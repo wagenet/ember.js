@@ -335,7 +335,7 @@ Ember.View = Ember.Object.extend(Ember.Evented,
 
   invokeForState: function(name) {
     var parent = this, states = parent.states;
-    var stateName = get(this, 'state'), state;
+    var stateName = this.state, state;
 
     while (states) {
       state = states[stateName];
@@ -1127,7 +1127,7 @@ Ember.View = Ember.Object.extend(Ember.Evented,
       dispatch
   */
   init: function() {
-    set(this, 'state', 'preRender');
+    this.state = 'preRender';
 
     var parentView = get(this, '_parentView');
 
@@ -1145,7 +1145,7 @@ Ember.View = Ember.Object.extend(Ember.Evented,
     this.classNameBindings = Ember.A(get(this, 'classNameBindings').slice());
     this.classNames = Ember.A(get(this, 'classNames').slice());
 
-    set(this, 'domManager', this.domManagerClass.create({ view: this }));
+    this.domManager = this.domManagerClass.create({ view: this });
 
     meta(this)["Ember.View"] = {};
 
@@ -1347,7 +1347,7 @@ Ember.View = Ember.Object.extend(Ember.Evented,
   },
 
   transitionTo: function(state, children) {
-    set(this, 'state', state);
+    this.state = state;
 
     if (children !== false) {
       this.forEachChildView(function(view) {

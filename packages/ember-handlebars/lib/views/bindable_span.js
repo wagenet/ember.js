@@ -82,9 +82,9 @@ Ember._BindableSpanView = Ember.View.extend(Ember.Metamorph,
   property: null,
 
   normalizedValue: Ember.computed(function() {
-    var property = get(this, 'property'),
-        context  = get(this, 'previousContext'),
-        valueNormalizer = get(this, 'valueNormalizerFunc'),
+    var property = this.property,
+        context  = this.previousContext,
+        valueNormalizer = this.valueNormalizerFunc,
         result;
 
     // Use the current context as the result if no
@@ -99,7 +99,7 @@ Ember._BindableSpanView = Ember.View.extend(Ember.Metamorph,
   }).property('property', 'previousContext', 'valueNormalizerFunc'),
 
   rerenderIfNeeded: function() {
-    if (!get(this, 'isDestroyed') && get(this, 'normalizedValue') !== this._lastNormalizedValue) {
+    if (!this.isDestroyed && get(this, 'normalizedValue') !== this._lastNormalizedValue) {
       this.rerender();
     }
   },
@@ -123,14 +123,14 @@ Ember._BindableSpanView = Ember.View.extend(Ember.Metamorph,
   render: function(buffer) {
     // If not invoked via a triple-mustache ({{{foo}}}), escape
     // the content of the template.
-    var escape = get(this, 'isEscaped');
+    var escape = this.isEscaped;
 
-    var shouldDisplay = get(this, 'shouldDisplayFunc'),
-        preserveContext = get(this, 'preserveContext'),
-        context = get(this, 'previousContext');
+    var shouldDisplay = this.shouldDisplayFunc,
+        preserveContext = this.preserveContext,
+        context = this.previousContext;
 
-    var inverseTemplate = get(this, 'inverseTemplate'),
-        displayTemplate = get(this, 'displayTemplate');
+    var inverseTemplate = this.inverseTemplate,
+        displayTemplate = this.displayTemplate;
 
     var result = get(this, 'normalizedValue');
     this._lastNormalizedValue = result;
