@@ -557,7 +557,7 @@ test("multiple contexts can be provided in a single transitionTo", function() {
 });
 
 test("transitionEvent is called for each nested state", function() {
-  expect(4);
+  expect(8);
 
   var calledOnParent = false,
       calledOnChild = true;
@@ -586,4 +586,17 @@ test("transitionEvent is called for each nested state", function() {
 
   ok(calledOnParent, 'called transitionEvent on parent');
   ok(calledOnChild, 'called transitionEvent on child');
+
+  // repeat the test now that the path is cached
+
+  stateManager.transitionTo('start');
+
+  calledOnParent = false;
+  calledOnChild = false;
+
+  stateManager.transitionTo('planters.nuts', 'context');
+
+  ok(calledOnParent, 'called transitionEvent on parent');
+  ok(calledOnChild, 'called transitionEvent on child');
+
 });
