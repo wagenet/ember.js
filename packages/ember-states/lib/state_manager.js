@@ -352,15 +352,15 @@ require('ember-states/state');
       robotManager.getPath('currentState.name') // 'rampaging'
 
   Transition actions can also be created using the `transitionTo` method of the Ember.State class. The
-  following example StateManagers are equivalent: 
-  
+  following example StateManagers are equivalent:
+
       aManager = Ember.StateManager.create({
         stateOne: Ember.State.create({
           changeToStateTwo: Ember.State.transitionTo('stateTwo')
         }),
         stateTwo: Ember.State.create({})
       })
-      
+
       bManager = Ember.StateManager.create({
         stateOne: Ember.State.create({
           changeToStateTwo: function(manager, context){
@@ -441,7 +441,7 @@ Ember.StateManager = Ember.State.extend(
     @default true
   */
   errorOnUnhandledEvent: true,
-  
+
   send: function(event, context) {
     Ember.assert('Cannot send event "' + event + '" while currentState is ' + get(this, 'currentState'), get(this, 'currentState'));
     if (arguments.length === 1) { context = {}; }
@@ -627,12 +627,6 @@ Ember.StateManager = Ember.State.extend(
           enterStates.shift();
           exitStates.shift();
         }
-
-        if (enterStates.length > 0) {
-          setupContexts = Ember.EnumerableUtils.map(enterStates, function(state, index) {
-                            return [state, explicitSegments ? segments[index][1] : context];
-                          });
-        }
       }
 
       currentState.routes[path] = {
@@ -641,6 +635,13 @@ Ember.StateManager = Ember.State.extend(
         futureState: state,
         resolveState: resolveState
       };
+    }
+
+    // must be calculated outside of the cache as the context can be different for the same path
+    if (enterStates.length > 0) {
+      setupContexts = Ember.EnumerableUtils.map(enterStates, function(state, index) {
+                        return [state, explicitSegments ? segments[index][1] : context];
+                      });
     }
 
     this.enterState(exitStates, enterStates, state);
