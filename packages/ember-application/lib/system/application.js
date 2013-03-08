@@ -637,19 +637,34 @@ function resolverFor(namespace) {
   return function(fullName) {
     var nameParts = fullName.split(":"),
         type = nameParts[0], name = nameParts[1],
-        root = namespace;
+        root = namespace,
+        result;
+
+    Ember.debug("RESOLVER: Resolving: "+fullName);
 
     if (type === 'template') {
-      var templateName = name.replace(/\./g, '/');
+      var originalTemplateName = name.replace(/\./g, '/'),
+          templateName = originalTemplateName;
 
-      if (Ember.TEMPLATES[templateName]) {
-        return Ember.TEMPLATES[templateName];
+      Ember.debug("  Looking for template named: "+templateName);
+
+      result = Ember.TEMPLATES[templateName];
+
+      if (!result) {
+        templateName = decamelize(templateName);
+        if (templateName !== originalTemplateName) {
+          Ember.debug("  Not found, trying: "+templateName);
+          result = Ember.TEMPLATES[templateName];
+        }
       }
 
-      templateName = decamelize(templateName);
-      if (Ember.TEMPLATES[templateName]) {
-        return Ember.TEMPLATES[templateName];
+      if (result) {
+        Ember.debug("  Found template: "+templateName);
+      } else {
+        Ember.debug("  Unable to find template.");
       }
+
+      return result;
     }
 
     if (type === 'controller' || type === 'route' || type === 'view') {
@@ -662,13 +677,19 @@ function resolverFor(namespace) {
       var namespaceName = capitalize(parts.slice(0, -1).join('.'));
       root = Ember.Namespace.byName(namespaceName);
 
-      Ember.assert('You are looking for a ' + name + ' ' + type + ' in the ' + namespaceName + ' namespace, but it could not be found', root);
+      Ember.assert('You are looking for a ' + name + ' ' + type + ' in the ' + namespaceName + ' namespace, but the namespace could not be found', root);
     }
 
     var className = classify(name) + classify(type);
+    Ember.debug("  Looking for: "+root.toString()+"."+className);
     var factory = get(root, className);
 
-    if (factory) { return factory; }
+    if (factory) {
+      Ember.debug("  Found");
+      return factory;
+    } else {
+      Ember.debug("  Not found.");
+    }
   };
 }
 

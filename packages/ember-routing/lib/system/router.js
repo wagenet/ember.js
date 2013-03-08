@@ -152,14 +152,26 @@ function getHandlerFunction(router) {
   var seen = {}, container = router.container;
 
   return function(name) {
+    if (!seen[name]) { Ember.debug("ROUTER: Looking for route definition: "+name); }
+
     var handler = container.lookup('route:' + name);
     if (seen[name]) { return handler; }
 
     seen[name] = true;
 
-    if (!handler) {
-      if (name === 'loading') { return {}; }
-      if (name === 'failure') { return router.constructor.defaultFailureHandler; }
+    if (handler) {
+      Ember.debug("ROUTER: Found route for '"+name+"': "+handler.toString());
+    } else {
+      if (name === 'loading') {
+        Ember.debug("ROUTER: No route class found, returning empty handler for: "+name);
+        return {};
+      }
+      if (name === 'failure') {
+        Ember.debug("ROUTER: No route class found, returning default handler for: "+failure);
+        return router.constructor.defaultFailureHandler;
+      }
+
+      Ember.debug("ROUTER: No route class found, returning default Ember.Route for: "+name);
 
       container.register('route', name, Ember.Route.extend());
       handler = container.lookup('route:' + name);

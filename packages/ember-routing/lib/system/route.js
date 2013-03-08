@@ -317,14 +317,19 @@ Ember.Route = Ember.Object.extend({
     @return {Ember.Controller}
   */
   controllerFor: function(name, model) {
+    Ember.debug("ROUTE: controllerFor - Looking up controller: "+name);
+
     var container = this.router.container,
         controller = container.lookup('controller:' + name);
 
-    if (!controller) {
+    if (controller) {
+      Ember.debug("ROUTE: controllerFor - Found controller: "+controller.toString());
+    } else {
       model = model || this.modelFor(name);
 
       Ember.assert("You are trying to look up a controller that you did not define, and for which Ember does not know the model.\n\nThis is not a controller for a route, so you must explicitly define the controller ("+this.router.namespace.toString() + "." + Ember.String.capitalize(Ember.String.camelize(name))+"Controller) or pass a model as the second parameter to `controllerFor`, so that Ember knows which type of controller to create for you.", model || this.container.lookup('route:' + name));
 
+      Ember.debug("ROUTE: controllerFor - Unable to find controller for '"+name+"', auto-generating a basic controller");
       controller = Ember.generateController(container, name, model);
     }
 
@@ -342,8 +347,14 @@ Ember.Route = Ember.Object.extend({
     @return {Object} the model object
   */
   modelFor: function(name) {
+    Ember.debug("ROUTE: modelFor - Looking up route: "+name);
     var route = this.container.lookup('route:' + name);
-    return route && route.currentModel;
+    if (route) {
+      Ember.debug("ROUTE: modelFor - Found route: "+route.toString());
+      return route.currentModel;
+    } else {
+      Ember.debug("ROUTE: modelFor - Unable to find route: "+name);
+    }
   },
 
   /**
@@ -425,11 +436,16 @@ Ember.Route = Ember.Object.extend({
 
     name = name ? name.replace(/\//g, '.') : this.routeName;
 
-    var container = this.container,
-        view = container.lookup('view:' + name),
-        template = container.lookup('template:' + name);
+    var container = this.container;
+    Ember.debug("ROUTE: render - Looking for view: "+name);
+    var view = container.lookup('view:' + name);
+    Ember.debug("ROUTE: render - Looking for template: "+name);
+    var template = container.lookup('template:' + name);
 
-    if (!view && !template) { return; }
+    if (!view && !template) {
+      Ember.debug("ROUTE: render - No view or template found, not rendering.");
+      return;
+    }
 
     options = normalizeOptions(this, name, template, options);
     view = setupView(view, container, options);
@@ -472,26 +488,52 @@ function parentTemplate(route, isRecursive) {
 
 function normalizeOptions(route, name, template, options) {
   options = options || {};
-  options.into = options.into ? options.into.replace(/\//g, '.') : parentTemplate(route);
-  options.outlet = options.outlet || 'main';
+
+  if (options.into) {
+    options.into = options.into.replace(/\//g, '.');
+    Ember.debug("ROUTE: render - Will render into specified view named: "+options.into);
+  } else {
+    options.into = parentTemplate(route);
+    if (options.into) {
+      Ember.debug("ROUTE: render - No target view specified, will render into parent view named: "+options.into);
+    } else {
+      Ember.debug("ROUTE: render - No target view specified, will render into root level");
+    }
+  }
+
+  if (options.outlet) {
+    Ember.debug("ROUTE: render - Will render into specified outlet: "+options.outlet);
+  } else {
+    Ember.debug("ROUTE: render - No outlet specified, will use main");
+    options.outlet = 'main';
+  }
+
   options.name = name;
   options.template = template;
 
   Ember.assert("An outlet ("+options.outlet+") was specified but this view will render at the root level.", options.outlet === 'main' || options.into);
 
-  var controller = options.controller, namedController;
+  var controller = options.controller;
 
   if (options.controller) {
     controller = options.controller;
-  } else if (namedController = route.container.lookup('controller:' + name)) {
-    controller = namedController;
   } else {
-    controller = route.routeName;
+    Ember.debug("ROUTE: render - Controller not specified, looking up based on provided name: "+name);
+    var namedController = route.container.lookup('controller:' + name);
+    if (namedController) {
+      controller = namedController;
+    } else {
+      Ember.debug("ROUTE: render - Couldn't find named controller, will attempt lookup by route name: "+route.routeName);
+      controller = route.routeName;
+    }
   }
 
   if (typeof controller === 'string') {
+    Ember.debug("ROUTE: render - Looking up controller by string: "+controller);
     controller = route.container.lookup('controller:' + controller);
   }
+
+  Ember.debug("ROUTE: render - Using controller: "+controller.toString());
 
   options.controller = controller;
 
@@ -501,15 +543,29 @@ function normalizeOptions(route, name, template, options) {
 function setupView(view, container, options) {
   var defaultView = options.into ? 'view:default' : 'view:toplevel';
 
-  view = view || container.lookup(defaultView);
+  if (!view) {
+    Ember.debug("ROUTE: render - No view provided, using: "+defaultView);
+    view = container.lookup(defaultView);
+  }
 
-  if (!get(view, 'templateName')) {
+  var templateName = get(view, 'templateName');
+  if (templateName) {
+    Ember.debug("ROUTE: render - View has a templateName specified, using that: "+templateName);
+  } else {
+    if (options.template) {
+      Ember.debug("ROUTE: render - Using specified template: "+options.name);
+    } else {
+      Ember.debug("ROUTE: render - No template provided for view.");
+    }
+
     set(view, 'template', options.template);
 
     set(view, '_debugTemplateName', options.name);
   }
 
   set(view, 'renderedName', options.name);
+
+  Ember.debug("ROUTE: render - Setting view controller to: "+(options.controller && options.controller.toString()));
   set(view, 'controller', options.controller);
 
   return view;
@@ -517,11 +573,13 @@ function setupView(view, container, options) {
 
 function appendView(route, view, options) {
   if (options.into) {
+    Ember.debug("ROUTE: render - Appending view into "+options.into+" with outlet: "+options.outlet);
     var parentView = route.router._lookupActiveView(options.into);
     route.teardownView = teardownOutlet(parentView, options.outlet);
     parentView.connectOutlet(options.outlet, view);
   } else {
     var rootElement = get(route, 'router.namespace.rootElement');
+    Ember.debug("ROUTE: render - Appending view into rootElement: "+rootElement);
     route.router._connectActiveView(options.name, view);
     route.teardownView = teardownTopLevel(view);
     view.appendTo(rootElement);
@@ -529,11 +587,17 @@ function appendView(route, view, options) {
 }
 
 function teardownTopLevel(view) {
-  return function() { view.destroy(); };
+  return function() {
+    Ember.debug("ROUTE: Tearing down top level view");
+    view.destroy();
+  };
 }
 
 function teardownOutlet(parentView, outlet) {
-  return function() { parentView.disconnectOutlet(outlet); };
+  return function() {
+    Ember.debug("ROUTE: Disconnecting outlet: "+parentView.toString()+", "+outlet);
+    parentView.disconnectOutlet(outlet);
+  };
 }
 
 function teardownView(route) {
