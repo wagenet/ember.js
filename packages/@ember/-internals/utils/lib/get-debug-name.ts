@@ -3,11 +3,11 @@ import { DEBUG } from '@glimmer/env';
 let getDebugName: undefined | ((value: any) => string);
 
 if (DEBUG) {
-  let getFunctionName = (fn: Function) => {
+  const getFunctionName = (fn: Function) => {
     let functionName = fn.name;
 
     if (functionName === undefined) {
-      let match = Function.prototype.toString.call(fn).match(/function (\w+)\s*\(/);
+      const match = Function.prototype.toString.call(fn).match(/function (\w+)\s*\(/);
 
       functionName = (match && match[1]) || '';
     }
@@ -15,7 +15,7 @@ if (DEBUG) {
     return functionName.replace(/^bound /, '');
   };
 
-  let getObjectName = (obj: object) => {
+  const getObjectName = (obj: object) => {
     let name;
     let className;
 
@@ -49,7 +49,7 @@ if (DEBUG) {
     return name || className;
   };
 
-  let getPrimitiveName = (value: any) => {
+  const getPrimitiveName = (value: any) => {
     return String(value);
   };
 

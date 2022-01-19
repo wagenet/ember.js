@@ -20,7 +20,7 @@ export type ElementDescriptor = [
 ];
 
 export function isElementDescriptor(args: unknown[]): args is ElementDescriptor {
-  let [maybeTarget, maybeKey, maybeDesc] = args;
+  const [maybeTarget, maybeKey, maybeDesc] = args;
 
   return (
     // Ensure we have the right number of args
@@ -36,7 +36,7 @@ export function isElementDescriptor(args: unknown[]): args is ElementDescriptor 
 }
 
 export function nativeDescDecorator(propertyDesc: PropertyDescriptor) {
-  let decorator = function () {
+  const decorator = function () {
     return propertyDesc;
   };
 
@@ -97,7 +97,7 @@ function DESCRIPTOR_SETTER_FUNCTION(
   name: string,
   descriptor: ComputedDescriptor
 ): (value: any) => void {
-  let set = function CPSETTER_FUNCTION(this: object, value: any): void {
+  const set = function CPSETTER_FUNCTION(this: object, value: any): void {
     return descriptor.set(this, name, value);
   };
 
@@ -112,7 +112,7 @@ export function makeComputedDecorator(
   desc: ComputedDescriptor,
   DecoratorClass: { prototype: object }
 ): Decorator {
-  let decorator = function COMPUTED_DECORATOR(
+  const decorator = function COMPUTED_DECORATOR(
     target: object,
     key: string,
     propertyDesc?: DecoratorPropertyDescriptor,
@@ -127,10 +127,10 @@ export function makeComputedDecorator(
         !COMPUTED_GETTERS.has(propertyDesc.get)
     );
 
-    let meta = arguments.length === 3 ? metaFor(target) : maybeMeta;
+    const meta = arguments.length === 3 ? metaFor(target) : maybeMeta;
     desc.setup(target, key, propertyDesc, meta!);
 
-    let computedDesc: PropertyDescriptor = {
+    const computedDesc: PropertyDescriptor = {
       enumerable: desc.enumerable,
       configurable: desc.configurable,
       get: DESCRIPTOR_GETTER_FUNCTION(key, desc),
@@ -168,7 +168,7 @@ export function descriptorForProperty(obj: object, keyName: string, _meta?: Meta
     typeof obj === 'object' || typeof obj === 'function'
   );
 
-  let meta = _meta === undefined ? peekMeta(obj) : _meta;
+  const meta = _meta === undefined ? peekMeta(obj) : _meta;
 
   if (meta !== null) {
     return meta.peekDescriptors(keyName);

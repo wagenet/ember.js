@@ -3,7 +3,7 @@ import { run } from '@ember/runloop';
 
 export function setupObserversCheck(hooks: NestedHooks): void {
   hooks.afterEach(function () {
-    let { assert } = QUnit.config.current;
+    const { assert } = QUnit.config.current;
 
     if (ASYNC_OBSERVERS.size > 0) {
       assert.ok(false, 'Should not have any ASYNC_OBSERVERS after tests');

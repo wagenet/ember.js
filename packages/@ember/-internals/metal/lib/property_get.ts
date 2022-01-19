@@ -13,7 +13,7 @@ export let getPossibleMandatoryProxyValue: (obj: object, keyName: string) => any
 
 if (DEBUG) {
   getPossibleMandatoryProxyValue = function getPossibleMandatoryProxyValue(obj, keyName): any {
-    let content = obj[PROXY_CONTENT];
+    const content = obj[PROXY_CONTENT];
     if (content === undefined) {
       return obj[keyName];
     } else {
@@ -93,11 +93,11 @@ export function get(obj: object, keyName: string): unknown {
 }
 
 export function _getProp(obj: object, keyName: string) {
-  let type = typeof obj;
+  const type = typeof obj;
 
-  let isObject = type === 'object';
-  let isFunction = type === 'function';
-  let isObjectLike = isObject || isFunction;
+  const isObject = type === 'object';
+  const isFunction = type === 'function';
+  const isObjectLike = isObject || isFunction;
 
   let value: unknown;
 
@@ -135,7 +135,7 @@ export function _getProp(obj: object, keyName: string) {
 
 export function _getPath<T extends object>(root: T, path: string | string[]): any {
   let obj: any = root;
-  let parts = typeof path === 'string' ? path.split('.') : path;
+  const parts = typeof path === 'string' ? path.split('.') : path;
 
   for (let i = 0; i < parts.length; i++) {
     if (obj === undefined || obj === null || (obj as MaybeHasIsDestroyed).isDestroyed) {
@@ -161,7 +161,7 @@ _getProp({ unkonwnProperty() {} }, 1 as any);
 get({}, 'foo');
 get({}, 'foo.bar');
 
-let fakeProxy = {};
+const fakeProxy = {};
 setProxy(fakeProxy);
 
 track(() => _getProp({}, 'a'));

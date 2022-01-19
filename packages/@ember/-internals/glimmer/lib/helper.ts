@@ -76,7 +76,7 @@ export interface SimpleHelper<T = unknown> {
   @public
   @since 1.13.0
 */
-let Helper = FrameworkObject.extend({
+const Helper = FrameworkObject.extend({
   init() {
     this._super(...arguments);
     this[RECOMPUTE_TAG] = createTag();
@@ -149,13 +149,13 @@ class ClassicHelperManager implements HelperManager<ClassicHelperStateBucket> {
   private ownerInjection: object;
 
   constructor(owner: Owner | undefined) {
-    let ownerInjection = {};
+    const ownerInjection = {};
     setOwner(ownerInjection, owner!);
     this.ownerInjection = ownerInjection;
   }
 
   createHelper(definition: typeof Helper, args: Arguments) {
-    let instance =
+    const instance =
       definition.class === undefined ? definition.create(this.ownerInjection) : definition.create();
 
     return {
@@ -169,9 +169,9 @@ class ClassicHelperManager implements HelperManager<ClassicHelperStateBucket> {
   }
 
   getValue({ instance, args }: ClassicHelperStateBucket) {
-    let { positional, named } = args;
+    const { positional, named } = args;
 
-    let ret = instance.compute(positional as unknown[], named);
+    const ret = instance.compute(positional as unknown[], named);
 
     consumeTag(instance[RECOMPUTE_TAG]);
 
@@ -210,7 +210,7 @@ class SimpleClassicHelperManager implements HelperManager<() => unknown> {
   });
 
   createHelper(definition: Wrapper, args: Arguments) {
-    let { compute } = definition;
+    const { compute } = definition;
 
     return () => compute.call(null, args.positional as unknown[], args.named);
   }

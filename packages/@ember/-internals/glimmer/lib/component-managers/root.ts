@@ -34,13 +34,17 @@ class RootComponentManager extends CurlyComponentManager {
     { isInteractive }: Environment,
     dynamicScope: DynamicScope
   ) {
-    let component = this.component;
+    const component = this.component;
 
-    let finalizer = _instrumentStart('render.component', initialRenderInstrumentDetails, component);
+    const finalizer = _instrumentStart(
+      'render.component',
+      initialRenderInstrumentDetails,
+      component
+    );
 
     dynamicScope.view = component;
 
-    let hasWrappedElement = component.tagName !== '';
+    const hasWrappedElement = component.tagName !== '';
 
     // We usually do this in the `didCreateElement`, but that hook doesn't fire for tagless components
     if (!hasWrappedElement) {
@@ -59,7 +63,7 @@ class RootComponentManager extends CurlyComponentManager {
       processComponentInitializationAssertions(component, {});
     }
 
-    let bucket = new ComponentStateBucket(
+    const bucket = new ComponentStateBucket(
       component,
       null,
       CONSTANT_TAG,

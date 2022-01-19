@@ -95,7 +95,7 @@ export function removeListener(
     method = targetOrFunction;
   }
 
-  let m = metaFor(obj);
+  const m = metaFor(obj);
 
   m.removeFromListeners(eventName, target, method);
 }
@@ -123,7 +123,7 @@ export function sendEvent(
   _meta?: Meta | null
 ) {
   if (actions === undefined) {
-    let meta = _meta === undefined ? peekMeta(obj) : _meta;
+    const meta = _meta === undefined ? peekMeta(obj) : _meta;
     actions = meta !== null ? meta.matchingListeners(eventName) : undefined;
   }
 
@@ -135,7 +135,7 @@ export function sendEvent(
     // looping in reverse for once listeners
     let target = actions[i];
     let method = actions[i + 1] as string | Function;
-    let once = actions[i + 2] as boolean;
+    const once = actions[i + 2] as boolean;
 
     if (!method) {
       continue;
@@ -147,7 +147,7 @@ export function sendEvent(
       target = obj;
     }
 
-    let type = typeof method;
+    const type = typeof method;
     if (type === 'string' || type === 'symbol') {
       method = target[method as string] as Function;
     }
@@ -167,11 +167,11 @@ export function sendEvent(
   @return {Boolean} if `obj` has listeners for event `eventName`
 */
 export function hasListeners(obj: object, eventName: string): boolean {
-  let meta = peekMeta(obj);
+  const meta = peekMeta(obj);
   if (meta === null) {
     return false;
   }
-  let matched = meta.matchingListeners(eventName);
+  const matched = meta.matchingListeners(eventName);
   return matched !== undefined && matched.length > 0;
 }
 
@@ -206,8 +206,8 @@ export function hasListeners(obj: object, eventName: string): boolean {
 export function on<T extends (...args: any[]) => any>(
   ...args: [...eventNames: string[], func: T]
 ): T {
-  let func = args.pop();
-  let events = args as string[];
+  const func = args.pop();
+  const events = args as string[];
 
   assert('on expects function as last argument', typeof func === 'function');
   assert(

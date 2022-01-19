@@ -23,7 +23,7 @@ import { isPath } from './utils';
   @class TransformHasBlockSyntax
 */
 export default function transformEachTrackArray(env: EmberASTPluginEnvironment): ASTPlugin {
-  let { builders: b } = env.syntax;
+  const { builders: b } = env.syntax;
 
   return {
     name: 'transform-each-track-array',
@@ -31,7 +31,7 @@ export default function transformEachTrackArray(env: EmberASTPluginEnvironment):
     visitor: {
       BlockStatement(node: AST.BlockStatement): AST.Node | void {
         if (isPath(node.path) && node.path.original === 'each') {
-          let firstParam = node.params[0];
+          const firstParam = node.params[0];
 
           if (
             firstParam.type === 'SubExpression' &&

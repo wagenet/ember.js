@@ -4,7 +4,6 @@ module.exports = {
   rules: [
     // When rules are removed here make sure to convert to 'error' in eslintrc
     'prefer-spread',
-    'prefer-const',
     'prefer-rest-params',
     'qunit/no-assert-equal',
     'qunit/no-commented-tests',

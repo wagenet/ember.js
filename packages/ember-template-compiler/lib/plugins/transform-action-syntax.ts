@@ -28,7 +28,7 @@ import { isPath } from './utils';
 */
 
 export default function transformActionSyntax({ syntax }: EmberASTPluginEnvironment): ASTPlugin {
-  let { builders: b } = syntax;
+  const { builders: b } = syntax;
 
   return {
     name: 'transform-action-syntax',

@@ -9,16 +9,16 @@ import { ACTIONS } from '../helpers/action';
 // inputs needed by CurlyComponents (attrs and props, with mutable
 // cells, etc).
 export function processComponentArgs(namedArgs: CapturedNamedArguments) {
-  let attrs = Object.create(null);
-  let props = Object.create(null);
+  const attrs = Object.create(null);
+  const props = Object.create(null);
 
   props[ARGS] = namedArgs;
 
-  for (let name in namedArgs) {
-    let ref = namedArgs[name];
-    let value = valueForRef(ref);
+  for (const name in namedArgs) {
+    const ref = namedArgs[name];
+    const value = valueForRef(ref);
 
-    let isAction = typeof value === 'function' && ACTIONS.has(value);
+    const isAction = typeof value === 'function' && ACTIONS.has(value);
 
     if (isUpdatableRef(ref) && !isAction) {
       attrs[name] = new MutableCell(ref, value);

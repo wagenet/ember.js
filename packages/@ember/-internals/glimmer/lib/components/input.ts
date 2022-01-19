@@ -195,7 +195,7 @@ class Input extends AbstractInput {
    * The HTML type attribute.
    */
   get type(): string {
-    let type = this.named('type');
+    const type = this.named('type');
 
     if (type === null || type === undefined) {
       return 'text';
@@ -268,13 +268,13 @@ class Input extends AbstractInput {
   }
 
   @action checkedDidChange(event: Event): void {
-    let element = event.target;
+    const element = event.target;
     assert('[BUG] element must be an <input>', element instanceof HTMLInputElement);
     this.checked = element.checked;
   }
 
   protected isSupportedArgument(name: string): boolean {
-    let supportedArguments = [
+    const supportedArguments = [
       'type',
       'value',
       'checked',

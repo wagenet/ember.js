@@ -35,9 +35,9 @@ import { isPath, trackLocals } from './utils';
   @class TransformHasBlockSyntax
 */
 export default function transformWrapMountAndOutlet(env: EmberASTPluginEnvironment): ASTPlugin {
-  let { builders: b } = env.syntax;
+  const { builders: b } = env.syntax;
 
-  let { hasLocal, node } = trackLocals();
+  const { hasLocal, node } = trackLocals();
 
   return {
     name: 'transform-wrap-mount-and-outlet',
@@ -52,7 +52,7 @@ export default function transformWrapMountAndOutlet(env: EmberASTPluginEnvironme
           (node.path.original === 'mount' || node.path.original === 'outlet') &&
           !hasLocal(node.path.original)
         ) {
-          let subexpression = b.sexpr(
+          const subexpression = b.sexpr(
             b.path(`-${node.path.original}`),
             node.params,
             node.hash,

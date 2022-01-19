@@ -6,7 +6,7 @@
 export default function makeDictionary<T>(
   parent: { [key: string]: T } | null
 ): { [key: string]: T } {
-  let dict = Object.create(parent);
+  const dict = Object.create(parent);
   dict['_dict'] = null;
   delete dict['_dict'];
   return dict;

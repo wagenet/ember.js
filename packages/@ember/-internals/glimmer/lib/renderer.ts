@@ -134,9 +134,9 @@ class RootState {
     this.destroyed = false;
 
     this.render = errorLoopTransaction(() => {
-      let layout = unwrapTemplate(template).asLayout();
+      const layout = unwrapTemplate(template).asLayout();
 
-      let iterator = renderMain(
+      const iterator = renderMain(
         runtime,
         context,
         owner,
@@ -146,7 +146,7 @@ class RootState {
         dynamicScope
       );
 
-      let result = (this.result = iterator.sync());
+      const result = (this.result = iterator.sync());
 
       // override .render function after initial render
       this.render = errorLoopTransaction(() => result.rerender({ alwaysRevalidate: false }));
@@ -158,7 +158,7 @@ class RootState {
   }
 
   destroy() {
-    let {
+    const {
       result,
       runtime: { env },
     } = this;
@@ -182,7 +182,7 @@ class RootState {
 
        */
 
-      inTransaction(env, () => destroy(result!));
+      inTransaction(env, () => destroy(result));
     }
   }
 }
@@ -199,7 +199,7 @@ function register(renderer: Renderer): void {
 }
 
 function deregister(renderer: Renderer): void {
-  let index = renderers.indexOf(renderer);
+  const index = renderers.indexOf(renderer);
   assert('Cannot deregister unknown unregistered renderer', index !== -1);
   renderers.splice(index, 1);
 }
@@ -240,7 +240,7 @@ export function renderSettled() {
 
 function resolveRenderPromise() {
   if (renderSettledDeferred !== null) {
-    let resolve = renderSettledDeferred.resolve;
+    const resolve = renderSettledDeferred.resolve;
     renderSettledDeferred = null;
 
     _backburner.join(null, resolve);
@@ -291,15 +291,15 @@ export class Renderer {
   readonly _runtimeResolver: ResolverImpl;
 
   static create(props: { _viewRegistry: any }): Renderer {
-    let { _viewRegistry } = props;
-    let document = getOwner(props).lookup('service:-document') as SimpleDocument;
-    let env = getOwner(props).lookup('-environment:main') as {
+    const { _viewRegistry } = props;
+    const document = getOwner(props).lookup('service:-document') as SimpleDocument;
+    const env = getOwner(props).lookup('-environment:main') as {
       isInteractive: boolean;
       hasDOM: boolean;
     };
-    let owner = getOwner(props);
-    let rootTemplate = owner.lookup(P`template:-root`) as TemplateFactory;
-    let builder = owner.lookup('service:-dom-builder') as IBuilder;
+    const owner = getOwner(props);
+    const rootTemplate = owner.lookup(P`template:-root`) as TemplateFactory;
+    const builder = owner.lookup('service:-dom-builder') as IBuilder;
     return new this(getOwner(props), document, env, rootTemplate, _viewRegistry, builder);
   }
 
@@ -320,13 +320,13 @@ export class Renderer {
     this._isInteractive = env.isInteractive;
 
     // resolver is exposed for tests
-    let resolver = (this._runtimeResolver = new ResolverImpl());
+    const resolver = (this._runtimeResolver = new ResolverImpl());
 
-    let sharedArtifacts = artifacts();
+    const sharedArtifacts = artifacts();
 
     this._context = programCompilationContext(sharedArtifacts, resolver);
 
-    let runtimeEnvironmentDelegate = new EmberEnvironmentDelegate(owner, env.isInteractive);
+    const runtimeEnvironmentDelegate = new EmberEnvironmentDelegate(owner, env.isInteractive);
     this._runtime = runtimeContext(
       {
         appendOperations: env.hasDOM
@@ -341,7 +341,7 @@ export class Renderer {
   }
 
   get debugRenderTree(): DebugRenderTree {
-    let { debugRenderTree } = this._runtime.env;
+    const { debugRenderTree } = this._runtime.env;
 
     assert(
       'Attempted to access the DebugRenderTree, but it did not exist. Is the Ember Inspector open?',
@@ -354,7 +354,7 @@ export class Renderer {
   // renderer HOOKS
 
   appendOutletView(view: OutletView, target: SimpleElement): void {
-    let definition = createRootOutlet(view);
+    const definition = createRootOutlet(view);
     this._appendDefinition(
       view,
       curry(CurriedType.Component, definition, view.owner, null, true),
@@ -363,7 +363,7 @@ export class Renderer {
   }
 
   appendTo(view: Component, target: SimpleElement): void {
-    let definition = new RootComponentDefinition(view);
+    const definition = new RootComponentDefinition(view);
     this._appendDefinition(
       view,
       curry(CurriedType.Component, definition, this._owner, null, true),
@@ -376,9 +376,9 @@ export class Renderer {
     definition: CurriedValue,
     target: SimpleElement
   ): void {
-    let self = createConstRef(definition, 'this');
-    let dynamicScope = new DynamicScope(null, UNDEFINED_REFERENCE);
-    let rootState = new RootState(
+    const self = createConstRef(definition, 'this');
+    const dynamicScope = new DynamicScope(null, UNDEFINED_REFERENCE);
+    const rootState = new RootState(
       root,
       this._runtime,
       this._context,
@@ -397,7 +397,7 @@ export class Renderer {
   }
 
   register(view: any): void {
-    let id = getViewId(view);
+    const id = getViewId(view);
     assert(
       'Attempted to register a view with an id already in use: ' + id,
       !this._viewRegistry[id]
@@ -425,13 +425,13 @@ export class Renderer {
       return;
     }
 
-    let roots = this._roots;
+    const roots = this._roots;
 
     // traverse in reverse so we can remove items
     // without mucking up the index
     let i = this._roots.length;
     while (i--) {
-      let root = roots[i];
+      const root = roots[i];
       if (root.isFor(view)) {
         root.destroy();
         roots.splice(i, 1);
@@ -460,13 +460,13 @@ export class Renderer {
   getBounds(
     view: object
   ): { parentElement: SimpleElement; firstNode: SimpleNode; lastNode: SimpleNode } {
-    let bounds: Bounds = view[BOUNDS];
+    const bounds: Bounds = view[BOUNDS];
 
     assert('object passed to getBounds must have the BOUNDS symbol as a property', Boolean(bounds));
 
-    let parentElement = bounds.parentElement();
-    let firstNode = bounds.firstNode();
-    let lastNode = bounds.lastNode();
+    const parentElement = bounds.parentElement();
+    const firstNode = bounds.firstNode();
+    const lastNode = bounds.lastNode();
 
     return { parentElement, firstNode, lastNode };
   }
@@ -476,7 +476,7 @@ export class Renderer {
   }
 
   _renderRoot(root: RootState): void {
-    let { _roots: roots } = this;
+    const { _roots: roots } = this;
 
     roots.push(root);
 
@@ -488,7 +488,7 @@ export class Renderer {
   }
 
   _renderRoots(): void {
-    let { _roots: roots, _runtime: runtime, _removedRoots: removedRoots } = this;
+    const { _roots: roots, _runtime: runtime, _removedRoots: removedRoots } = this;
     let initialRootsLength: number;
 
     do {
@@ -498,7 +498,7 @@ export class Renderer {
         // ensure that for the first iteration of the loop
         // each root is processed
         for (let i = 0; i < roots.length; i++) {
-          let root = roots[i];
+          const root = roots[i];
 
           if (root.destroyed) {
             // add to the list of roots to be removed
@@ -524,9 +524,9 @@ export class Renderer {
 
     // remove any roots that were destroyed during this transaction
     while (removedRoots.length) {
-      let root = removedRoots.pop();
+      const root = removedRoots.pop();
 
-      let rootIndex = roots.indexOf(root!);
+      const rootIndex = roots.indexOf(root!);
       roots.splice(rootIndex, 1);
     }
 
@@ -559,9 +559,9 @@ export class Renderer {
   }
 
   _clearAllRoots(): void {
-    let roots = this._roots;
+    const roots = this._roots;
     for (let i = 0; i < roots.length; i++) {
-      let root = roots[i];
+      const root = roots[i];
       root.destroy();
     }
 

@@ -4,15 +4,15 @@ import { RESOLUTION_MODE_TRANSFORMS, STRICT_MODE_TRANSFORMS } from '../plugins/i
 import { EmberPrecompileOptions, PluginFunc } from '../types';
 import COMPONENT_NAME_SIMPLE_DASHERIZE_CACHE from './dasherize-component-name';
 
-let USER_PLUGINS: PluginFunc[] = [];
+const USER_PLUGINS: PluginFunc[] = [];
 
 function malformedComponentLookup(string: string) {
   return string.indexOf('::') === -1 && string.indexOf(':') > -1;
 }
 
 export function buildCompileOptions(_options: EmberPrecompileOptions): EmberPrecompileOptions {
-  let moduleName = _options.moduleName;
-  let options: EmberPrecompileOptions = Object.assign(
+  const moduleName = _options.moduleName;
+  const options: EmberPrecompileOptions = Object.assign(
     { meta: {}, isProduction: false, plugins: { ast: [] } },
     _options,
     {
@@ -46,7 +46,7 @@ export function buildCompileOptions(_options: EmberPrecompileOptions): EmberPrec
 
   // move `moduleName` into `meta` property
   if (options.moduleName) {
-    let meta = options.meta;
+    const meta = options.meta;
     assert('has meta', meta); // We just set it
     meta.moduleName = options.moduleName;
   }
@@ -63,15 +63,15 @@ export function transformsFor(options: EmberPrecompileOptions): readonly PluginF
 export default function compileOptions(
   _options: Partial<EmberPrecompileOptions> = {}
 ): EmberPrecompileOptions {
-  let options = buildCompileOptions(_options);
-  let builtInPlugins = transformsFor(options);
+  const options = buildCompileOptions(_options);
+  const builtInPlugins = transformsFor(options);
 
   if (!_options.plugins) {
     options.plugins = { ast: [...USER_PLUGINS, ...builtInPlugins] };
   } else {
-    let potententialPugins = [...USER_PLUGINS, ...builtInPlugins];
+    const potententialPugins = [...USER_PLUGINS, ...builtInPlugins];
     assert('expected plugins', options.plugins);
-    let pluginsToAdd = potententialPugins.filter((plugin) => {
+    const pluginsToAdd = potententialPugins.filter((plugin) => {
       assert('expected plugins', options.plugins);
       return options.plugins.ast.indexOf(plugin) === -1;
     });

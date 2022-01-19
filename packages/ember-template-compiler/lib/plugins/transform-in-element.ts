@@ -22,7 +22,7 @@ import { isPath } from './utils';
   @class TransformInElement
 */
 export default function transformInElement(env: EmberASTPluginEnvironment): ASTPlugin {
-  let { builders: b } = env.syntax;
+  const { builders: b } = env.syntax;
 
   return {
     name: 'transform-in-element',
@@ -32,10 +32,10 @@ export default function transformInElement(env: EmberASTPluginEnvironment): ASTP
         if (!isPath(node.path)) return;
 
         if (node.path.original === 'in-element') {
-          let originalValue = node.params[0];
+          const originalValue = node.params[0];
 
           if (originalValue && !env.isProduction) {
-            let subExpr = b.sexpr('-in-el-null', [originalValue]);
+            const subExpr = b.sexpr('-in-el-null', [originalValue]);
 
             node.params.shift();
             node.params.unshift(subExpr);

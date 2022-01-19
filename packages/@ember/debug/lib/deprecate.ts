@@ -82,7 +82,7 @@ if (DEBUG) {
     genericRegisterHandler('deprecate', handler);
   };
 
-  let formatMessage = function formatMessage(_message: string, options?: DeprecationOptions) {
+  const formatMessage = function formatMessage(_message: string, options?: DeprecationOptions) {
     let message = _message;
 
     if (options && options.id) {
@@ -97,7 +97,7 @@ if (DEBUG) {
   };
 
   registerHandler(function logDeprecationToConsole(message, options) {
-    let updatedMessage = formatMessage(message, options);
+    const updatedMessage = formatMessage(message, options);
     console.warn(`DEPRECATION: ${updatedMessage}`); // eslint-disable-line no-console
   });
 
@@ -118,7 +118,7 @@ if (DEBUG) {
   registerHandler(function logDeprecationStackTrace(message, options, next) {
     if (ENV.LOG_STACKTRACE_ON_DEPRECATION) {
       let stackStr = '';
-      let error = captureErrorForStack();
+      const error = captureErrorForStack();
       let stack;
 
       if (error instanceof Error) {
@@ -143,7 +143,7 @@ if (DEBUG) {
         }
       }
 
-      let updatedMessage = formatMessage(message, options);
+      const updatedMessage = formatMessage(message, options);
 
       console.warn(`DEPRECATION: ${updatedMessage}${stackStr}`); // eslint-disable-line no-console
     } else {
@@ -153,7 +153,7 @@ if (DEBUG) {
 
   registerHandler(function raiseOnDeprecation(message, options, next) {
     if (ENV.RAISE_ON_DEPRECATION) {
-      let updatedMessage = formatMessage(message);
+      const updatedMessage = formatMessage(message);
 
       throw new Error(updatedMessage);
     } else {

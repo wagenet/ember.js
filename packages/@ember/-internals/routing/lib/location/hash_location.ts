@@ -72,7 +72,7 @@ export default class HashLocation extends EmberObject implements EmberLocation {
     @method getURL
   */
   getURL(): string {
-    let originalPath = this.getHash().substr(1);
+    const originalPath = this.getHash().substr(1);
     let outPath = originalPath;
 
     if (outPath[0] !== '/') {
@@ -131,7 +131,7 @@ export default class HashLocation extends EmberObject implements EmberLocation {
   onUpdateURL(callback: UpdateCallback): void {
     this._removeEventListener();
     this._hashchangeHandler = bind(this, function (this: HashLocation) {
-      let path = this.getURL();
+      const path = this.getURL();
       if (this.lastSetURL === path) {
         return;
       }

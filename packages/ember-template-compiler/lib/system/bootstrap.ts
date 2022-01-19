@@ -29,21 +29,20 @@ function bootstrap({ context, hasTemplate, setTemplate }: BootstrapOptions) {
     context = document;
   }
 
-  let selector = 'script[type="text/x-handlebars"]';
+  const selector = 'script[type="text/x-handlebars"]';
 
-  let elements = context.querySelectorAll(selector);
+  const elements = context.querySelectorAll(selector);
 
   for (let i = 0; i < elements.length; i++) {
-    let script = elements[i];
+    const script = elements[i];
 
     // Get the name of the script
     // First look for data-template-name attribute, then fall back to its
     // id if no name is found.
-    let templateName =
+    const templateName =
       script.getAttribute('data-template-name') || script.getAttribute('id') || 'application';
-    let template;
 
-    template = compile(script.innerHTML, {
+    const template = compile(script.innerHTML, {
       moduleName: templateName,
     });
 

@@ -57,9 +57,9 @@ export const outletHelper = internalHelper(
       nameRef = args.positional[0];
     }
 
-    let outletRef = createComputeRef(() => {
-      let state = valueForRef(scope.get('outletState') as Reference<OutletState | undefined>);
-      let outlets = state !== undefined ? state.outlets : undefined;
+    const outletRef = createComputeRef(() => {
+      const state = valueForRef(scope.get('outletState') as Reference<OutletState | undefined>);
+      const outlets = state !== undefined ? state.outlets : undefined;
 
       return outlets !== undefined ? outlets[valueForRef(nameRef)] : undefined;
     });
@@ -68,17 +68,17 @@ export const outletHelper = internalHelper(
     let definition: CurriedValue | null = null;
 
     return createComputeRef(() => {
-      let outletState = valueForRef(outletRef);
-      let state = stateFor(outletRef, outletState);
+      const outletState = valueForRef(outletRef);
+      const state = stateFor(outletRef, outletState);
 
       if (!validate(state, lastState)) {
         lastState = state;
 
         if (state !== null) {
-          let named = dict<Reference>();
+          const named = dict<Reference>();
 
           // Create a ref for the model
-          let modelRef = childRefFromParts(outletRef, ['render', 'model']);
+          const modelRef = childRefFromParts(outletRef, ['render', 'model']);
 
           // Store the value of the model
           let model = valueForRef(modelRef);
@@ -101,7 +101,7 @@ export const outletHelper = internalHelper(
             named.model = createDebugAliasRef!('@model', named.model);
           }
 
-          let args = createCapturedArgs(named, EMPTY_POSITIONAL);
+          const args = createCapturedArgs(named, EMPTY_POSITIONAL);
           definition = curry(
             CurriedType.Component,
             new OutletComponentDefinition(state),
@@ -121,7 +121,7 @@ export const outletHelper = internalHelper(
 
 function stateFor(ref: Reference, outlet: OutletState | undefined): OutletDefinitionState | null {
   if (outlet === undefined) return null;
-  let render = outlet.render;
+  const render = outlet.render;
   if (render === undefined) return null;
   let template = render.template;
   if (template === undefined) return null;

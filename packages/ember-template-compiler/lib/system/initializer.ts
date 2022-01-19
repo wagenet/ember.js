@@ -7,12 +7,12 @@ if (
   has('@ember/-internals/browser-environment') &&
   has('@ember/-internals/glimmer')
 ) {
-  let emberEnv = require('@ember/-internals/browser-environment');
-  let emberGlimmer = require('@ember/-internals/glimmer');
-  let emberApp = require('@ember/application');
-  let Application = emberApp.default;
-  let { hasTemplate, setTemplate } = emberGlimmer;
-  let { hasDOM } = emberEnv;
+  const emberEnv = require('@ember/-internals/browser-environment');
+  const emberGlimmer = require('@ember/-internals/glimmer');
+  const emberApp = require('@ember/application');
+  const Application = emberApp.default;
+  const { hasTemplate, setTemplate } = emberGlimmer;
+  const { hasDOM } = emberEnv;
 
   Application.initializer({
     name: 'domTemplates',

@@ -13,5 +13,5 @@ export function setComponentManager(
   return glimmerSetComponentManager(manager, obj);
 }
 
-export let componentCapabilities = glimmerComponentCapabilities;
-export let modifierCapabilities = glimmerModifierCapabilities;
+export const componentCapabilities = glimmerComponentCapabilities;
+export const modifierCapabilities = glimmerModifierCapabilities;

@@ -60,7 +60,6 @@ module.exports = {
         // Typescript provides better types with these rules enabled
         // Remove from esplintrc when no longer warning
         'prefer-spread': 'warn',
-        'prefer-const': 'warn',
         'prefer-rest-params': 'warn',
 
         // Remove from esplintrc when no longer warning

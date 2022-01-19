@@ -275,14 +275,14 @@ export class ComputedProperty extends ComputedDescriptor {
   constructor(args: Array<string | ComputedPropertyCallback>) {
     super();
 
-    let maybeConfig = args[args.length - 1];
+    const maybeConfig = args[args.length - 1];
 
     if (
       typeof maybeConfig === 'function' ||
       (maybeConfig !== null && typeof maybeConfig === 'object')
     ) {
       this._hasConfig = true;
-      let config = args.pop();
+      const config = args.pop();
 
       if (typeof config === 'function') {
         assert(
@@ -344,7 +344,7 @@ export class ComputedProperty extends ComputedDescriptor {
           (typeof propertyDesc.get === 'function' || typeof propertyDesc.set === 'function')
       );
 
-      let { get, set } = propertyDesc;
+      const { get, set } = propertyDesc;
 
       if (get !== undefined) {
         this._getter = get as ComputedPropertyGetterFunction;
@@ -352,7 +352,7 @@ export class ComputedProperty extends ComputedDescriptor {
 
       if (set !== undefined) {
         this._setter = function setterWrapper(_key, value) {
-          let ret = set!.call(this, value);
+          const ret = set.call(this, value);
 
           if (get !== undefined) {
             return typeof ret === 'undefined' ? get.call(this) : ret;
@@ -365,7 +365,7 @@ export class ComputedProperty extends ComputedDescriptor {
   }
 
   _property(...passedArgs: string[]): void {
-    let args: string[] = [];
+    const args: string[] = [];
 
     function addArg(property: string): void {
       assert(
@@ -387,14 +387,14 @@ export class ComputedProperty extends ComputedDescriptor {
   }
 
   get(obj: object, keyName: string): unknown {
-    let meta = metaFor(obj);
-    let tagMeta = tagMetaFor(obj);
+    const meta = metaFor(obj);
+    const tagMeta = tagMetaFor(obj);
 
-    let propertyTag = tagFor(obj, keyName, tagMeta) as UpdatableTag;
+    const propertyTag = tagFor(obj, keyName, tagMeta) as UpdatableTag;
 
     let ret;
 
-    let revision = meta.revisionFor(keyName);
+    const revision = meta.revisionFor(keyName);
 
     if (revision !== undefined && validateTag(propertyTag, revision)) {
       ret = meta.valueFor(keyName);
@@ -406,7 +406,7 @@ export class ComputedProperty extends ComputedDescriptor {
         this._dependentKeys === undefined || !isDestroyed(obj)
       );
 
-      let { _getter, _dependentKeys } = this;
+      const { _getter, _dependentKeys } = this;
 
       // Create a tracker that absorbs any trackable actions inside the CP
       untrack(() => {
@@ -448,7 +448,7 @@ export class ComputedProperty extends ComputedDescriptor {
       this._setter !== undefined
     );
 
-    let meta = metaFor(obj);
+    const meta = metaFor(obj);
 
     // ensure two way binding works when the component has defined a computed
     // property with both a setter and dependent keys, in that scenario without
@@ -484,10 +484,10 @@ export class ComputedProperty extends ComputedDescriptor {
 
       finishLazyChains(meta, keyName, ret);
 
-      let tagMeta = tagMetaFor(obj);
-      let propertyTag = tagFor(obj, keyName, tagMeta) as UpdatableTag;
+      const tagMeta = tagMetaFor(obj);
+      const propertyTag = tagFor(obj, keyName, tagMeta) as UpdatableTag;
 
-      let { _dependentKeys } = this;
+      const { _dependentKeys } = this;
 
       if (_dependentKeys !== undefined) {
         updateTag(propertyTag, getChainTagsForKeys(obj, _dependentKeys, tagMeta, meta));
@@ -510,11 +510,11 @@ export class ComputedProperty extends ComputedDescriptor {
   }
 
   _set(obj: object, keyName: string, value: unknown, meta: Meta): unknown {
-    let hadCachedValue = meta.revisionFor(keyName) !== undefined;
-    let cachedValue = meta.valueFor(keyName);
+    const hadCachedValue = meta.revisionFor(keyName) !== undefined;
+    const cachedValue = meta.valueFor(keyName);
 
     let ret;
-    let { _setter } = this;
+    const { _setter } = this;
 
     setObserverSuspended(obj, keyName, true);
 
@@ -549,14 +549,14 @@ export class ComputedProperty extends ComputedDescriptor {
 
 class AutoComputedProperty extends ComputedProperty {
   get(obj: object, keyName: string): unknown {
-    let meta = metaFor(obj);
-    let tagMeta = tagMetaFor(obj);
+    const meta = metaFor(obj);
+    const tagMeta = tagMetaFor(obj);
 
-    let propertyTag = tagFor(obj, keyName, tagMeta) as UpdatableTag;
+    const propertyTag = tagFor(obj, keyName, tagMeta) as UpdatableTag;
 
     let ret;
 
-    let revision = meta.revisionFor(keyName);
+    const revision = meta.revisionFor(keyName);
 
     if (revision !== undefined && validateTag(propertyTag, revision)) {
       ret = meta.valueFor(keyName);
@@ -566,10 +566,10 @@ class AutoComputedProperty extends ComputedProperty {
         !isDestroyed(obj)
       );
 
-      let { _getter } = this;
+      const { _getter } = this;
 
       // Create a tracker that absorbs any trackable actions inside the CP
-      let tag = track(() => {
+      const tag = track(() => {
         ret = _getter!.call(obj, keyName);
       });
 
@@ -638,7 +638,7 @@ class ComputedDecoratorImpl extends Function {
     @public
   */
   readOnly(this: Decorator) {
-    let desc = descriptorForDecorator(this) as ComputedProperty;
+    const desc = descriptorForDecorator(this) as ComputedProperty;
     assert(
       'Computed properties that define a setter using the new syntax cannot be read-only',
       !(desc._setter && (desc._setter as unknown) !== (desc._getter as unknown))
@@ -694,7 +694,7 @@ class ComputedDecoratorImpl extends Function {
     @public
   */
   meta(this: Decorator, meta?: unknown): unknown {
-    let prop = descriptorForDecorator(this) as ComputedProperty;
+    const prop = descriptorForDecorator(this) as ComputedProperty;
 
     if (arguments.length === 0) {
       return prop._meta || {};
@@ -882,7 +882,7 @@ export function computed(
   );
 
   if (isElementDescriptor(args)) {
-    let decorator = makeComputedDecorator(
+    const decorator = makeComputedDecorator(
       new ComputedProperty([]),
       ComputedDecoratorImpl
     ) as ComputedDecorator;

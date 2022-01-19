@@ -14,10 +14,10 @@ import { internalHelper } from './internal-helper';
   transform at build time, similar to the (-each-in) helper
 */
 export default internalHelper(({ positional }: CapturedArguments) => {
-  let inner = positional[0];
+  const inner = positional[0];
 
   return createComputeRef(() => {
-    let iterable = valueForRef(inner);
+    const iterable = valueForRef(inner);
 
     if (isObject(iterable)) {
       consumeTag(tagForProperty(iterable, '[]'));

@@ -22,13 +22,13 @@ export function tagForProperty(
   addMandatorySetter = false,
   meta?: TagMeta
 ): Tag {
-  let customTagFor = getCustomTagFor(obj);
+  const customTagFor = getCustomTagFor(obj);
 
   if (customTagFor !== undefined) {
     return (customTagFor as CustomTagFnWithMandatorySetter)(obj, propertyKey, addMandatorySetter);
   }
 
-  let tag = tagFor(obj, propertyKey, meta);
+  const tag = tagFor(obj, propertyKey, meta);
 
   if (DEBUG && addMandatorySetter) {
     setupMandatorySetter!(tag, obj, propertyKey);

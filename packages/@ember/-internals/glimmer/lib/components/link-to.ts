@@ -329,7 +329,7 @@ class LinkTo extends InternalComponent {
       return '#';
     }
 
-    let { routing, route, models, query } = this;
+    const { routing, route, models, query } = this;
 
     assert('[BUG] route can only be missing if isLoading is true', isPresent(route));
 
@@ -341,8 +341,8 @@ class LinkTo extends InternalComponent {
       try {
         return routing.generateURL(route, models, query);
       } catch (e) {
-        let details = e instanceof Error ? e.message : inspect(e);
-        let message = `While generating link to route "${route}": ${details}`;
+        const details = e instanceof Error ? e.message : inspect(e);
+        const message = `While generating link to route "${route}": ${details}`;
         if (e instanceof Error) {
           e.message = message;
           throw e;
@@ -360,10 +360,10 @@ class LinkTo extends InternalComponent {
       return;
     }
 
-    let element = event.currentTarget;
+    const element = event.currentTarget;
     assert('[BUG] must be an <a> element', element instanceof HTMLAnchorElement);
 
-    let isSelf = element.target === '' || element.target === '_self';
+    const isSelf = element.target === '' || element.target === '_self';
 
     if (isSelf) {
       this.preventDefault(event);
@@ -388,9 +388,9 @@ class LinkTo extends InternalComponent {
       return;
     }
 
-    let { routing, route, models, query, replace } = this;
+    const { routing, route, models, query, replace } = this;
 
-    let payload = {
+    const payload = {
       routeName: route,
       queryParams: query,
       transition: undefined as Transition | undefined,
@@ -405,7 +405,7 @@ class LinkTo extends InternalComponent {
 
   private get route(): Maybe<string> {
     if ('route' in this.args.named) {
-      let route = this.named('route');
+      const route = this.named('route');
 
       assert(
         'The `@route` argument to the <LinkTo> component must be a string',
@@ -431,7 +431,7 @@ class LinkTo extends InternalComponent {
   // TODO: not sure why generateURL takes {}[] instead of unknown[]
   private get models(): {}[] {
     if ('models' in this.args.named) {
-      let models = this.named('models');
+      const models = this.named('models');
 
       assert(
         'The `@models` argument to the <LinkTo> component must be an array.',
@@ -448,7 +448,7 @@ class LinkTo extends InternalComponent {
 
   private get query(): Record<string, unknown> {
     if ('query' in this.args.named) {
-      let query = this.named('query');
+      const query = this.named('query');
 
       assert(
         'The `@query` argument to the <LinkTo> component must be an object.',
@@ -470,8 +470,8 @@ class LinkTo extends InternalComponent {
   }
 
   private get willBeActive(): Option<boolean> {
-    let current = this.routing.currentState as Maybe<RouterState>;
-    let target = this.routing.targetState as Maybe<RouterState>;
+    const current = this.routing.currentState as Maybe<RouterState>;
+    const target = this.routing.targetState as Maybe<RouterState>;
 
     if (current === target) {
       return null;
@@ -497,7 +497,7 @@ class LinkTo extends InternalComponent {
   }
 
   private classFor(state: 'active' | 'loading' | 'disabled'): string {
-    let className = this.named(`${state}Class`);
+    const className = this.named(`${state}Class`);
 
     assert(
       `The \`@${state}Class\` argument to the <LinkTo> component must be a string or boolean`,
@@ -514,7 +514,7 @@ class LinkTo extends InternalComponent {
   }
 
   private namespaceRoute(route: string): string {
-    let { engineMountPoint } = this;
+    const { engineMountPoint } = this;
 
     if (engineMountPoint === undefined) {
       return route;
@@ -534,12 +534,12 @@ class LinkTo extends InternalComponent {
       return false;
     }
 
-    let currentWhen = this.named('current-when');
+    const currentWhen = this.named('current-when');
 
     if (typeof currentWhen === 'boolean') {
       return currentWhen;
     } else if (typeof currentWhen === 'string') {
-      let { models, routing } = this;
+      const { models, routing } = this;
 
       return currentWhen
         .split(' ')
@@ -547,7 +547,7 @@ class LinkTo extends InternalComponent {
           routing.isActiveForRoute(models, undefined, this.namespaceRoute(route), state)
         );
     } else {
-      let { route, models, query, routing } = this;
+      const { route, models, query, routing } = this;
 
       assert('[BUG] route can only be missing if isLoading is true', isPresent(route));
 
@@ -560,7 +560,7 @@ class LinkTo extends InternalComponent {
   }
 
   protected isSupportedArgument(name: string): boolean {
-    let supportedArguments = [
+    const supportedArguments = [
       'route',
       'model',
       'models',
@@ -577,9 +577,9 @@ class LinkTo extends InternalComponent {
   }
 }
 
-let { prototype } = LinkTo;
+const { prototype } = LinkTo;
 
-let descriptorFor = (target: object, property: string): Option<PropertyDescriptor> => {
+const descriptorFor = (target: object, property: string): Option<PropertyDescriptor> => {
   if (target) {
     return (
       Object.getOwnPropertyDescriptor(target, property) ||
@@ -592,7 +592,7 @@ let descriptorFor = (target: object, property: string): Option<PropertyDescripto
 
 // @href
 {
-  let superOnUnsupportedArgument = prototype['onUnsupportedArgument'];
+  const superOnUnsupportedArgument = prototype['onUnsupportedArgument'];
 
   Object.defineProperty(prototype, 'onUnsupportedArgument', {
     configurable: true,
@@ -609,14 +609,14 @@ let descriptorFor = (target: object, property: string): Option<PropertyDescripto
 
 // QP
 {
-  let superModelsDescriptor = descriptorFor(prototype, 'models');
+  const superModelsDescriptor = descriptorFor(prototype, 'models');
 
   assert(
     `[BUG] expecting models to be a getter on <LinkTo>`,
     superModelsDescriptor && typeof superModelsDescriptor.get === 'function'
   );
 
-  let superModelsGetter = superModelsDescriptor.get as (this: LinkTo) => {}[];
+  const superModelsGetter = superModelsDescriptor.get as (this: LinkTo) => {}[];
 
   Object.defineProperty(prototype, 'models', {
     configurable: true,
@@ -634,21 +634,21 @@ let descriptorFor = (target: object, property: string): Option<PropertyDescripto
     },
   });
 
-  let superQueryDescriptor = descriptorFor(prototype, 'query');
+  const superQueryDescriptor = descriptorFor(prototype, 'query');
 
   assert(
     `[BUG] expecting query to be a getter on <LinkTo>`,
     superQueryDescriptor && typeof superQueryDescriptor.get === 'function'
   );
 
-  let superQueryGetter = superQueryDescriptor.get as (this: LinkTo) => {};
+  const superQueryGetter = superQueryDescriptor.get as (this: LinkTo) => {};
 
   Object.defineProperty(prototype, 'query', {
     configurable: true,
     enumerable: false,
     get: function query(this: LinkTo): {} {
       if ('query' in this.args.named) {
-        let qp = superQueryGetter.call(this);
+        const qp = superQueryGetter.call(this);
 
         if (isQueryParams(qp)) {
           return qp.values ?? EMPTY_QUERY_PARAMS;
@@ -656,10 +656,10 @@ let descriptorFor = (target: object, property: string): Option<PropertyDescripto
           return qp;
         }
       } else {
-        let models = superModelsGetter.call(this);
+        const models = superModelsGetter.call(this);
 
         if (models.length > 0) {
-          let qp = models[models.length - 1];
+          const qp = models[models.length - 1];
 
           if (isQueryParams(qp) && qp.values !== null) {
             return qp.values;
@@ -674,7 +674,7 @@ let descriptorFor = (target: object, property: string): Option<PropertyDescripto
 
 // Positional Arguments
 {
-  let superOnUnsupportedArgument = prototype['onUnsupportedArgument'];
+  const superOnUnsupportedArgument = prototype['onUnsupportedArgument'];
 
   Object.defineProperty(prototype, 'onUnsupportedArgument', {
     configurable: true,

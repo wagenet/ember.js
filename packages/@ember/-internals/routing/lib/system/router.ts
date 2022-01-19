@@ -260,7 +260,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
   }
 
   static _routePath(routeInfos: PrivateRouteInfo[]) {
-    let path: string[] = [];
+    const path: string[] = [];
 
     // We have to handle coalescing resource names that
     // are prefixed with their parent's names, e.g.
@@ -300,35 +300,35 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
     this._resetQueuedQueryParameterChanges();
     this.namespace = owner.lookup('application:main');
 
-    let bucketCache: BucketCache | undefined = owner.lookup(P`-bucket-cache:main`);
+    const bucketCache: BucketCache | undefined = owner.lookup(P`-bucket-cache:main`);
     assert('BUG: BucketCache should always be present', bucketCache !== undefined);
     this._bucketCache = bucketCache;
 
-    let routerService: RouterService | undefined = owner.lookup('service:router');
+    const routerService: RouterService | undefined = owner.lookup('service:router');
     assert('BUG: RouterService should always be present', routerService !== undefined);
     this._routerService = routerService;
   }
 
   _initRouterJs(): void {
-    let location = get(this, 'location') as IEmberLocation;
-    let router = this;
-    let owner = getOwner(this);
-    let seen = Object.create(null);
+    const location = get(this, 'location') as IEmberLocation;
+    const router = this;
+    const owner = getOwner(this);
+    const seen = Object.create(null);
 
     class PrivateRouter extends Router<Route> {
       getRoute(name: string): Route {
         let routeName = name;
         let routeOwner = owner;
-        let engineInfo = router._engineInfoByRoute[routeName];
+        const engineInfo = router._engineInfoByRoute[routeName];
 
         if (engineInfo) {
-          let engineInstance = router._getEngineInstance(engineInfo);
+          const engineInstance = router._getEngineInstance(engineInfo);
 
           routeOwner = engineInstance;
           routeName = engineInfo.localFullName;
         }
 
-        let fullRouteName = `route:${routeName}`;
+        const fullRouteName = `route:${routeName}`;
 
         let route = routeOwner.lookup<Route>(fullRouteName);
 
@@ -340,7 +340,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
         seen[name] = true;
 
         if (!route) {
-          let DefaultRoute: any = routeOwner.factoryFor('route:basic')!.class;
+          const DefaultRoute: any = routeOwner.factoryFor('route:basic')!.class;
           routeOwner.register(fullRouteName, DefaultRoute.extend());
           route = routeOwner.lookup(fullRouteName);
 
@@ -363,7 +363,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
       }
 
       getSerializer(name: string) {
-        let engineInfo = router._engineInfoByRoute[name];
+        const engineInfo = router._engineInfoByRoute[name];
 
         // If this is not an Engine route, we fall back to the handler for serialization
         if (!engineInfo) {
@@ -462,7 +462,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
 
       replaceURL(url: string) {
         if (location.replaceURL) {
-          let doReplaceURL = () => {
+          const doReplaceURL = () => {
             location.replaceURL!(url);
             set(router, 'currentURL', url);
           };
@@ -473,10 +473,10 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
       }
     }
 
-    let routerMicrolib = (this._routerMicrolib = new PrivateRouter());
+    const routerMicrolib = (this._routerMicrolib = new PrivateRouter());
 
-    let dslCallbacks = (this.constructor as any).dslCallbacks || [K];
-    let dsl = this._buildDSL();
+    const dslCallbacks = (this.constructor as any).dslCallbacks || [K];
+    const dsl = this._buildDSL();
 
     dsl.route(
       'application',
@@ -498,10 +498,10 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
   }
 
   _buildDSL(): DSL {
-    let enableLoadingSubstates = this._hasModuleBasedResolver();
-    let router = this;
-    let owner = getOwner(this);
-    let options = {
+    const enableLoadingSubstates = this._hasModuleBasedResolver();
+    const router = this;
+    const owner = getOwner(this);
+    const options = {
       enableLoadingSubstates,
       resolveRouteMap(name: string) {
         return owner.factoryFor(`route-map:${name}`)!;
@@ -526,8 +526,8 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
   }
 
   _hasModuleBasedResolver() {
-    let owner = getOwner(this);
-    let resolver = get(owner, 'application.__registry__.resolver.moduleBasedResolver');
+    const owner = getOwner(this);
+    const resolver = get(owner, 'application.__registry__.resolver.moduleBasedResolver');
     return Boolean(resolver);
   }
 
@@ -547,7 +547,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
       if (initialURL === undefined) {
         initialURL = (get(this, 'location') as IEmberLocation).getURL();
       }
-      let initialTransition = this.handleURL(initialURL);
+      const initialTransition = this.handleURL(initialURL);
       if (initialTransition && initialTransition.error) {
         throw initialTransition.error;
       }
@@ -561,7 +561,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
     this._didSetupRouter = true;
     this._setupLocation();
 
-    let location = get(this, 'location') as IEmberLocation;
+    const location = get(this, 'location') as IEmberLocation;
 
     // Allow the Location class to cancel the router setup while it refreshes
     // the page
@@ -586,7 +586,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
       return;
     }
 
-    let routeInfos = this._routerMicrolib.currentRouteInfos;
+    const routeInfos = this._routerMicrolib.currentRouteInfos;
     if (!routeInfos) {
       return;
     }
@@ -595,16 +595,16 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
     let liveRoutes = null;
 
     for (let i = 0; i < routeInfos.length; i++) {
-      let route = routeInfos[i].route!;
-      let connections = ROUTE_CONNECTIONS.get(route);
+      const route = routeInfos[i].route!;
+      const connections = ROUTE_CONNECTIONS.get(route);
       let ownState: OutletState;
       if (connections.length === 0) {
         ownState = representEmptyRoute(liveRoutes, defaultParentState, route);
       } else {
         for (let j = 0; j < connections.length; j++) {
-          let appended = appendLiveRoute(liveRoutes, defaultParentState, connections[j]);
+          const appended = appendLiveRoute(liveRoutes, defaultParentState, connections[j]);
           liveRoutes = appended.liveRoutes;
-          let { name, outlet } = appended.ownState.render;
+          const { name, outlet } = appended.ownState.render;
           if (name === route.routeName || outlet === 'main') {
             ownState = appended.ownState;
           }
@@ -623,14 +623,14 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
     }
 
     if (!this._toplevelView) {
-      let owner = getOwner(this);
-      let OutletView = owner.factoryFor<OutletView, FactoryClass>('view:-outlet')!;
-      let application = owner.lookup('application:main');
-      let environment = owner.lookup('-environment:main');
-      let template = owner.lookup('template:-outlet');
+      const owner = getOwner(this);
+      const OutletView = owner.factoryFor<OutletView, FactoryClass>('view:-outlet')!;
+      const application = owner.lookup('application:main');
+      const environment = owner.lookup('-environment:main');
+      const template = owner.lookup('template:-outlet');
       this._toplevelView = OutletView.create({ environment, template, application });
       this._toplevelView.setOutletState(liveRoutes as GlimmerOutletState);
-      let instance: any = owner.lookup('-application-instance:main');
+      const instance: any = owner.lookup('-application-instance:main');
       if (instance) {
         instance.didCreateRootView(this._toplevelView);
       }
@@ -642,13 +642,13 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
   handleURL(url: string) {
     // Until we have an ember-idiomatic way of accessing #hashes, we need to
     // remove it because router.js doesn't know how to handle it.
-    let _url = url.split(/#(.+)?/)[0];
+    const _url = url.split(/#(.+)?/)[0];
     return this._doURLTransition('handleURL', _url);
   }
 
   _doURLTransition(routerJsMethod: string, url: string) {
     this._initialTransitionStarted = true;
-    let transition = this._routerMicrolib[routerJsMethod](url || '/');
+    const transition = this._routerMicrolib[routerJsMethod](url || '/');
     didBeginTransition(transition, this);
     return transition;
   }
@@ -677,7 +677,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
       );
       return this._doURLTransition('transitionTo', args[0]);
     }
-    let { routeName, models, queryParams } = extractRouteArgs(args);
+    const { routeName, models, queryParams } = extractRouteArgs(args);
     assert(
       `A transition was attempted from '${this.currentRouteName}' to '${routeName}' but the application instance has already been destroyed.`,
       !this.isDestroying && !this.isDestroyed
@@ -691,7 +691,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
     updatePaths(this);
 
     if (DEBUG) {
-      let infos = this._routerMicrolib.currentRouteInfos;
+      const infos = this._routerMicrolib.currentRouteInfos;
       if (this.namespace.LOG_TRANSITIONS) {
         assert('expected infos to be set', infos);
         // eslint-disable-next-line no-console
@@ -705,7 +705,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
   }
 
   generate(name: string, ...args: any[]) {
-    let url = this._routerMicrolib.generate(name, ...args);
+    const url = this._routerMicrolib.generate(name, ...args);
     assert('expected non-string location', typeof this.location !== 'string');
     return this.location.formatURL(url);
   }
@@ -780,9 +780,9 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
 
     this.reset();
 
-    let instances = this._engineInstances;
-    for (let name in instances) {
-      for (let id in instances[name]) {
+    const instances = this._engineInstances;
+    for (const name in instances) {
+      for (const id in instances[name]) {
         run(instances[name][id], 'destroy');
       }
     }
@@ -826,11 +826,11 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
 
   _setupLocation() {
     let location = this.location;
-    let rootURL = this.rootURL;
-    let owner = getOwner(this);
+    const rootURL = this.rootURL;
+    const owner = getOwner(this);
 
     if ('string' === typeof location) {
-      let resolvedLocation = owner.lookup<IEmberLocation>(`location:${location}`);
+      const resolvedLocation = owner.lookup<IEmberLocation>(`location:${location}`);
 
       if (location === 'auto') {
         deprecate(
@@ -853,7 +853,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
         location = set(this, 'location', resolvedLocation);
       } else {
         // Allow for deprecated registration of custom location API's
-        let options = {
+        const options = {
           implementation: location,
         };
 
@@ -1006,9 +1006,9 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
     routeInfos: PrivateRouteInfo[],
     queryParams: Record<string, string | null | undefined>
   ) {
-    let qps = this._queryParamsFor(routeInfos);
-    for (let key in queryParams) {
-      let qp = qps.map[key];
+    const qps = this._queryParamsFor(routeInfos);
+    for (const key in queryParams) {
+      const qp = qps.map[key];
       if (qp && qp.serializedDefaultValue === queryParams[key]) {
         delete queryParams[key];
       }
@@ -1021,7 +1021,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
     _queryParams: Record<string, unknown>,
     _keepDefaultQueryParamValues?: boolean
   ) {
-    let targetRouteName = _targetRouteName || getActiveTargetName(this._routerMicrolib);
+    const targetRouteName = _targetRouteName || getActiveTargetName(this._routerMicrolib);
     assert(
       `The route ${targetRouteName} was not found`,
       Boolean(targetRouteName) && this._routerMicrolib.hasRoute(targetRouteName)
@@ -1029,7 +1029,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
 
     this._initialTransitionStarted = true;
 
-    let queryParams: Record<string, unknown> = {};
+    const queryParams: Record<string, unknown> = {};
 
     this._processActiveTransitionQueryParams(targetRouteName, models, queryParams, _queryParams);
 
@@ -1042,7 +1042,9 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
       Boolean(_keepDefaultQueryParamValues)
     );
 
-    let transition = this._routerMicrolib.transitionTo(targetRouteName, ...models, { queryParams });
+    const transition = this._routerMicrolib.transitionTo(targetRouteName, ...models, {
+      queryParams,
+    });
 
     didBeginTransition(transition, this);
 
@@ -1061,10 +1063,10 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
       return;
     }
 
-    let unchangedQPs: Partial<QueryParamMeta> = {};
-    let qpUpdates = this._qpUpdates;
-    let params = getFullQueryParams(this, this._routerMicrolib.activeTransition[STATE_SYMBOL]);
-    for (let key in params) {
+    const unchangedQPs: Partial<QueryParamMeta> = {};
+    const qpUpdates = this._qpUpdates;
+    const params = getFullQueryParams(this, this._routerMicrolib.activeTransition[STATE_SYMBOL]);
+    for (const key in params) {
       if (!qpUpdates.has(key)) {
         unchangedQPs[key] = params[key];
       }
@@ -1096,7 +1098,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
     queryParams: Record<string, unknown>,
     _fromRouterService?: boolean
   ) {
-    let state = calculatePostTransitionState(this, targetRouteName, models);
+    const state = calculatePostTransitionState(this, targetRouteName, models);
     this._hydrateUnsuppliedQueryParams(state, queryParams, Boolean(_fromRouterService));
     this._serializeQueryParams(state.routeInfos, queryParams);
 
@@ -1115,7 +1117,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
     @return {Object}
   */
   _getQPMeta(routeInfo: PrivateRouteInfo) {
-    let route = routeInfo.route;
+    const route = routeInfo.route;
     return route && (get(route, '_qp') as Route['_qp']);
   }
 
@@ -1129,17 +1131,17 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
     @return {Object}
    */
   _queryParamsFor(routeInfos: PrivateRouteInfo[]) {
-    let routeInfoLength = routeInfos.length;
-    let leafRouteName = routeInfos[routeInfoLength - 1].name;
-    let cached = this._qpCache[leafRouteName];
+    const routeInfoLength = routeInfos.length;
+    const leafRouteName = routeInfos[routeInfoLength - 1].name;
+    const cached = this._qpCache[leafRouteName];
     if (cached !== undefined) {
       return cached;
     }
 
     let shouldCache = true;
-    let map: QueryParamMeta['map'] = {};
-    let qps = [];
-    let qpsByUrlKey = DEBUG ? {} : null;
+    const map: QueryParamMeta['map'] = {};
+    const qps = [];
+    const qpsByUrlKey = DEBUG ? {} : null;
     let qpMeta;
     let qp;
     let urlKey;
@@ -1175,7 +1177,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
       Object.assign(map, qpMeta.map);
     }
 
-    let finalQPMeta = { qps, map };
+    const finalQPMeta = { qps, map };
 
     if (shouldCache) {
       this._qpCache[leafRouteName] = finalQPMeta;
@@ -1196,8 +1198,8 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
     @return {Void}
   */
   _fullyScopeQueryParams(leafRouteName: string, contexts: {}[], queryParams: {}) {
-    let state = calculatePostTransitionState(this, leafRouteName, contexts);
-    let routeInfos = state.routeInfos;
+    const state = calculatePostTransitionState(this, leafRouteName, contexts);
+    const routeInfos = state.routeInfos;
     let qpMeta;
     for (let i = 0, len = routeInfos.length; i < len; ++i) {
       qpMeta = this._getQPMeta(routeInfos[i]);
@@ -1242,8 +1244,8 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
     queryParams: {},
     _fromRouterService: boolean
   ): void {
-    let routeInfos = state.routeInfos;
-    let appCache = this._bucketCache;
+    const routeInfos = state.routeInfos;
+    const appCache = this._bucketCache;
     let qpMeta;
     let qp;
     let presentProp;
@@ -1287,7 +1289,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
             delete queryParams[presentProp];
           }
         } else {
-          let cacheKey = calculateCacheKey(qp.route.fullRouteName, qp.parts, state.params);
+          const cacheKey = calculateCacheKey(qp.route.fullRouteName, qp.parts, state.params);
 
           assert(
             'ROUTER BUG: expected appCache to be defined. This is an internal bug, please open an issue on Github if you see this message!',
@@ -1320,7 +1322,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
       // the transition that put us in a loading state.
       return;
     }
-    let targetState = new RouterState(
+    const targetState = new RouterState(
       this,
       this._routerMicrolib,
       this._routerMicrolib.activeTransition[STATE_SYMBOL]!
@@ -1360,7 +1362,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
     instanceId: number;
     mountPoint: string;
   }) {
-    let engineInstances = this._engineInstances;
+    const engineInstances = this._engineInstances;
 
     if (!engineInstances[name]) {
       engineInstances[name] = Object.create(null);
@@ -1369,7 +1371,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
     let engineInstance = engineInstances[name][instanceId];
 
     if (!engineInstance) {
-      let owner = getOwner(this);
+      const owner = getOwner(this);
 
       assert(
         `You attempted to mount the engine '${name}' in your router map, but the engine can not be found.`,
@@ -1470,8 +1472,8 @@ function forEachRouteAbove(
   callback: (route: Route, routeInfo: PrivateRouteInfo) => boolean
 ) {
   for (let i = routeInfos.length - 1; i >= 0; --i) {
-    let routeInfo = routeInfos[i];
-    let route = routeInfo.route;
+    const routeInfo = routeInfos[i];
+    const route = routeInfo.route;
 
     // routeInfo.handler being `undefined` generally means either:
     //
@@ -1492,7 +1494,7 @@ function forEachRouteAbove(
 
 // These get invoked when an action bubbles above ApplicationRoute
 // and are not meant to be overridable.
-let defaultActionHandlers = {
+const defaultActionHandlers = {
   willResolveModel(
     this: EmberRouter,
     _routeInfos: PrivateRouteInfo[],
@@ -1504,16 +1506,16 @@ let defaultActionHandlers = {
 
   // Attempt to find an appropriate error route or substate to enter.
   error(routeInfos: PrivateRouteInfo[], error: Error, transition: Transition) {
-    let router: any = this;
+    const router: any = this;
 
-    let routeInfoWithError = routeInfos[routeInfos.length - 1];
+    const routeInfoWithError = routeInfos[routeInfos.length - 1];
 
     forEachRouteAbove(routeInfos, (route: Route, routeInfo: PrivateRouteInfo) => {
       // We don't check the leaf most routeInfo since that would
       // technically be below where we're at in the route hierarchy.
       if (routeInfo !== routeInfoWithError) {
         // Check for the existence of an 'error' route.
-        let errorRouteName = findRouteStateName(route, 'error');
+        const errorRouteName = findRouteStateName(route, 'error');
         if (errorRouteName) {
           router._markErrorAsHandled(error);
           router.intermediateTransitionTo(errorRouteName, error);
@@ -1522,7 +1524,7 @@ let defaultActionHandlers = {
       }
 
       // Check for an 'error' substate route
-      let errorSubstateName = findRouteSubstateName(route, 'error');
+      const errorSubstateName = findRouteSubstateName(route, 'error');
       if (errorSubstateName) {
         router._markErrorAsHandled(error);
         router.intermediateTransitionTo(errorSubstateName, error);
@@ -1537,16 +1539,16 @@ let defaultActionHandlers = {
 
   // Attempt to find an appropriate loading route or substate to enter.
   loading(routeInfos: PrivateRouteInfo[], transition: Transition) {
-    let router: any = this;
+    const router: any = this;
 
-    let routeInfoWithSlowLoading = routeInfos[routeInfos.length - 1];
+    const routeInfoWithSlowLoading = routeInfos[routeInfos.length - 1];
 
     forEachRouteAbove(routeInfos, (route: Route, routeInfo: PrivateRouteInfo) => {
       // We don't check the leaf most routeInfos since that would
       // technically be below where we're at in the route hierarchy.
       if (routeInfo !== routeInfoWithSlowLoading) {
         // Check for the existence of a 'loading' route.
-        let loadingRouteName = findRouteStateName(route, 'loading');
+        const loadingRouteName = findRouteStateName(route, 'loading');
         if (loadingRouteName) {
           router.intermediateTransitionTo(loadingRouteName);
           return false;
@@ -1554,7 +1556,7 @@ let defaultActionHandlers = {
       }
 
       // Check for loading substate
-      let loadingSubstateName = findRouteSubstateName(route, 'loading');
+      const loadingSubstateName = findRouteSubstateName(route, 'loading');
       if (loadingSubstateName) {
         router.intermediateTransitionTo(loadingSubstateName);
         return false;
@@ -1567,7 +1569,7 @@ let defaultActionHandlers = {
 };
 
 function logError(_error: any, initialMessage: string) {
-  let errorArgs = [];
+  const errorArgs = [];
   let error;
   if (_error && typeof _error === 'object' && typeof _error.errorThrown === 'object') {
     error = _error.errorThrown;
@@ -1605,11 +1607,11 @@ function logError(_error: any, initialMessage: string) {
   @return {String}
 */
 function findRouteSubstateName(route: Route, state: string) {
-  let owner = getOwner(route);
-  let { routeName, fullRouteName, _router: router } = route;
+  const owner = getOwner(route);
+  const { routeName, fullRouteName, _router: router } = route;
 
-  let substateName = `${routeName}_${state}`;
-  let substateNameFull = `${fullRouteName}_${state}`;
+  const substateName = `${routeName}_${state}`;
+  const substateNameFull = `${fullRouteName}_${state}`;
 
   return routeHasBeenDefined(owner, router, substateName, substateNameFull) ? substateNameFull : '';
 }
@@ -1625,11 +1627,11 @@ function findRouteSubstateName(route: Route, state: string) {
   @return {String}
 */
 function findRouteStateName(route: Route, state: string) {
-  let owner = getOwner(route);
-  let { routeName, fullRouteName, _router: router } = route;
+  const owner = getOwner(route);
+  const { routeName, fullRouteName, _router: router } = route;
 
-  let stateName = routeName === 'application' ? state : `${routeName}.${state}`;
-  let stateNameFull = fullRouteName === 'application' ? state : `${fullRouteName}.${state}`;
+  const stateName = routeName === 'application' ? state : `${routeName}.${state}`;
+  const stateNameFull = fullRouteName === 'application' ? state : `${fullRouteName}.${state}`;
 
   return routeHasBeenDefined(owner, router, stateName, stateNameFull) ? stateNameFull : '';
 }
@@ -1646,8 +1648,8 @@ function findRouteStateName(route: Route, state: string) {
   @return {Boolean}
 */
 function routeHasBeenDefined(owner: Owner, router: any, localName: string, fullName: string) {
-  let routerHasRoute = router.hasRoute(fullName);
-  let ownerHasRoute =
+  const routerHasRoute = router.hasRoute(fullName);
+  const ownerHasRoute =
     owner.hasRegistration(`template:${localName}`) || owner.hasRegistration(`route:${localName}`);
   return routerHasRoute && ownerHasRoute;
 }
@@ -1689,7 +1691,7 @@ export function triggerEvent(
     }
   }
 
-  let defaultHandler = defaultActionHandlers[name];
+  const defaultHandler = defaultActionHandlers[name];
   if (defaultHandler) {
     defaultHandler.apply(this, [routeInfos, ...args]);
     return;
@@ -1707,11 +1709,11 @@ function calculatePostTransitionState(
   leafRouteName: string,
   contexts: {}[]
 ) {
-  let state = emberRouter._routerMicrolib.applyIntent(leafRouteName, contexts);
-  let { routeInfos, params } = state;
+  const state = emberRouter._routerMicrolib.applyIntent(leafRouteName, contexts);
+  const { routeInfos, params } = state;
 
   for (let i = 0; i < routeInfos.length; ++i) {
-    let routeInfo = routeInfos[i];
+    const routeInfo = routeInfos[i];
 
     // If the routeInfo is not resolved, we serialize the context into params
     if (!routeInfo.isResolved) {
@@ -1730,22 +1732,22 @@ function calculatePostTransitionState(
 }
 
 function updatePaths(router: EmberRouter) {
-  let infos = router._routerMicrolib.currentRouteInfos!;
+  const infos = router._routerMicrolib.currentRouteInfos!;
   if (infos.length === 0) {
     return;
   }
 
-  let path = EmberRouter._routePath(infos);
-  let currentRouteName = infos[infos.length - 1].name;
-  let location = router.location;
+  const path = EmberRouter._routePath(infos);
+  const currentRouteName = infos[infos.length - 1].name;
+  const location = router.location;
   assert('expected location to not be a string', typeof location !== 'string');
-  let currentURL = location.getURL();
+  const currentURL = location.getURL();
 
   set(router, 'currentPath', path);
   set(router, 'currentRouteName', currentRouteName);
   set(router, 'currentURL', currentURL);
 
-  let appController = getOwner(router).lookup<Controller>('controller:application');
+  const appController = getOwner(router).lookup<Controller>('controller:application');
 
   if (!appController) {
     // appController might not exist when top-level loading/error
@@ -1756,7 +1758,7 @@ function updatePaths(router: EmberRouter) {
 }
 
 function didBeginTransition(transition: Transition, router: EmberRouter) {
-  let routerState = new RouterState(router, router._routerMicrolib, transition[STATE_SYMBOL]!);
+  const routerState = new RouterState(router, router._routerMicrolib, transition[STATE_SYMBOL]!);
 
   if (!router.currentState) {
     router.set('currentState', routerState);
@@ -1778,14 +1780,14 @@ function forEachQueryParam(
   queryParams: Record<string, unknown>,
   callback: (key: string, value: unknown, qp: QueryParam) => void
 ) {
-  let qpCache = router._queryParamsFor(routeInfos);
+  const qpCache = router._queryParamsFor(routeInfos);
 
-  for (let key in queryParams) {
+  for (const key in queryParams) {
     if (!Object.prototype.hasOwnProperty.call(queryParams, key)) {
       continue;
     }
-    let value = queryParams[key];
-    let qp = qpCache.map[key];
+    const value = queryParams[key];
+    const qp = qpCache.map[key];
 
     callback(key, value, qp);
   }
@@ -1795,14 +1797,14 @@ function findLiveRoute(liveRoutes: OutletState | null, name: string) {
   if (!liveRoutes) {
     return;
   }
-  let stack = [liveRoutes];
+  const stack = [liveRoutes];
   while (stack.length > 0) {
-    let test = stack.shift()!;
+    const test = stack.shift()!;
     if (test.render.name === name) {
       return test;
     }
-    let outlets = test.outlets;
-    for (let outletName in outlets) {
+    const outlets = test.outlets;
+    for (const outletName in outlets) {
       stack.push(outlets[outletName]);
     }
   }
@@ -1815,7 +1817,7 @@ function appendLiveRoute(
   defaultParentState: OutletState | undefined,
   renderOptions: RenderOptions
 ) {
-  let ownState: OutletState = {
+  const ownState: OutletState = {
     render: renderOptions,
     outlets: Object.create(null),
     wasUsed: false,
@@ -1844,7 +1846,7 @@ function representEmptyRoute(
   { routeName }: Route
 ): OutletState {
   // the route didn't render anything
-  let alreadyAppended = findLiveRoute(liveRoutes, routeName);
+  const alreadyAppended = findLiveRoute(liveRoutes, routeName);
   if (alreadyAppended) {
     // But some other route has already rendered our default
     // template, so that becomes the default target for any
@@ -1873,7 +1875,7 @@ EmberRouter.reopen({
 
   // FIXME: Does this need to be overrideable via extend?
   url: computed(function (this: Router<Route>) {
-    let location = get(this, 'location') as string | IEmberLocation;
+    const location = get(this, 'location') as string | IEmberLocation;
 
     if (typeof location === 'string') {
       return undefined;

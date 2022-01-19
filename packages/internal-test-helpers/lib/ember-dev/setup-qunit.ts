@@ -28,12 +28,12 @@ declare global {
 }
 
 export default function setupQUnit() {
-  let env = {
+  const env = {
     getDebugFunction,
     setDebugFunction,
   } as DebugEnv;
 
-  let originalModule = QUnit.module;
+  const originalModule = QUnit.module;
 
   QUnit.module = function (name: string, callback: any) {
     return originalModule(name, function (hooks) {
@@ -55,7 +55,7 @@ export default function setupQUnit() {
     message?: string
   ) {
     let error: unknown;
-    let prevOnError = Ember.onerror;
+    const prevOnError = Ember.onerror;
 
     Ember.onerror = (e: Error) => {
       error = e;

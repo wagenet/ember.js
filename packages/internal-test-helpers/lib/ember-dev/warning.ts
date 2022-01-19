@@ -17,7 +17,7 @@ declare global {
 }
 
 export function setupWarningHelpers(hooks: NestedHooks, env: DebugEnv) {
-  let assertion = new WarningAssert(env);
+  const assertion = new WarningAssert(env);
 
   hooks.beforeEach(function () {
     assertion.reset();
@@ -46,7 +46,7 @@ class WarningAssert extends DebugAssert {
     // expectNoWarning();
     // Ember.warn("Oh snap, didn't expect that");
     //
-    let expectNoWarning: ExpectNoWarningFunc = (func) => {
+    const expectNoWarning: ExpectNoWarningFunc = (func) => {
       if (typeof func !== 'function') {
         func = undefined;
       }
@@ -72,7 +72,7 @@ class WarningAssert extends DebugAssert {
     // expectWarning(/* optionalStringOrRegex */);
     // Ember.warn("Times definitely be changin'");
     //
-    let expectWarning: ExpectWarningFunc = (func, message) => {
+    const expectWarning: ExpectWarningFunc = (func, message) => {
       let actualFunc: (() => void) | undefined;
       if (typeof func !== 'function') {
         message = func as Message;
@@ -90,7 +90,7 @@ class WarningAssert extends DebugAssert {
       });
     };
 
-    let ignoreWarning: IgnoreWarningFunc = (func) => {
+    const ignoreWarning: IgnoreWarningFunc = (func) => {
       callWithStub(this.env, 'warn', func);
     };
 

@@ -43,7 +43,7 @@ export default class RoutingService extends Service {
     queryParams: Record<string, unknown>,
     shouldReplace: boolean
   ) {
-    let transition = this.router._doTransition(routeName, models, queryParams);
+    const transition = this.router._doTransition(routeName, models, queryParams);
 
     if (shouldReplace) {
       transition.method('replace');
@@ -57,7 +57,7 @@ export default class RoutingService extends Service {
   }
 
   _generateURL(routeName: string, models: {}[], queryParams: Record<string, unknown>) {
-    let visibleQueryParams = {};
+    const visibleQueryParams = {};
     if (queryParams) {
       Object.assign(visibleQueryParams, queryParams);
       this.normalizeQueryParams(routeName, models, visibleQueryParams);
@@ -88,9 +88,9 @@ export default class RoutingService extends Service {
     routeName: string,
     routerState: RouterState
   ): boolean {
-    let handlers = this.router._routerMicrolib.recognizer.handlersFor(routeName);
-    let leafName = handlers[handlers.length - 1].handler;
-    let maximumContexts = numberOfContextsAcceptedByHandler(routeName, handlers);
+    const handlers = this.router._routerMicrolib.recognizer.handlersFor(routeName);
+    const leafName = handlers[handlers.length - 1].handler;
+    const maximumContexts = numberOfContextsAcceptedByHandler(routeName, handlers);
 
     // NOTE: any ugliness in the calculation of activeness is largely
     // due to the fact that we support automatic normalizing of

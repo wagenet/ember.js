@@ -54,7 +54,7 @@ export default function expandProperties(
     pattern.match(/\{[^}{]*\{|\}[^}{]*\}|\{[^}]*$/g) === null
   );
 
-  let start = pattern.indexOf('{');
+  const start = pattern.indexOf('{');
   if (start < 0) {
     callback(pattern.replace(END_WITH_EACH_REGEX, '.[]'));
   } else {
@@ -68,15 +68,14 @@ function dive(
   start: number,
   callback: (expansion: string) => void
 ): void {
-  let end = pattern.indexOf('}'),
-    i = 0,
-    newStart,
-    arrayLength;
-  let tempArr = pattern.substring(start + 1, end).split(',');
-  let after = pattern.substring(end + 1);
+  const end = pattern.indexOf('}');
+  let i = 0;
+  let newStart;
+  const tempArr = pattern.substring(start + 1, end).split(',');
+  const after = pattern.substring(end + 1);
   prefix = prefix + pattern.substring(0, start);
 
-  arrayLength = tempArr.length;
+  const arrayLength = tempArr.length;
   while (i < arrayLength) {
     newStart = after.indexOf('{');
     if (newStart < 0) {

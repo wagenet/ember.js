@@ -68,7 +68,7 @@ class FunctionalModifierManager implements ModifierManager<SimpleModifierState> 
   }
 
   setupModifier(state: SimpleModifierState) {
-    let { fn, args, element } = state;
+    const { fn, args, element } = state;
 
     state.destructor = fn(element, args.positional, args.named);
   }
@@ -92,7 +92,7 @@ export function defineComponent(
   templateSource: string,
   definition: object = templateOnlyComponent()
 ): ComponentDefinitionState {
-  let templateFactory = compile(
+  const templateFactory = compile(
     templateSource,
     { strictMode: scopeValues !== null },
     scopeValues ?? {}

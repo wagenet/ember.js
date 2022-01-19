@@ -8,10 +8,10 @@ let helper: Helper;
 
 if (DEBUG) {
   helper = (args: CapturedArguments) => {
-    let inner = args.positional[0];
+    const inner = args.positional[0];
 
     return createComputeRef(() => {
-      let value = valueForRef(inner);
+      const value = valueForRef(inner);
 
       assert(
         'You cannot pass a null or undefined destination element to in-element',

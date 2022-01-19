@@ -14,7 +14,7 @@ import { EmberASTPluginEnvironment } from '../types';
   @class AssertAgainstNamedBlocks
 */
 export default function assertAgainstNamedBlocks(env: EmberASTPluginEnvironment): ASTPlugin {
-  let moduleName = env.meta?.moduleName;
+  const moduleName = env.meta?.moduleName;
 
   return {
     name: 'assert-against-named-blocks',
@@ -22,7 +22,7 @@ export default function assertAgainstNamedBlocks(env: EmberASTPluginEnvironment)
     visitor: {
       ElementNode(node: AST.ElementNode) {
         if (node.tag[0] === ':') {
-          let sourceInformation = calculateLocationDisplay(moduleName, node.loc);
+          const sourceInformation = calculateLocationDisplay(moduleName, node.loc);
 
           assert(
             `Named blocks are not currently available, attempted to use the <${node.tag}> named block. ${sourceInformation}`
@@ -32,7 +32,7 @@ export default function assertAgainstNamedBlocks(env: EmberASTPluginEnvironment)
 
       MustacheStatement(node: AST.MustacheStatement) {
         if (node.path.type === 'PathExpression' && node.path.original === 'yield') {
-          let to = node.hash.pairs.filter((pair) => pair.key === 'to')[0];
+          const to = node.hash.pairs.filter((pair) => pair.key === 'to')[0];
 
           // Glimmer template compiler ensures yield must receive a string literal,
           // so we only need to check if it is not "default" or "inverse"
@@ -42,7 +42,7 @@ export default function assertAgainstNamedBlocks(env: EmberASTPluginEnvironment)
             to.value.original !== 'default' &&
             to.value.original !== 'inverse'
           ) {
-            let sourceInformation = calculateLocationDisplay(moduleName, node.loc);
+            const sourceInformation = calculateLocationDisplay(moduleName, node.loc);
 
             assert(
               `Named blocks are not currently available, attempted to yield to a named block other than "default" or "inverse": {{yield to="${to.value.original}"}}. ${sourceInformation}`

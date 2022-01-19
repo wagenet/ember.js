@@ -14,7 +14,7 @@ ControllerMixin.reopen({
 
   init() {
     this._super(...arguments);
-    let owner = getOwner(this);
+    const owner = getOwner(this);
     if (owner) {
       this.namespace = owner.lookup('application:main');
       this.target = owner.lookup('router:main');
@@ -83,11 +83,11 @@ ControllerMixin.reopen({
     @private
   */
   _qpChanged(controller: any, _prop: string) {
-    let dotIndex = _prop.indexOf('.[]');
-    let prop = dotIndex === -1 ? _prop : _prop.slice(0, dotIndex);
+    const dotIndex = _prop.indexOf('.[]');
+    const prop = dotIndex === -1 ? _prop : _prop.slice(0, dotIndex);
 
-    let delegate = controller._qpDelegate;
-    let value = get(controller, prop);
+    const delegate = controller._qpDelegate;
+    const value = get(controller, prop);
     delegate(prop, value);
   },
 
@@ -171,12 +171,12 @@ ControllerMixin.reopen({
     deprecateTransitionMethods('controller', 'transitionToRoute');
 
     // target may be either another controller or a router
-    let target = get(this, 'target');
+    const target = get(this, 'target');
 
     // SAFETY: We can't actually assert that this is a full Controller or Router since some tests
     // mock out an object that only has the single method. Since this is deprecated, I think it's
     // ok to be a little less than proper here.
-    let method = (target as Controller).transitionToRoute ?? (target as Router).transitionTo;
+    const method = (target as Controller).transitionToRoute ?? (target as Router).transitionTo;
 
     return method.apply(target, prefixRouteNameArg(this, args));
   },
@@ -244,12 +244,12 @@ ControllerMixin.reopen({
   replaceRoute(...args: string[]) {
     deprecateTransitionMethods('controller', 'replaceRoute');
     // target may be either another controller or a router
-    let target = get(this, 'target');
+    const target = get(this, 'target');
 
     // SAFETY: We can't actually assert that this is a full Controller or Router since some tests
     // mock out an object that only has the single method. Since this is deprecated, I think it's
     // ok to be a little less than proper here.
-    let method = (target as Controller).replaceRoute ?? (target as Router).replaceWith;
+    const method = (target as Controller).replaceRoute ?? (target as Router).replaceWith;
 
     return method.apply(target, prefixRouteNameArg(this, args));
   },

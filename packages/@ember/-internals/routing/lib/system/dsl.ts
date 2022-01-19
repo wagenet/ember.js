@@ -69,7 +69,7 @@ export default class DSLImpl implements DSL {
     let options: RouteOptions;
     let callback: Option<DSLCallback> = null;
 
-    let dummyErrorRoute = `/_unused_dummy_error_path_route_${name}/:error`;
+    const dummyErrorRoute = `/_unused_dummy_error_path_route_${name}/:error`;
     if (isCallback(_options)) {
       assert('Unexpected arguments', arguments.length === 2);
       options = {};
@@ -110,8 +110,8 @@ export default class DSLImpl implements DSL {
     }
 
     if (callback) {
-      let fullName = getFullName(this, name, options.resetNamespace);
-      let dsl = new DSLImpl(fullName, this.options);
+      const fullName = getFullName(this, name, options.resetNamespace);
+      const dsl = new DSLImpl(fullName, this.options);
 
       createRoute(dsl, 'loading');
       createRoute(dsl, 'error', { path: dummyErrorRoute });
@@ -130,11 +130,11 @@ export default class DSLImpl implements DSL {
     callback?: MatchCallback,
     serialize?: (model: {}, params: string[]) => { [key: string]: unknown | undefined }
   ): void {
-    let parts = name.split('.');
+    const parts = name.split('.');
 
     if (this.options.engineInfo) {
-      let localFullName = name.slice(this.options.engineInfo.fullName.length + 1);
-      let routeInfo: EngineRouteInfo = Object.assign({ localFullName }, this.options.engineInfo);
+      const localFullName = name.slice(this.options.engineInfo.fullName.length + 1);
+      const routeInfo: EngineRouteInfo = Object.assign({ localFullName }, this.options.engineInfo);
 
       if (serialize) {
         routeInfo.serializeMethod = serialize;
@@ -155,7 +155,7 @@ export default class DSLImpl implements DSL {
   }
 
   generate(): MatchCallback {
-    let dslMatches = this.matches;
+    const dslMatches = this.matches;
 
     if (!this.explicitIndex) {
       this.route('index', { path: '/' });
@@ -172,16 +172,16 @@ export default class DSLImpl implements DSL {
   }
 
   mount(_name: string, options: MountOptions = {}): void {
-    let engineRouteMap = this.options.resolveRouteMap(_name);
+    const engineRouteMap = this.options.resolveRouteMap(_name);
     let name = _name;
 
     if (options.as) {
       name = options.as;
     }
 
-    let fullName = getFullName(this, name, options.resetNamespace);
+    const fullName = getFullName(this, name, options.resetNamespace);
 
-    let engineInfo: EngineInfo = {
+    const engineInfo: EngineInfo = {
       name: _name,
       instanceId: uuid++,
       mountPoint: fullName,
@@ -195,17 +195,17 @@ export default class DSLImpl implements DSL {
     }
 
     let callback;
-    let dummyErrorRoute = `/_unused_dummy_error_path_route_${name}/:error`;
+    const dummyErrorRoute = `/_unused_dummy_error_path_route_${name}/:error`;
     if (engineRouteMap) {
       let shouldResetEngineInfo = false;
-      let oldEngineInfo = this.options.engineInfo;
+      const oldEngineInfo = this.options.engineInfo;
       if (oldEngineInfo) {
         shouldResetEngineInfo = true;
         this.options.engineInfo = engineInfo;
       }
 
-      let optionsForChild = Object.assign({ engineInfo }, this.options);
-      let childDSL = new DSLImpl(fullName, optionsForChild);
+      const optionsForChild = Object.assign({ engineInfo }, this.options);
+      const childDSL = new DSLImpl(fullName, optionsForChild);
 
       createRoute(childDSL, 'loading');
       createRoute(childDSL, 'error', { path: dummyErrorRoute });
@@ -219,8 +219,8 @@ export default class DSLImpl implements DSL {
       }
     }
 
-    let localFullName = 'application';
-    let routeInfo = Object.assign({ localFullName }, engineInfo);
+    const localFullName = 'application';
+    const routeInfo = Object.assign({ localFullName }, engineInfo);
 
     if (this.enableLoadingSubstates) {
       // These values are important to register the loading routes under their
@@ -267,7 +267,7 @@ function createRoute(
   options: RouteOptions = {},
   callback?: MatchCallback
 ) {
-  let fullName = getFullName(dsl, name, options.resetNamespace);
+  const fullName = getFullName(dsl, name, options.resetNamespace);
 
   if (typeof options.path !== 'string') {
     options.path = `/${name}`;

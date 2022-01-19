@@ -53,8 +53,7 @@ import { internalHelper } from '../helpers/internal-helper';
 export const mountHelper = internalHelper(
   (args: CapturedArguments, owner?: Owner): Reference<CurriedValue | null> => {
     assert('{{mount}} must be used within a component that has an owner', owner);
-    let nameRef = args.positional[0] as Reference<Option<string>>;
-    let captured: CapturedArguments | null;
+    const nameRef = args.positional[0] as Reference<Option<string>>;
 
     assert(
       'You can only pass a single positional argument to the {{mount}} helper, e.g. {{mount "chat-engine"}}.',
@@ -62,8 +61,8 @@ export const mountHelper = internalHelper(
     );
 
     if (DEBUG && args.named) {
-      let keys = Object.keys(args.named);
-      let extra = keys.filter((k) => k !== 'model');
+      const keys = Object.keys(args.named);
+      const extra = keys.filter((k) => k !== 'model');
 
       assert(
         'You can only pass a `model` argument to the {{mount}} helper, ' +
@@ -73,12 +72,12 @@ export const mountHelper = internalHelper(
       );
     }
 
-    captured = createCapturedArgs(args.named, EMPTY_POSITIONAL);
+    const captured = createCapturedArgs(args.named, EMPTY_POSITIONAL);
 
     let lastName: string | null, lastDef: CurriedValue | null;
 
     return createComputeRef(() => {
-      let name = valueForRef(nameRef);
+      const name = valueForRef(nameRef);
 
       if (typeof name === 'string') {
         if (lastName === name) {

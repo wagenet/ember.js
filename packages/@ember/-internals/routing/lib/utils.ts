@@ -27,7 +27,7 @@ export function extractRouteArgs(
 ): ExtractedArgs {
   args = args.slice();
 
-  let possibleQueryParams = args.pop();
+  const possibleQueryParams = args.pop();
 
   let queryParams: Record<string, unknown>;
   if (hasQueryParams(possibleQueryParams)) {
@@ -41,14 +41,14 @@ export function extractRouteArgs(
   // UNSAFE: these are simply assumed as the existing behavior of the system.
   // However, this could break if upstream refactors change it, and the types
   // here would not be able to tell us; we would lie to everything downstream.
-  let routeName = args.shift() as string | undefined;
-  let models = args as {}[];
+  const routeName = args.shift() as string | undefined;
+  const models = args as {}[];
 
   return { routeName, models, queryParams };
 }
 
 export function getActiveTargetName(router: Router<Route>): string {
-  let routeInfos = router.activeTransition
+  const routeInfos = router.activeTransition
     ? router.activeTransition[STATE_SYMBOL]!.routeInfos
     : router.state!.routeInfos;
   return routeInfos[routeInfos.length - 1].name;
@@ -63,13 +63,13 @@ export function stashParamNames(router: EmberRouter, routeInfos: PrivateRouteInf
   // keeps separate a routeInfo's list of parameter names depending
   // on whether a URL transition or named transition is happening.
   // Hopefully we can remove this in the future.
-  let targetRouteName = routeInfos[routeInfos.length - 1].name;
-  let recogHandlers = router._routerMicrolib.recognizer.handlersFor(targetRouteName);
+  const targetRouteName = routeInfos[routeInfos.length - 1].name;
+  const recogHandlers = router._routerMicrolib.recognizer.handlersFor(targetRouteName);
   let dynamicParent: PrivateRouteInfo;
 
   for (let i = 0; i < routeInfos.length; ++i) {
-    let routeInfo = routeInfos[i];
-    let names = recogHandlers[i].names;
+    const routeInfo = routeInfos[i];
+    const names = recogHandlers[i].names;
 
     if (names.length) {
       dynamicParent = routeInfo;
@@ -77,7 +77,7 @@ export function stashParamNames(router: EmberRouter, routeInfos: PrivateRouteInf
 
     routeInfo['_names'] = names;
 
-    let route = routeInfo.route!;
+    const route = routeInfo.route!;
     route._stashNames(routeInfo, dynamicParent!);
   }
 
@@ -94,11 +94,11 @@ function _calculateCacheValuePrefix(prefix: string, part: string) {
   // given : prefix = site.article, part = site.article.id
   //      - returns: site.article. (use get(values[site.article], 'id') to get the dynamic part - used below)
 
-  let prefixParts = prefix.split('.');
+  const prefixParts = prefix.split('.');
   let currPrefix = '';
 
   for (let i = 0; i < prefixParts.length; i++) {
-    let currPart = prefixParts.slice(0, i + 1).join('.');
+    const currPart = prefixParts.slice(0, i + 1).join('.');
     if (part.indexOf(currPart) !== 0) {
       break;
     }
@@ -114,12 +114,12 @@ function _calculateCacheValuePrefix(prefix: string, part: string) {
 export function calculateCacheKey(prefix: string, parts: string[] = [], values: {} | null): string {
   let suffixes = '';
   for (let i = 0; i < parts.length; ++i) {
-    let part = parts[i];
-    let cacheValuePrefix = _calculateCacheValuePrefix(prefix, part);
+    const part = parts[i];
+    const cacheValuePrefix = _calculateCacheValuePrefix(prefix, part);
     let value;
     if (values) {
       if (cacheValuePrefix && cacheValuePrefix in values) {
-        let partRemovedPrefix =
+        const partRemovedPrefix =
           part.indexOf(cacheValuePrefix) === 0 ? part.substr(cacheValuePrefix.length + 1) : part;
         value = get(values[cacheValuePrefix], partRemovedPrefix);
       } else {
@@ -164,7 +164,7 @@ export function calculateCacheKey(prefix: string, parts: string[] = [], values: 
   'Array of fully defined objects' style.
 */
 export function normalizeControllerQueryParams(queryParams: ControllerQueryParam[]) {
-  let qpMap: Record<string, ExpandedControllerQueryParam> = {};
+  const qpMap: Record<string, ExpandedControllerQueryParam> = {};
 
   for (let i = 0; i < queryParams.length; ++i) {
     accumulateQueryParamDescriptors(queryParams[i], qpMap);
@@ -185,7 +185,7 @@ function accumulateQueryParamDescriptors(
     desc = tmp;
   }
 
-  for (let key in desc) {
+  for (const key in desc) {
     if (!Object.prototype.hasOwnProperty.call(desc, key)) {
       return;
     }
@@ -195,7 +195,7 @@ function accumulateQueryParamDescriptors(
       singleDesc = { as: singleDesc };
     }
 
-    let val = accum[key] || { as: null, scope: 'model' };
+    const val = accum[key] || { as: null, scope: 'model' };
     Object.assign(val, singleDesc);
 
     accum[key] = val;
@@ -218,8 +218,8 @@ export function resemblesURL(str: unknown): str is string {
 */
 export function prefixRouteNameArg(route: Route, args: any[]) {
   let routeName = args[0];
-  let owner = getOwner(route);
-  let prefix = owner.mountPoint;
+  const owner = getOwner(route);
+  const prefix = owner.mountPoint;
 
   // only alter the routeName if it's actually referencing a route.
   if (owner.routable && typeof routeName === 'string') {
@@ -277,7 +277,7 @@ export function deprecateTransitionMethods(frameworkClass: string, methodName: s
 
 function hasQueryParams(value: unknown): value is HasQueryParams {
   if (value && typeof value === 'object') {
-    let qps = (value as HasQueryParams).queryParams;
+    const qps = (value as HasQueryParams).queryParams;
     if (qps && typeof qps === 'object') {
       return Object.keys(qps).every((k) => typeof k === 'string');
     }

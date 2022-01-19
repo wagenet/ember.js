@@ -12,7 +12,7 @@ declare global {
 }
 
 export function setupDeprecationHelpers(hooks: NestedHooks, env: DebugEnv): void {
-  let assertion = new DeprecationAssert(env);
+  const assertion = new DeprecationAssert(env);
 
   hooks.beforeEach(function () {
     assertion.reset();

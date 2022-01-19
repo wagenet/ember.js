@@ -31,7 +31,7 @@ export default class BucketCache {
       return defaultValue;
     }
 
-    let bucket = this.cache.get(bucketKey)!;
+    const bucket = this.cache.get(bucketKey)!;
     if (bucket.has(prop)) {
       return bucket.get(prop);
     } else {

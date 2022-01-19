@@ -24,7 +24,7 @@ export function generateControllerFactory(owner: Owner, controllerName: string):
     },
   });
 
-  let fullName = `controller:${controllerName}`;
+  const fullName = `controller:${controllerName}`;
 
   owner.register(fullName, Factory);
 
@@ -43,8 +43,8 @@ export function generateControllerFactory(owner: Owner, controllerName: string):
 export default function generateController(owner: Owner, controllerName: string): Controller {
   generateControllerFactory(owner, controllerName);
 
-  let fullName = `controller:${controllerName}`;
-  let instance = owner.lookup<Controller>(fullName)!;
+  const fullName = `controller:${controllerName}`;
+  const instance = owner.lookup<Controller>(fullName)!;
 
   if (DEBUG) {
     if (get(instance, 'namespace.LOG_ACTIVE_GENERATION')) {

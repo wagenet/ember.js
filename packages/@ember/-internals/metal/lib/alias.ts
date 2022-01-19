@@ -48,7 +48,7 @@ class AliasDecoratorImpl extends Function {
   }
 
   meta(this: Decorator, meta?: any): any {
-    let prop = descriptorForDecorator(this) as AliasedProperty;
+    const prop = descriptorForDecorator(this) as AliasedProperty;
 
     if (arguments.length === 0) {
       return prop._meta || {};
@@ -76,9 +76,9 @@ export class AliasedProperty extends ComputedDescriptor {
   get(obj: object, keyName: string): any {
     let ret: any;
 
-    let meta = metaFor(obj);
-    let tagMeta = tagMetaFor(obj);
-    let propertyTag = tagFor(obj, keyName, tagMeta) as UpdatableTag;
+    const meta = metaFor(obj);
+    const tagMeta = tagMetaFor(obj);
+    const propertyTag = tagFor(obj, keyName, tagMeta) as UpdatableTag;
 
     // We don't use the tag since CPs are not automatic, we just want to avoid
     // anything tracking while we get the altKey
@@ -86,7 +86,7 @@ export class AliasedProperty extends ComputedDescriptor {
       ret = get(obj, this.altKey);
     });
 
-    let lastRevision = meta.revisionFor(keyName);
+    const lastRevision = meta.revisionFor(keyName);
 
     if (lastRevision === undefined || !validateTag(propertyTag, lastRevision)) {
       updateTag(propertyTag, getChainTagsForKey(obj, this.altKey, tagMeta, meta));

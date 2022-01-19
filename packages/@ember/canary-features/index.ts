@@ -50,7 +50,7 @@ export const FEATURES = Object.assign(DEFAULT_FEATURES, ENV.FEATURES);
   @public
 */
 export function isEnabled(feature: string): boolean {
-  let value = FEATURES[feature];
+  const value = FEATURES[feature];
 
   if (value === true || value === false) {
     return value;

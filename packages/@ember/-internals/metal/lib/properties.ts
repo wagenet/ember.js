@@ -63,9 +63,9 @@ export function defineProperty(
   data?: any | undefined | null,
   _meta?: Meta
 ): void {
-  let meta = _meta === undefined ? metaFor(obj) : _meta;
-  let previousDesc = descriptorForProperty(obj, keyName, meta);
-  let wasDescriptor = previousDesc !== undefined;
+  const meta = _meta === undefined ? metaFor(obj) : _meta;
+  const previousDesc = descriptorForProperty(obj, keyName, meta);
+  const wasDescriptor = previousDesc !== undefined;
 
   if (wasDescriptor) {
     previousDesc.teardown(obj, keyName, meta);

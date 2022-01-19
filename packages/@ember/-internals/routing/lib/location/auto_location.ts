@@ -159,7 +159,7 @@ export default class AutoLocation extends EmberObject implements EmberLocation {
    @private
   */
   detect(): void {
-    let rootURL = this.rootURL;
+    const rootURL = this.rootURL;
 
     assert(
       'rootURL must end with a trailing forward slash e.g. "/app/"',
@@ -180,7 +180,7 @@ export default class AutoLocation extends EmberObject implements EmberLocation {
       implementation = 'none';
     }
 
-    let concrete = getOwner(this).lookup<EmberLocation>(`location:${implementation}`);
+    const concrete = getOwner(this).lookup<EmberLocation>(`location:${implementation}`);
     assert(`Could not find location '${implementation}'.`, concrete !== undefined);
 
     set(concrete, 'rootURL', rootURL);
@@ -188,7 +188,7 @@ export default class AutoLocation extends EmberObject implements EmberLocation {
   }
 
   willDestroy(): void {
-    let { concreteImplementation } = this;
+    const { concreteImplementation } = this;
 
     if (concreteImplementation) {
       concreteImplementation.destroy();
@@ -219,7 +219,7 @@ AutoLocation.reopen({
 
 function delegateToConcreteImplementation(methodName: string) {
   return function (this: AutoLocation, ...args: unknown[]) {
-    let { concreteImplementation } = this;
+    const { concreteImplementation } = this;
     assert(
       "AutoLocation's detect() method should be called before calling any other hooks.",
       concreteImplementation
@@ -252,14 +252,14 @@ interface DetectionOptions {
 }
 
 function detectImplementation(options: DetectionOptions) {
-  let { location, userAgent, history, documentMode, global, rootURL } = options;
+  const { location, userAgent, history, documentMode, global, rootURL } = options;
 
   let implementation = 'none';
   let cancelRouterSetup = false;
-  let currentPath = getFullPath(location);
+  const currentPath = getFullPath(location);
 
   if (supportsHistory(userAgent, history)) {
-    let historyPath = getHistoryPath(rootURL, location);
+    const historyPath = getHistoryPath(rootURL, location);
 
     // If the browser supports history and we have a history path, we can use
     // the history location with no redirects.
@@ -273,7 +273,7 @@ function detectImplementation(options: DetectionOptions) {
       replacePath(location, historyPath);
     }
   } else if (supportsHashChange(documentMode, global)) {
-    let hashPath = getHashPath(rootURL, location);
+    const hashPath = getHashPath(rootURL, location);
 
     // Be sure we're using a hashed path, otherwise let's switch over it to so
     // we start off clean and consistent. We'll count an index path with no
@@ -304,9 +304,9 @@ function detectImplementation(options: DetectionOptions) {
 */
 export function getHistoryPath(rootURL: string, location: Location): string {
   let path = getPath(location);
-  let hash = getHash(location);
-  let query = getQuery(location);
-  let rootURLIndex = path.indexOf(rootURL);
+  const hash = getHash(location);
+  const query = getQuery(location);
+  const rootURLIndex = path.indexOf(rootURL);
 
   let routeHash: string;
   let hashParts;
@@ -351,7 +351,7 @@ export function getHistoryPath(rootURL: string, location: Location): string {
 */
 export function getHashPath(rootURL: string, location: Location): string {
   let path = rootURL;
-  let historyPath = getHistoryPath(rootURL, location);
+  const historyPath = getHistoryPath(rootURL, location);
   let routePath = historyPath.substr(rootURL.length);
 
   if (routePath !== '') {

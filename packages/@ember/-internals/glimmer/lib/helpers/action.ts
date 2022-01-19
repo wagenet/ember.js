@@ -284,17 +284,17 @@ export const ACTIONS = new _WeakSet();
 */
 export default internalHelper(
   (args: CapturedArguments): Reference<Function> => {
-    let { named, positional } = args;
+    const { named, positional } = args;
     // The first two argument slots are reserved.
     // pos[0] is the context (or `this`)
     // pos[1] is the action name or function
     // Anything else is an action argument.
-    let [context, action, ...restArgs] = positional;
+    const [context, action, ...restArgs] = positional;
 
-    let debugKey: string = action.debugLabel!;
+    const debugKey: string = action.debugLabel!;
 
-    let target = 'target' in named ? named.target : context;
-    let processArgs = makeArgsProcessor('value' in named && named.value, restArgs);
+    const target = 'target' in named ? named.target : context;
+    const processArgs = makeArgsProcessor('value' in named && named.value, restArgs);
 
     let fn: Function;
 
@@ -339,7 +339,7 @@ function makeArgsProcessor(valuePathRef: Reference | false, actionArgsRef: Refer
 
   if (valuePathRef) {
     readValue = (args: unknown[]) => {
-      let valuePath = valueForRef(valuePathRef);
+      const valuePath = valueForRef(valuePathRef);
 
       if (valuePath && args.length > 0) {
         args[0] = get(args[0] as object, valuePath as string);
@@ -406,7 +406,7 @@ function makeClosureAction(
     action !== undefined && action !== null
   );
 
-  let typeofAction = typeof action;
+  const typeofAction = typeof action;
 
   if (typeofAction === 'string') {
     self = target;
@@ -428,7 +428,7 @@ function makeClosureAction(
   }
 
   return (...args: any[]) => {
-    let payload = { target: self, args, label: '@glimmer/closure-action' };
+    const payload = { target: self, args, label: '@glimmer/closure-action' };
     return flaggedInstrument('interaction.ember-action', payload, () => {
       return join(self, fn, ...processArgs(args));
     });

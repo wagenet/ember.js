@@ -21,13 +21,13 @@ import { EmberASTPluginEnvironment } from '../types';
 */
 
 export default function assertAgainstAttrs(env: EmberASTPluginEnvironment): ASTPlugin {
-  let { builders: b } = env.syntax;
-  let moduleName = env.meta?.moduleName;
+  const { builders: b } = env.syntax;
+  const moduleName = env.meta?.moduleName;
 
-  let stack: string[][] = [[]];
+  const stack: string[][] = [[]];
 
   function updateBlockParamsStack(blockParams: string[]) {
-    let parent = stack[stack.length - 1];
+    const parent = stack[stack.length - 1];
     stack.push(parent.concat(blockParams));
   }
 
@@ -55,7 +55,7 @@ export default function assertAgainstAttrs(env: EmberASTPluginEnvironment): ASTP
 
       PathExpression(node: AST.PathExpression): AST.Node | void {
         if (isAttrs(node, stack[stack.length - 1])) {
-          let path = b.path(node.original.substr(6));
+          const path = b.path(node.original.substr(6));
 
           assert(
             `Using {{attrs}} to reference named arguments is not supported. {{attrs.${
@@ -73,7 +73,7 @@ export default function assertAgainstAttrs(env: EmberASTPluginEnvironment): ASTP
 }
 
 function isAttrs(node: AST.PathExpression, symbols: string[]) {
-  let name = node.parts[0];
+  const name = node.parts[0];
 
   if (symbols.indexOf(name) !== -1) {
     return false;

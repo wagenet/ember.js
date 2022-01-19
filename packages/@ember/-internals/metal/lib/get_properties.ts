@@ -34,7 +34,7 @@ import { get } from './property_get';
 function getProperties<L extends string[]>(obj: object, list: L): Record<L[number], unknown>;
 function getProperties<L extends string[]>(obj: object, ...list: L): Record<L[number], unknown>;
 function getProperties<L extends string[]>(obj: object, keys?: L): Record<L[number], unknown> {
-  let ret = {} as Record<L[number], unknown>;
+  const ret = {} as Record<L[number], unknown>;
   let propertyNames = arguments;
   let i = 1;
 

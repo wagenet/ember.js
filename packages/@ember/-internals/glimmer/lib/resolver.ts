@@ -61,12 +61,12 @@ function componentFor(
   owner: Owner,
   options?: LookupOptions
 ): Option<Factory<{}, {}>> {
-  let fullName = `component:${name}`;
+  const fullName = `component:${name}`;
   return owner.factoryFor(fullName, options) || null;
 }
 
 function layoutFor(name: string, owner: Owner, options?: LookupOptions): Option<Template> {
-  let templateFullName = `template:components/${name}`;
+  const templateFullName = `template:components/${name}`;
 
   return owner.lookup(templateFullName, options) || null;
 }
@@ -90,17 +90,17 @@ function lookupComponentPair(
   name: string,
   options?: LookupOptions
 ): Option<LookupResult> {
-  let component = componentFor(name, owner, options);
+  const component = componentFor(name, owner, options);
 
   if (component !== null && component.class !== undefined) {
-    let layout = getComponentTemplate(component.class);
+    const layout = getComponentTemplate(component.class);
 
     if (layout !== undefined) {
       return { component, layout };
     }
   }
 
-  let layout = layoutFor(name, owner, options);
+  const layout = layoutFor(name, owner, options);
 
   if (component === null && layout === null) {
     return null;
@@ -185,7 +185,7 @@ export default class ResolverImpl implements RuntimeResolver<Owner>, CompileTime
       return null;
     }
 
-    let definition = factory.class;
+    const definition = factory.class;
 
     if (definition === undefined) {
       return null;
@@ -218,13 +218,13 @@ export default class ResolverImpl implements RuntimeResolver<Owner>, CompileTime
   }
 
   lookupModifier(name: string, owner: Owner): Option<ModifierDefinitionState> {
-    let builtin = BUILTIN_MODIFIERS[name];
+    const builtin = BUILTIN_MODIFIERS[name];
 
     if (builtin !== undefined) {
       return builtin;
     }
 
-    let modifier = owner.factoryFor<unknown, FactoryClass>(`modifier:${name}`);
+    const modifier = owner.factoryFor<unknown, FactoryClass>(`modifier:${name}`);
 
     if (modifier === undefined) {
       return null;
@@ -238,7 +238,7 @@ export default class ResolverImpl implements RuntimeResolver<Owner>, CompileTime
   }
 
   lookupComponent(name: string, owner: Owner): ResolvedComponentDefinition | null {
-    let pair = lookupComponentPair(owner, name);
+    const pair = lookupComponentPair(owner, name);
 
     if (pair === null) {
       assert(
@@ -257,7 +257,7 @@ export default class ResolverImpl implements RuntimeResolver<Owner>, CompileTime
       key = pair.component;
     }
 
-    let cachedComponentDefinition = this.componentDefinitionCache.get(key);
+    const cachedComponentDefinition = this.componentDefinitionCache.get(key);
     if (cachedComponentDefinition !== undefined) {
       return cachedComponentDefinition;
     }
@@ -266,7 +266,11 @@ export default class ResolverImpl implements RuntimeResolver<Owner>, CompileTime
       template = pair.layout(owner);
     }
 
-    let finalizer = _instrumentStart('render.getComponentDefinition', instrumentationPayload, name);
+    const finalizer = _instrumentStart(
+      'render.getComponentDefinition',
+      instrumentationPayload,
+      name
+    );
 
     let definition: Option<ResolvedComponentDefinition> = null;
 
@@ -278,8 +282,8 @@ export default class ResolverImpl implements RuntimeResolver<Owner>, CompileTime
           template,
         };
       } else {
-        let factory = owner.factoryFor(P`component:-default`)!;
-        let manager = getInternalComponentManager(factory.class as object);
+        const factory = owner.factoryFor(P`component:-default`)!;
+        const manager = getInternalComponentManager(factory.class as object);
 
         definition = {
           state: factory,
@@ -290,9 +294,9 @@ export default class ResolverImpl implements RuntimeResolver<Owner>, CompileTime
     } else {
       assert(`missing component class ${name}`, pair.component.class !== undefined);
 
-      let factory = pair.component;
-      let ComponentClass = factory.class!;
-      let manager = getInternalComponentManager(ComponentClass);
+      const factory = pair.component;
+      const ComponentClass = factory.class!;
+      const manager = getInternalComponentManager(ComponentClass);
 
       definition = {
         state: isCurlyManager(manager) ? factory : ComponentClass,

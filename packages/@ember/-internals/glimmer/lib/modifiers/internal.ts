@@ -29,12 +29,12 @@ export default class InternalModifier {
   remove(): void {}
 
   protected positional(index: number): unknown {
-    let ref = this.args.positional[index];
+    const ref = this.args.positional[index];
     return ref ? valueForRef(ref) : undefined;
   }
 
   protected named(key: string): unknown {
-    let ref = this.args.named[key];
+    const ref = this.args.named[key];
     return ref ? valueForRef(ref) : undefined;
   }
 
@@ -63,8 +63,8 @@ export class InternalModifierManager
   ): InternalModifierState {
     assert('element must be an HTMLElement', element instanceof HTMLElement);
 
-    let { ModifierClass } = this;
-    let instance = new ModifierClass(owner, element, args);
+    const { ModifierClass } = this;
+    const instance = new ModifierClass(owner, element, args);
 
     registerDestructor(instance, destructor);
 

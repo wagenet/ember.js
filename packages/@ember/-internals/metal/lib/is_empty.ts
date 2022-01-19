@@ -36,7 +36,7 @@ import { get } from './property_get';
   @public
 */
 export default function isEmpty(obj: any): boolean {
-  let none = obj === null || obj === undefined;
+  const none = obj === null || obj === undefined;
   if (none) {
     return none;
   }
@@ -45,10 +45,10 @@ export default function isEmpty(obj: any): boolean {
     return !obj.size;
   }
 
-  let objectType = typeof obj;
+  const objectType = typeof obj;
 
   if (objectType === 'object') {
-    let size = get(obj, 'size');
+    const size = get(obj, 'size');
     if (typeof size === 'number') {
       return !size;
     }
@@ -59,7 +59,7 @@ export default function isEmpty(obj: any): boolean {
   }
 
   if (objectType === 'object') {
-    let length = get(obj, 'length');
+    const length = get(obj, 'length');
     if (typeof length === 'number') {
       return !length;
     }

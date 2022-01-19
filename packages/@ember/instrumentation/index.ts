@@ -86,11 +86,11 @@ interface MaybePerf {
   @static
   @private
 */
-export let subscribers: Subscriber<any>[] = [];
+export const subscribers: Subscriber<any>[] = [];
 let cache: { [key: string]: Listener<any>[] } = {};
 
 function populateListeners(name: string) {
-  let listeners: Listener<any>[] = [];
+  const listeners: Listener<any>[] = [];
   let subscriber;
 
   for (let i = 0; i < subscribers.length; i++) {
@@ -105,8 +105,8 @@ function populateListeners(name: string) {
 }
 
 const time = ((): (() => number) => {
-  let perf: MaybePerf = 'undefined' !== typeof window ? window.performance || {} : {};
-  let fn = perf.now || perf.mozNow || perf.webkitNow || perf.msNow || perf.oNow;
+  const perf: MaybePerf = 'undefined' !== typeof window ? window.performance || {} : {};
+  const fn = perf.now || perf.mozNow || perf.webkitNow || perf.msNow || perf.oNow;
 
   return fn ? fn.bind(perf) : Date.now;
 })();
@@ -176,9 +176,9 @@ export function instrument<Binding, Result>(
   }
 
   // avoid allocating the payload in fast path
-  let payload = _payload || {};
+  const payload = _payload || {};
 
-  let finalizer = _instrumentStart(name, () => payload);
+  const finalizer = _instrumentStart(name, () => payload);
 
   if (finalizer === NOOP) {
     return callback.call(binding);
@@ -247,26 +247,26 @@ export function _instrumentStart<Arg>(
     return NOOP;
   }
 
-  let payload = payloadFunc(payloadArg!);
+  const payload = payloadFunc(payloadArg!);
 
-  let STRUCTURED_PROFILE = ENV.STRUCTURED_PROFILE;
+  const STRUCTURED_PROFILE = ENV.STRUCTURED_PROFILE;
   let timeName: string;
   if (STRUCTURED_PROFILE) {
     timeName = `${name}: ${(payload as StructuredProfilePayload).object}`;
     console.time(timeName);
   }
 
-  let beforeValues: any[] = [];
-  let timestamp = time();
+  const beforeValues: any[] = [];
+  const timestamp = time();
   for (let i = 0; i < listeners.length; i++) {
-    let listener = listeners[i];
+    const listener = listeners[i];
     beforeValues.push(listener.before(name, timestamp, payload));
   }
 
   return function _instrumentEnd(): void {
-    let timestamp = time();
+    const timestamp = time();
     for (let i = 0; i < listeners.length; i++) {
-      let listener = listeners[i];
+      const listener = listeners[i];
       if (typeof listener.after === 'function') {
         listener.after(name, timestamp, payload, beforeValues[i]);
       }
@@ -292,9 +292,9 @@ export function _instrumentStart<Arg>(
   @private
 */
 export function subscribe<T>(pattern: string, object: Listener<T>): Subscriber<T> {
-  let paths = pattern.split('.');
+  const paths = pattern.split('.');
   let path;
-  let regexes: string[] = [];
+  const regexes: string[] = [];
 
   for (let i = 0; i < paths.length; i++) {
     path = paths[i];
@@ -308,7 +308,7 @@ export function subscribe<T>(pattern: string, object: Listener<T>): Subscriber<T
   let regex = regexes.join('\\.');
   regex = `${regex}(\\..*)?`;
 
-  let subscriber = {
+  const subscriber = {
     pattern,
     regex: new RegExp(`^${regex}$`),
     object,

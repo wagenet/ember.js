@@ -130,9 +130,9 @@ export default class RouterService extends Service {
       return this._router._doURLTransition('transitionTo', args[0]);
     }
 
-    let { routeName, models, queryParams } = extractRouteArgs(args);
+    const { routeName, models, queryParams } = extractRouteArgs(args);
 
-    let transition = this._router._doTransition(routeName, models, queryParams, true);
+    const transition = this._router._doTransition(routeName, models, queryParams, true);
     transition['_keepDefaultQueryParamValues'] = true;
 
     return transition;
@@ -301,8 +301,10 @@ export default class RouterService extends Service {
      @public
    */
   isActive(...args: any[]) {
-    let { routeName, models, queryParams } = extractRouteArgs(args);
-    let routerMicrolib = this._router._routerMicrolib;
+    const extracted = extractRouteArgs(args);
+    const { routeName, models } = extracted;
+    let { queryParams } = extracted;
+    const routerMicrolib = this._router._routerMicrolib;
 
     // When using isActive() in a getter, we want to entagle with the auto-tracking system
     // for example,
@@ -324,7 +326,7 @@ export default class RouterService extends Service {
     if (!routerMicrolib.isActiveIntent(routeName as string, models)) {
       return false;
     }
-    let hasQueryParams = Object.keys(queryParams).length > 0;
+    const hasQueryParams = Object.keys(queryParams).length > 0;
 
     if (hasQueryParams) {
       queryParams = Object.assign({}, queryParams);
@@ -383,7 +385,7 @@ export default class RouterService extends Service {
       url.indexOf(this.rootURL) === 0
     );
     this._router.setupRouter();
-    let internalURL = cleanURL(url, this.rootURL);
+    const internalURL = cleanURL(url, this.rootURL);
     return this._router._routerMicrolib.recognize(internalURL);
   }
 
@@ -404,7 +406,7 @@ export default class RouterService extends Service {
       url.indexOf(this.rootURL) === 0
     );
     this._router.setupRouter();
-    let internalURL = cleanURL(url, this.rootURL);
+    const internalURL = cleanURL(url, this.rootURL);
     return this._router._routerMicrolib.recognizeAndLoad(internalURL);
   }
 
@@ -514,7 +516,7 @@ if (EMBER_ROUTING_ROUTER_SERVICE_REFRESH) {
         this.isActive(pivotRouteName)
       );
 
-      let pivotRoute = getOwner(this).lookup(`route:${pivotRouteName}`) as Route;
+      const pivotRoute = getOwner(this).lookup(`route:${pivotRouteName}`) as Route;
 
       return this._router._routerMicrolib.refresh(pivotRoute);
     },

@@ -10,7 +10,7 @@ export default function calculateLocationDisplay(
   }
 
   if (loc) {
-    let { column, line } = loc.start || { line: undefined, column: undefined };
+    const { column, line } = loc.start || { line: undefined, column: undefined };
     if (line !== undefined && column !== undefined) {
       if (moduleName) {
         // only prepend @ if the moduleName was present

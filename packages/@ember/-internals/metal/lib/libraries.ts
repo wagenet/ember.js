@@ -31,8 +31,8 @@ export class Libraries {
   }
 
   _getLibraryByName(name: string): Library | undefined {
-    let libs = this._registry;
-    let count = libs.length;
+    const libs = this._registry;
+    const count = libs.length;
 
     for (let i = 0; i < count; i++) {
       if (libs[i].name === name) {
@@ -62,7 +62,7 @@ export class Libraries {
   }
 
   deRegister(name: string): void {
-    let lib = this._getLibraryByName(name);
+    const lib = this._getLibraryByName(name);
     let index;
 
     if (lib) {
@@ -83,18 +83,18 @@ if (EMBER_LIBRARIES_ISREGISTERED) {
 
 if (DEBUG) {
   Libraries.prototype.logVersions = function (): void {
-    let libs = this._registry;
-    let nameLengths = libs.map((item) => get(item, 'name.length'));
+    const libs = this._registry;
+    const nameLengths = libs.map((item) => get(item, 'name.length'));
     assert(
       'nameLengths is number array',
       nameLengths instanceof Array && nameLengths.every((n) => typeof n === 'number')
     );
-    let maxNameLength = Math.max.apply(null, nameLengths);
+    const maxNameLength = Math.max.apply(null, nameLengths);
 
     debug('-------------------------------');
     for (let i = 0; i < libs.length; i++) {
-      let lib = libs[i];
-      let spaces = new Array(maxNameLength - lib.name.length + 1).join(' ');
+      const lib = libs[i];
+      const spaces = new Array(maxNameLength - lib.name.length + 1).join(' ');
       debug([lib.name, spaces, ' : ', lib.version].join(''));
     }
     debug('-------------------------------');

@@ -11,9 +11,8 @@ let popstateFired = false;
 
 function _uuid() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    let r, v;
-    r = (Math.random() * 16) | 0;
-    v = c === 'x' ? r : (r & 3) | 8;
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 3) | 8;
     return v.toString(16);
   });
 }
@@ -90,7 +89,7 @@ export default class HistoryLocation extends EmberObject implements EmberLocatio
   init(): void {
     this._super(...arguments);
 
-    let base = document.querySelector('base');
+    const base = document.querySelector('base');
     let baseURL = '';
     if (base !== null && base.hasAttribute('href')) {
       baseURL = base.getAttribute('href') ?? '';
@@ -109,11 +108,11 @@ export default class HistoryLocation extends EmberObject implements EmberLocatio
     @method initState
   */
   initState(): void {
-    let history = this.history || window.history;
+    const history = this.history || window.history;
     set(this, 'history', history);
 
-    let { state } = history;
-    let path = this.formatURL(this.getURL());
+    const { state } = history;
+    const path = this.formatURL(this.getURL());
     if (state && state.path === path) {
       // preserve existing state
       // used for webkit workaround, since there will be no initial popstate event
@@ -131,8 +130,9 @@ export default class HistoryLocation extends EmberObject implements EmberLocatio
     @return url {String}
   */
   getURL(): string {
-    let { location, rootURL, baseURL } = this;
-    let path = location.pathname;
+    let { rootURL, baseURL } = this;
+    const { location } = this;
+    const path = location.pathname;
 
     // remove trailing slashes if they exists
     rootURL = rootURL.replace(/\/$/, '');
@@ -144,7 +144,7 @@ export default class HistoryLocation extends EmberObject implements EmberLocatio
       .replace(new RegExp(`^${rootURL}(?=/|$)`), '')
       .replace(/\/\//g, '/'); // remove extra slashes
 
-    let search = location.search || '';
+    const search = location.search || '';
     url += search + this.getHash();
 
     return url;
@@ -158,7 +158,7 @@ export default class HistoryLocation extends EmberObject implements EmberLocatio
     @param path {String}
   */
   setURL(path: string): void {
-    let { state } = this.history;
+    const { state } = this.history;
     path = this.formatURL(path);
 
     if (!state || state.path !== path) {
@@ -175,7 +175,7 @@ export default class HistoryLocation extends EmberObject implements EmberLocatio
     @param path {String}
   */
   replaceURL(path: string): void {
-    let { state } = this.history;
+    const { state } = this.history;
     path = this.formatURL(path);
 
     if (!state || state.path !== path) {
@@ -191,7 +191,7 @@ export default class HistoryLocation extends EmberObject implements EmberLocatio
    @param path {String}
   */
   pushState(path: string): void {
-    let state = { path, uuid: _uuid() };
+    const state = { path, uuid: _uuid() };
 
     this.history.pushState(state, null, path);
 
@@ -207,7 +207,7 @@ export default class HistoryLocation extends EmberObject implements EmberLocatio
    @param path {String}
   */
   replaceState(path: string): void {
-    let state = { path, uuid: _uuid() };
+    const state = { path, uuid: _uuid() };
 
     this.history.replaceState(state, null, path);
 

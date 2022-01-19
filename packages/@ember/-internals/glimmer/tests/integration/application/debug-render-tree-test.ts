@@ -221,7 +221,7 @@ if (ENV._DEBUG_RENDER_TREE) {
             }
 
             buildInstance(options?: EngineInstanceOptions): EngineInstance {
-              let instance = super.buildInstance(options);
+              const instance = super.buildInstance(options);
               instance['isFooEngineInstance'] = true;
               return instance;
             }
@@ -257,7 +257,7 @@ if (ENV._DEBUG_RENDER_TREE) {
             }
 
             buildInstance(options?: EngineInstanceOptions): EngineInstance {
-              let instance = super.buildInstance(options);
+              const instance = super.buildInstance(options);
               instance['isBarEngineInstance'] = true;
               return instance;
             }
@@ -363,7 +363,7 @@ if (ENV._DEBUG_RENDER_TREE) {
           },
         ]);
 
-        let model = {
+        const model = {
           toString() {
             return 'some model';
           },
@@ -670,7 +670,7 @@ if (ENV._DEBUG_RENDER_TREE) {
         ]);
 
         runTask(() => {
-          let controller = instance!.lookup<Controller>('controller:application')!;
+          const controller = instance!.lookup<Controller>('controller:application')!;
           controller.set('message', 'World');
         });
 
@@ -716,7 +716,7 @@ if (ENV._DEBUG_RENDER_TREE) {
         ]);
 
         runTask(() => {
-          let controller = instance!.lookup<Controller>('controller:application')!;
+          const controller = instance!.lookup<Controller>('controller:application')!;
           controller.set('message', undefined);
         });
 
@@ -1160,9 +1160,9 @@ if (ENV._DEBUG_RENDER_TREE) {
 
         await this.visit('/');
 
-        let target = this.controllerFor('application');
+        const target = this.controllerFor('application');
 
-        let inputToString = /<Input:ember[0-9]+>/;
+        const inputToString = /<Input:ember[0-9]+>/;
 
         this.assertRenderTree([
           {
@@ -1228,7 +1228,7 @@ if (ENV._DEBUG_RENDER_TREE) {
 
         await this.visit('/');
 
-        let textareaNode = (value: string, node: Node): ExpectedRenderNode => {
+        const textareaNode = (value: string, node: Node): ExpectedRenderNode => {
           return {
             type: 'component',
             name: 'textarea',
@@ -1277,7 +1277,7 @@ if (ENV._DEBUG_RENDER_TREE) {
 
         await this.visit('/');
 
-        let template = `packages/@ember/-internals/glimmer/lib/templates/link-to.hbs`;
+        const template = `packages/@ember/-internals/glimmer/lib/templates/link-to.hbs`;
 
         this.assertRenderTree([
           {
@@ -1387,9 +1387,9 @@ if (ENV._DEBUG_RENDER_TREE) {
       }
 
       assertRenderTree(expected: ExpectedRenderNode[]): void {
-        let outlet = 'packages/@ember/-internals/glimmer/lib/templates/outlet.hbs';
-        let actual = captureRenderTree(this.owner);
-        let wrapped: ExpectedRenderNode[] = [
+        const outlet = 'packages/@ember/-internals/glimmer/lib/templates/outlet.hbs';
+        const actual = captureRenderTree(this.owner);
+        const wrapped: ExpectedRenderNode[] = [
           this.outlet({
             type: 'route-template',
             name: '-top-level',
@@ -1430,7 +1430,7 @@ if (ENV._DEBUG_RENDER_TREE) {
         );
 
         if (actual.length === expected.length) {
-          let byTypeAndName = <T, U, V extends { type: T; name: U }>(a: V, b: V): number => {
+          const byTypeAndName = <T, U, V extends { type: T; name: U }>(a: V, b: V): number => {
             if (a.type > b.type) {
               return 1;
             } else if (a.type < b.type) {

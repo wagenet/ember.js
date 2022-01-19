@@ -33,7 +33,7 @@ export function addNamespace(namespace: Namespace): void {
 }
 
 export function removeNamespace(namespace: Namespace): void {
-  let name = getName(namespace) as string;
+  const name = getName(namespace) as string;
   delete NAMESPACES_BY_ID[name];
   NAMESPACES.splice(NAMESPACES.indexOf(namespace), 1);
   if (name in context.lookup && namespace === context.lookup[name]) {
@@ -45,15 +45,15 @@ export function findNamespaces(): void {
   if (!flags.unprocessedNamespaces) {
     return;
   }
-  let lookup = context.lookup;
-  let keys = Object.keys(lookup);
+  const lookup = context.lookup;
+  const keys = Object.keys(lookup);
   for (let i = 0; i < keys.length; i++) {
-    let key = keys[i];
+    const key = keys[i];
     // Only process entities that start with uppercase A-Z
     if (!isUppercase(key.charCodeAt(0))) {
       continue;
     }
-    let obj = tryIsNamespace(lookup, key);
+    const obj = tryIsNamespace(lookup, key);
     if (obj) {
       setName(obj, key);
     }
@@ -72,14 +72,14 @@ export function processNamespace(namespace: Namespace): void {
 }
 
 export function processAllNamespaces(): void {
-  let unprocessedNamespaces = flags.unprocessedNamespaces;
+  const unprocessedNamespaces = flags.unprocessedNamespaces;
   if (unprocessedNamespaces) {
     findNamespaces();
     flags.unprocessedNamespaces = false;
   }
 
   if (unprocessedNamespaces || unprocessedMixins) {
-    let namespaces = NAMESPACES;
+    const namespaces = NAMESPACES;
 
     for (let i = 0; i < namespaces.length; i++) {
       processNamespace(namespaces[i]);
@@ -102,19 +102,19 @@ export function setUnprocessedMixins(): void {
 }
 
 function _processNamespace(paths: string[], root: Namespace, seen: Set<Namespace>): void {
-  let idx = paths.length;
+  const idx = paths.length;
 
-  let id = paths.join('.');
+  const id = paths.join('.');
 
   NAMESPACES_BY_ID[id] = root;
   setName(root, id);
 
   // Loop over all of the keys in the namespace, looking for classes
-  for (let key in root) {
+  for (const key in root) {
     if (!hasOwnProperty.call(root, key)) {
       continue;
     }
-    let obj = root[key];
+    const obj = root[key];
 
     // If we are processing the `Ember` namespace, for example, the
     // `paths` will start with `["Ember"]`. Every iteration through
@@ -150,7 +150,7 @@ function isUppercase(code: number): boolean {
 
 function tryIsNamespace(lookup: { [k: string]: any }, prop: string): Namespace | void {
   try {
-    let obj = lookup[prop];
+    const obj = lookup[prop];
     return (
       ((obj !== null && typeof obj === 'object') || typeof obj === 'function') &&
       obj.isNamespace &&

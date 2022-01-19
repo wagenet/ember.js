@@ -159,7 +159,7 @@ class Textarea extends AbstractInput {
   }
 
   protected isSupportedArgument(name: string): boolean {
-    let supportedArguments = ['type', 'value', 'enter', 'insert-newline', 'escape-press'];
+    const supportedArguments = ['type', 'value', 'enter', 'insert-newline', 'escape-press'];
     return supportedArguments.indexOf(name) !== -1 || super.isSupportedArgument(name);
   }
 }

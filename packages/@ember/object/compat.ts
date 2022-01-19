@@ -10,8 +10,8 @@ import { ElementDescriptor } from '@ember/-internals/metal/lib/decorator';
 import { assert } from '@ember/debug';
 import { consumeTag, tagFor, track, UpdatableTag, updateTag } from '@glimmer/validator';
 
-let wrapGetterSetter = function (target: object, key: string, desc: PropertyDescriptor) {
-  let { get: originalGet } = desc;
+const wrapGetterSetter = function (target: object, key: string, desc: PropertyDescriptor) {
+  const { get: originalGet } = desc;
 
   assert(
     'You attempted to use @dependentKeyCompat on a property that already has been decorated with either @computed or @tracked. @dependentKeyCompat is only necessary for native getters that are not decorated with @computed.',
@@ -20,11 +20,11 @@ let wrapGetterSetter = function (target: object, key: string, desc: PropertyDesc
 
   if (originalGet !== undefined) {
     desc.get = function () {
-      let propertyTag = tagFor(this, key) as UpdatableTag;
+      const propertyTag = tagFor(this, key) as UpdatableTag;
       let ret;
 
-      let tag = track(() => {
-        ret = originalGet!.call(this);
+      const tag = track(() => {
+        ret = originalGet.call(this);
       });
 
       updateTag(propertyTag, tag);
@@ -129,7 +129,7 @@ export function dependentKeyCompat(
 export function dependentKeyCompat(desc: PropertyDescriptor): Decorator;
 export function dependentKeyCompat(...args: ElementDescriptor | [PropertyDescriptor]) {
   if (isElementDescriptor(args)) {
-    let [target, key, desc] = args;
+    const [target, key, desc] = args;
 
     assert(
       'The @dependentKeyCompat decorator must be applied to getters/setters when used in native classes',
@@ -142,7 +142,7 @@ export function dependentKeyCompat(...args: ElementDescriptor | [PropertyDescrip
 
     assert('expected valid PropertyDescriptor', isPropertyDescriptor(desc));
 
-    let decorator: Decorator = function (
+    const decorator: Decorator = function (
       target: object,
       key: string,
       _desc?: DecoratorPropertyDescriptor,
@@ -172,7 +172,7 @@ setClassicDecorator(dependentKeyCompat as Decorator);
 
 function isPropertyDescriptor(value: unknown): value is PropertyDescriptor {
   if (value && typeof value === 'object') {
-    let cast = value as PropertyDescriptor;
+    const cast = value as PropertyDescriptor;
     return (
       (cast.configurable === undefined ||
         cast.configurable === false ||

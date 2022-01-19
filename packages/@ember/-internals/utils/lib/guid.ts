@@ -70,8 +70,8 @@ export const GUID_KEY = intern(`__ember${Date.now()}`);
     separate the guid into separate namespaces.
   @return {String} the guid
 */
-export function generateGuid(obj: object, prefix = GUID_PREFIX): String {
-  let guid = prefix + uuid().toString();
+export function generateGuid(obj: object, prefix = GUID_PREFIX): string {
+  const guid = prefix + uuid().toString();
 
   if (isObject(obj)) {
     OBJECT_GUIDS.set(obj, guid);
@@ -108,7 +108,7 @@ export function guidFor(value: any | null | undefined): string {
     guid = NON_OBJECT_GUIDS.get(value);
 
     if (guid === undefined) {
-      let type = typeof value;
+      const type = typeof value;
 
       if (type === 'string') {
         guid = `st${uuid()}`;

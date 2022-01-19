@@ -23,7 +23,7 @@ import { isPath } from './utils';
   @class TransformHasBlockSyntax
 */
 export default function transformEachInIntoEach(env: EmberASTPluginEnvironment): ASTPlugin {
-  let { builders: b } = env.syntax;
+  const { builders: b } = env.syntax;
 
   return {
     name: 'transform-each-in-into-each',
@@ -42,8 +42,8 @@ export default function transformEachInIntoEach(env: EmberASTPluginEnvironment):
             // pick a name that won't parse so it won't shadow any real variables
             blockParams = ['( unused value )', blockParams[0]];
           } else {
-            let key = blockParams.shift()!;
-            let value = blockParams.shift()!;
+            const key = blockParams.shift()!;
+            const value = blockParams.shift()!;
             blockParams = [value, key, ...blockParams];
           }
 

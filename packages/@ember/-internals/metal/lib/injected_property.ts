@@ -37,12 +37,12 @@ function inject(
 function inject(type: string, ...args: any[]): Decorator | DecoratorPropertyDescriptor {
   assert('a string type must be provided to inject', typeof type === 'string');
 
-  let calledAsDecorator = isElementDescriptor(args);
+  const calledAsDecorator = isElementDescriptor(args);
 
-  let name = calledAsDecorator ? undefined : args[0];
+  const name = calledAsDecorator ? undefined : args[0];
 
-  let getInjection = function (this: any, propertyName: string) {
-    let owner = getOwner(this) || this.container; // fallback to `container` for backwards compat
+  const getInjection = function (this: any, propertyName: string) {
+    const owner = getOwner(this) || this.container; // fallback to `container` for backwards compat
 
     assert(
       `Attempting to lookup an injected property on an object without a container, ensure that the object was instantiated via a container.`,
@@ -59,7 +59,7 @@ function inject(type: string, ...args: any[]): Decorator | DecoratorPropertyDesc
     });
   }
 
-  let decorator = computed({
+  const decorator = computed({
     get: getInjection,
 
     set(this: any, keyName: string, value: any) {

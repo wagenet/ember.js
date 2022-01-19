@@ -19,7 +19,7 @@ function isElementKey(key: string | number | symbol) {
 }
 
 function isStringInt(str: string) {
-  let num = parseInt(str, 10);
+  const num = parseInt(str, 10);
   return isPositiveInt(num) && str === String(num);
 }
 
@@ -28,14 +28,14 @@ function isPositiveInt(num: number) {
 }
 
 if (DEBUG) {
-  let SEEN_TAGS = new WeakSet();
+  const SEEN_TAGS = new WeakSet();
 
-  let MANDATORY_SETTERS: WeakMap<
+  const MANDATORY_SETTERS: WeakMap<
     object,
     { [key: string | symbol]: PropertyDescriptorWithMeta }
   > = new WeakMap();
 
-  let propertyIsEnumerable = function (obj: object, key: string | symbol) {
+  const propertyIsEnumerable = function (obj: object, key: string | symbol) {
     return Object.prototype.propertyIsEnumerable.call(obj, key);
   };
 
@@ -50,7 +50,7 @@ if (DEBUG) {
       return;
     }
 
-    let desc = (lookupDescriptor(obj, keyName) as PropertyDescriptorWithMeta) || {};
+    const desc = (lookupDescriptor(obj, keyName) as PropertyDescriptorWithMeta) || {};
 
     if (desc.get || desc.set) {
       // if it has a getter or setter, we can't install the mandatory setter.
@@ -99,7 +99,7 @@ if (DEBUG) {
   };
 
   teardownMandatorySetter = function (obj: object, keyName: string | symbol) {
-    let setters = MANDATORY_SETTERS.get(obj);
+    const setters = MANDATORY_SETTERS.get(obj);
 
     if (setters !== undefined && setters[keyName] !== undefined) {
       Object.defineProperty(obj, keyName, setters[keyName]);
@@ -109,10 +109,10 @@ if (DEBUG) {
   };
 
   setWithMandatorySetter = function (obj: object, keyName: string | symbol, value: any) {
-    let setters = MANDATORY_SETTERS.get(obj);
+    const setters = MANDATORY_SETTERS.get(obj);
 
     if (setters !== undefined && setters[keyName] !== undefined) {
-      let setter = setters[keyName];
+      const setter = setters[keyName];
 
       if (setter.set) {
         setter.set.call(obj, value);
@@ -122,7 +122,7 @@ if (DEBUG) {
         // If the object didn't have own property before, it would have changed
         // the enumerability after setting the value the first time.
         if (!setter.hadOwnProperty) {
-          let desc = lookupDescriptor(obj, keyName);
+          const desc = lookupDescriptor(obj, keyName);
           desc!.enumerable = true;
 
           Object.defineProperty(obj, keyName, desc!);

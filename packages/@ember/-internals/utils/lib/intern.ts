@@ -38,9 +38,9 @@
   @return {String} interned version of the provided string
 */
 export default function intern(str: string): string {
-  let obj = {};
+  const obj = {};
   obj[str] = 1;
-  for (let key in obj) {
+  for (const key in obj) {
     if (key === str) {
       return key;
     }

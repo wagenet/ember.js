@@ -30,13 +30,13 @@ export default class MethodCallTracker {
       return;
     }
 
-    let env = this._env;
-    let methodName = this._methodName;
+    const env = this._env;
+    const methodName = this._methodName;
 
     this._originalMethod = env.getDebugFunction(methodName);
 
     env.setDebugFunction(methodName, (message, test, options) => {
-      let resultOfTest = checkTest(test);
+      const resultOfTest = checkTest(test);
 
       this._actuals.push([message, resultOfTest, options]);
     });
@@ -68,12 +68,12 @@ export default class MethodCallTracker {
   }
 
   assert(): void {
-    let { assert } = QUnit.config.current;
-    let methodName = this._methodName;
-    let isExpectingNoCalls = this._isExpectingNoCalls;
-    let expectedMessages = this._expectedMessages;
-    let expectedOptionLists = this._expectedOptionLists;
-    let actuals = this._actuals;
+    const { assert } = QUnit.config.current;
+    const methodName = this._methodName;
+    const isExpectingNoCalls = this._isExpectingNoCalls;
+    const expectedMessages = this._expectedMessages;
+    const expectedOptionLists = this._expectedOptionLists;
+    const actuals = this._actuals;
     let o, i, j;
 
     if (!isExpectingNoCalls && expectedMessages.length === 0 && actuals.length === 0) {
@@ -86,7 +86,7 @@ export default class MethodCallTracker {
     }
 
     if (isExpectingNoCalls) {
-      let actualMessages = [];
+      const actualMessages = [];
       for (i = 0; i < actuals.length; i++) {
         if (!actuals[i][1]) {
           actualMessages.push(actuals[i][0]);
@@ -101,7 +101,7 @@ export default class MethodCallTracker {
 
     let actual: Actual | undefined;
     let match: Actual | undefined = undefined;
-    let matched: Set<number> = new Set();
+    const matched: Set<number> = new Set();
 
     for (o = 0; o < expectedMessages.length; o++) {
       const expectedMessage = expectedMessages[o];

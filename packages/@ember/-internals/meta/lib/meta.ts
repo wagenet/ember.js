@@ -142,7 +142,7 @@ export class Meta {
   get parent(): Meta | null {
     let parent = this._parent;
     if (parent === undefined) {
-      let proto = getPrototypeOf(this.source);
+      const proto = getPrototypeOf(this.source);
       this._parent = parent = proto === null || proto === objectPrototype ? null : meta(proto);
     }
     return parent;
@@ -181,9 +181,9 @@ export class Meta {
   _findInheritedMap(key: string, subkey: string): any | undefined {
     let pointer: Meta | null = this;
     while (pointer !== null) {
-      let map: Map<string, any> = pointer[key];
+      const map: Map<string, any> = pointer[key];
       if (map !== undefined) {
-        let value = map.get(subkey);
+        const value = map.get(subkey);
         if (value !== undefined) {
           return value;
         }
@@ -196,7 +196,7 @@ export class Meta {
   _hasInInheritedSet(key: string, value: any) {
     let pointer: Meta | null = this;
     while (pointer !== null) {
-      let set = pointer[key];
+      const set = pointer[key];
       if (set !== undefined && set.has(value)) {
         return true;
       }
@@ -207,28 +207,28 @@ export class Meta {
 
   /** @internal */
   valueFor(key: string): unknown {
-    let values = this._values;
+    const values = this._values;
 
     return values !== undefined ? values[key] : undefined;
   }
 
   /** @internal */
   setValueFor(key: string, value: unknown) {
-    let values = this._getOrCreateOwnMap('_values');
+    const values = this._getOrCreateOwnMap('_values');
 
     values[key] = value;
   }
 
   /** @internal */
   revisionFor(key: string): Revision | undefined {
-    let revisions = this._revisions;
+    const revisions = this._revisions;
 
     return revisions !== undefined ? revisions[key] : undefined;
   }
 
   /** @internal */
   setRevisionFor(key: string, revision: Revision | undefined) {
-    let revisions = this._getOrCreateOwnMap('_revisions');
+    const revisions = this._getOrCreateOwnMap('_revisions');
 
     revisions[key] = revision;
   }
@@ -239,7 +239,7 @@ export class Meta {
       counters!.writableLazyChainsCalls++;
     }
 
-    let lazyChains = this._getOrCreateOwnMap('_lazyChains');
+    const lazyChains = this._getOrCreateOwnMap('_lazyChains');
 
     let chains = lazyChains[key];
 
@@ -256,7 +256,7 @@ export class Meta {
       counters!.readableLazyChainsCalls++;
     }
 
-    let lazyChains = this._lazyChains;
+    const lazyChains = this._lazyChains;
 
     if (lazyChains !== undefined) {
       return lazyChains[key];
@@ -275,7 +275,7 @@ export class Meta {
         : '',
       !isDestroyed(this.source)
     );
-    let set = this._getOrCreateOwnSet('_mixins');
+    const set = this._getOrCreateOwnSet('_mixins');
     set.add(mixin);
   }
 
@@ -289,7 +289,7 @@ export class Meta {
     let pointer: Meta | null = this;
     let seen: Set<any> | undefined;
     while (pointer !== null) {
-      let set = pointer._mixins;
+      const set = pointer._mixins;
       if (set !== undefined) {
         seen = seen === undefined ? new Set() : seen;
         // TODO cleanup typing here
@@ -314,13 +314,13 @@ export class Meta {
         : '',
       !isDestroyed(this.source)
     );
-    let map = this._descriptors || (this._descriptors = new Map());
+    const map = this._descriptors || (this._descriptors = new Map());
     map.set(subkey, value);
   }
 
   /** @internal */
   peekDescriptors(subkey: string) {
-    let possibleDesc = this._findInheritedMap('_descriptors', subkey);
+    const possibleDesc = this._findInheritedMap('_descriptors', subkey);
     return possibleDesc === UNDEFINED ? undefined : possibleDesc;
   }
 
@@ -334,7 +334,7 @@ export class Meta {
     let pointer: Meta | null = this;
     let seen: Set<any> | undefined;
     while (pointer !== null) {
-      let map = pointer._descriptors;
+      const map = pointer._descriptors;
       if (map !== undefined) {
         seen = seen === undefined ? new Set() : seen;
         map.forEach((value, key) => {
@@ -381,7 +381,7 @@ export class Meta {
     kind: ListenerKind.ADD | ListenerKind.ONCE | ListenerKind.REMOVE,
     sync = false
   ): void {
-    let listeners = this.writableListeners();
+    const listeners = this.writableListeners();
 
     let i = indexOfListener(listeners, event, target, method);
 
@@ -418,7 +418,7 @@ export class Meta {
         sync,
       } as Listener);
     } else {
-      let listener = listeners[i];
+      const listener = listeners[i];
 
       // If the listener is our own listener and we are trying to remove it, we
       // want to splice it out entirely so we don't hold onto a reference.
@@ -492,11 +492,11 @@ export class Meta {
         counters!.listenersFlattened++;
       }
 
-      let parent = this.parent;
+      const parent = this.parent;
 
       if (parent !== null) {
         // compute
-        let parentListeners = parent.flattenedListeners();
+        const parentListeners = parent.flattenedListeners();
 
         if (parentListeners !== undefined) {
           if (this._listeners === undefined) {
@@ -509,7 +509,7 @@ export class Meta {
 
             this._listeners = parentListeners;
           } else {
-            let listeners = this._listeners;
+            const listeners = this._listeners;
 
             if (this._inheritedEnd > 0) {
               listeners.splice(0, this._inheritedEnd);
@@ -517,8 +517,8 @@ export class Meta {
             }
 
             for (let i = 0; i < parentListeners.length; i++) {
-              let listener = parentListeners[i];
-              let index = indexOfListener(
+              const listener = parentListeners[i];
+              const index = indexOfListener(
                 listeners,
                 listener.event,
                 listener.target,
@@ -546,7 +546,7 @@ export class Meta {
 
   /** @internal */
   matchingListeners(eventName: string): (string | boolean | object | null)[] | undefined {
-    let listeners = this.flattenedListeners();
+    const listeners = this.flattenedListeners();
     let result;
 
     if (DEBUG) {
@@ -555,7 +555,7 @@ export class Meta {
 
     if (listeners !== undefined) {
       for (let index = 0; index < listeners.length; index++) {
-        let listener = listeners[index];
+        const listener = listeners[index];
 
         // REMOVE listeners are placeholders that tell us not to
         // inherit, so they never match. Only ADD and ONCE can match.
@@ -579,7 +579,7 @@ export class Meta {
 
   /** @internal */
   observerEvents() {
-    let listeners = this.flattenedListeners();
+    const listeners = this.flattenedListeners();
     let result;
 
     if (DEBUG) {
@@ -588,7 +588,7 @@ export class Meta {
 
     if (listeners !== undefined) {
       for (let index = 0; index < listeners.length; index++) {
-        let listener = listeners[index];
+        const listener = listeners[index];
 
         // REMOVE listeners are placeholders that tell us not to
         // inherit, so they never match. Only ADD and ONCE can match.
@@ -704,14 +704,14 @@ export const meta: {
     counters!.metaCalls++;
   }
 
-  let maybeMeta = peekMeta(obj);
+  const maybeMeta = peekMeta(obj);
 
   // remove this code, in-favor of explicit parent
   if (maybeMeta !== null && maybeMeta.source === obj) {
     return maybeMeta;
   }
 
-  let newMeta = new Meta(obj);
+  const newMeta = new Meta(obj);
   setMeta(obj, newMeta);
   return newMeta;
 };
@@ -729,7 +729,7 @@ function indexOfListener(
   method: Function | string | null
 ) {
   for (let i = listeners.length - 1; i >= 0; i--) {
-    let listener = listeners[i];
+    const listener = listeners[i];
 
     if (listener.event === event && listener.target === target && listener.method === method) {
       return i;

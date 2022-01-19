@@ -41,7 +41,7 @@ export default class NoneLocation extends EmberObject implements EmberLocation {
   initState(): void {
     this._super(...arguments);
 
-    let { rootURL } = this;
+    const { rootURL } = this;
 
     // This assert doesn't have anything to do with state initialization,
     // but we're hijacking this method since it's called after the route has
@@ -60,7 +60,8 @@ export default class NoneLocation extends EmberObject implements EmberLocation {
     @return {String} path
   */
   getURL(): string {
-    let { path, rootURL } = this;
+    const { path } = this;
+    let { rootURL } = this;
 
     // remove trailing slashes if they exists
     rootURL = rootURL.replace(/\/$/, '');

@@ -6,7 +6,7 @@ export default function transformQuotedBindingsIntoJustBindings(/* env */): ASTP
 
     visitor: {
       ElementNode(node: AST.ElementNode) {
-        let styleAttr = getStyleAttr(node);
+        const styleAttr = getStyleAttr(node);
 
         if (!validStyleAttr(styleAttr)) {
           return;
@@ -23,19 +23,19 @@ function validStyleAttr(attr: AST.AttrNode | undefined) {
     return false;
   }
 
-  let value = attr.value;
+  const value = attr.value;
 
   if (!value || value.type !== 'ConcatStatement' || value.parts.length !== 1) {
     return false;
   }
 
-  let onlyPart = value.parts[0];
+  const onlyPart = value.parts[0];
 
   return onlyPart.type === 'MustacheStatement';
 }
 
 function getStyleAttr(node: AST.ElementNode): AST.AttrNode | undefined {
-  let attributes = node.attributes;
+  const attributes = node.attributes;
 
   for (let i = 0; i < attributes.length; i++) {
     if (attributes[i].name === 'style') {

@@ -64,9 +64,9 @@ import { isPath, isStringLiteral, trackLocals } from './utils';
 const TARGETS = Object.freeze(['helper', 'modifier']);
 
 export default function transformResolutions(env: EmberASTPluginEnvironment): ASTPlugin {
-  let { builders: b } = env.syntax;
-  let moduleName = env.meta?.moduleName;
-  let { hasLocal, node: tracker } = trackLocals();
+  const { builders: b } = env.syntax;
+  const moduleName = env.meta?.moduleName;
+  const { hasLocal, node: tracker } = trackLocals();
   let seen: Set<AST.Node> | undefined;
 
   return {
@@ -103,7 +103,7 @@ export default function transformResolutions(env: EmberASTPluginEnvironment): AS
           !isLocalVariable(node.path, hasLocal) &&
           TARGETS.indexOf(node.path.original) !== -1
         ) {
-          let result = b.mustache(
+          const result = b.mustache(
             node.path,
             transformParams(b, node.params, node.path.original, moduleName, node.loc),
             node.hash,
@@ -130,7 +130,7 @@ export default function transformResolutions(env: EmberASTPluginEnvironment): AS
           !isLocalVariable(node.path, hasLocal) &&
           TARGETS.indexOf(node.path.original) !== -1
         ) {
-          let result = b.sexpr(
+          const result = b.sexpr(
             node.path,
             transformParams(b, node.params, node.path.original, moduleName, node.loc),
             node.hash,
@@ -158,7 +158,7 @@ function transformParams(
   moduleName: string | undefined,
   loc: AST.SourceLocation | undefined
 ): AST.Expression[] {
-  let [first, ...rest] = params;
+  const [first, ...rest] = params;
 
   assert(
     `The ${type} keyword requires at least one positional arguments ${calculateLocationDisplay(

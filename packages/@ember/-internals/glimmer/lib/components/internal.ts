@@ -57,7 +57,7 @@ export default class InternalComponent {
   }
 
   protected validateArguments(): void {
-    for (let name of Object.keys(this.args.named)) {
+    for (const name of Object.keys(this.args.named)) {
       if (!this.isSupportedArgument(name)) {
         this.onUnsupportedArgument(name);
       }
@@ -65,17 +65,17 @@ export default class InternalComponent {
   }
 
   protected named(name: string): unknown {
-    let ref = this.args.named[name];
+    const ref = this.args.named[name];
     return ref ? valueForRef(ref) : undefined;
   }
 
   protected positional(index: number): unknown {
-    let ref = this.args.positional[index];
+    const ref = this.args.positional[index];
     return ref ? valueForRef(ref) : undefined;
   }
 
   protected listenerFor(name: string): EventListener {
-    let listener = this.named(name);
+    const listener = this.named(name);
 
     if (listener) {
       assert(
@@ -89,12 +89,10 @@ export default class InternalComponent {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected isSupportedArgument(_name: string): boolean {
     return false;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected onUnsupportedArgument(_name: string): void {}
 
   toString(): string {
@@ -125,7 +123,7 @@ export function opaquify(
   constructor: InternalComponentConstructor,
   template: TemplateFactory
 ): OpaqueInternalComponentConstructor {
-  let _opaque: Omit<
+  const _opaque: Omit<
     OpaqueInternalComponentConstructor,
     typeof OPAQUE_INTERNAL_COMPONENT_CONSTRUCTOR
   > = {
@@ -139,7 +137,7 @@ export function opaquify(
     },
   };
 
-  let opaque = _opaque as OpaqueInternalComponentConstructor;
+  const opaque = _opaque as OpaqueInternalComponentConstructor;
 
   OPAQUE_CONSTRUCTOR_MAP.set(opaque, constructor);
 
@@ -150,7 +148,7 @@ export function opaquify(
 }
 
 function deopaquify(opaque: OpaqueInternalComponentConstructor): InternalComponentConstructor {
-  let constructor = OPAQUE_CONSTRUCTOR_MAP.get(opaque);
+  const constructor = OPAQUE_CONSTRUCTOR_MAP.get(opaque);
   assert(`[BUG] Invalid internal component constructor: ${opaque}`, constructor);
   return constructor;
 }
@@ -189,9 +187,9 @@ class InternalManager
   ): InternalComponent {
     assert('caller must be const', isConstRef(caller));
 
-    let ComponentClass = deopaquify(definition);
+    const ComponentClass = deopaquify(definition);
 
-    let instance = new ComponentClass(owner, args.capture(), valueForRef(caller));
+    const instance = new ComponentClass(owner, args.capture(), valueForRef(caller));
 
     untrack(instance['validateArguments'].bind(instance));
 

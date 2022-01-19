@@ -58,7 +58,7 @@ export default class ComponentStateBucket {
   }
 
   willDestroy(): void {
-    let { component, isInteractive } = this;
+    const { component, isInteractive } = this;
 
     if (isInteractive) {
       beginUntrackFrame();
@@ -66,7 +66,7 @@ export default class ComponentStateBucket {
       component.trigger('willClearRender');
       endUntrackFrame();
 
-      let element = getViewElement(component);
+      const element = getViewElement(component);
 
       if (element) {
         clearElementView(element);
@@ -78,7 +78,7 @@ export default class ComponentStateBucket {
   }
 
   finalize(): void {
-    let { finalizer } = this;
+    const { finalizer } = this;
     finalizer();
     this.finalizer = NOOP;
   }

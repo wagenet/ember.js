@@ -54,9 +54,9 @@ setGlobalContext({
 
   assert(test: unknown, msg: string, options?: { id: string }) {
     if (DEBUG) {
-      let id = options?.id;
+      const id = options?.id;
 
-      let override = VM_ASSERTION_OVERRIDES.filter((o) => o.id === id)[0];
+      const override = VM_ASSERTION_OVERRIDES.filter((o) => o.id === id)[0];
 
       assert(override?.message ?? msg, test);
     }
@@ -64,7 +64,7 @@ setGlobalContext({
 
   deprecate(msg: string, test: unknown, options: { id: string }) {
     if (DEBUG) {
-      let { id } = options;
+      const { id } = options;
 
       if (id === 'argument-less-helper-paren-less-invocation') {
         throw new Error(
@@ -75,7 +75,7 @@ setGlobalContext({
         );
       }
 
-      let override = VM_DEPRECATION_OVERRIDES.filter((o) => o.id === id)[0];
+      const override = VM_DEPRECATION_OVERRIDES.filter((o) => o.id === id)[0];
 
       if (!override) throw new Error(`deprecation override for ${id} not found`);
 
@@ -90,7 +90,7 @@ setGlobalContext({
 if (DEBUG) {
   setTrackingTransactionEnv?.({
     debugMessage(obj, keyName) {
-      let dirtyString = keyName
+      const dirtyString = keyName
         ? `\`${keyName}\` on \`${getDebugName?.(obj)}\``
         : `\`${getDebugName?.(obj)}\``;
 

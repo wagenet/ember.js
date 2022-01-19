@@ -67,7 +67,7 @@ export function set<T>(obj: object, keyName: string, value: T, tolerant?: boolea
 }
 
 export function _setProp(obj: object, keyName: string, value: any) {
-  let descriptor = lookupDescriptor(obj, keyName);
+  const descriptor = lookupDescriptor(obj, keyName);
 
   if (descriptor !== null && COMPUTED_SETTERS.has(descriptor.set!)) {
     obj[keyName] = value;
@@ -105,12 +105,12 @@ export function _setProp(obj: object, keyName: string, value: any) {
 }
 
 function _setPath(root: object, path: string, value: any, tolerant?: boolean): any {
-  let parts = path.split('.');
-  let keyName = parts.pop()!;
+  const parts = path.split('.');
+  const keyName = parts.pop()!;
 
   assert('Property set failed: You passed an empty path', keyName.trim().length > 0);
 
-  let newRoot = getPath(root, parts);
+  const newRoot = getPath(root, parts);
 
   if (newRoot !== null && newRoot !== undefined) {
     return set(newRoot, keyName, value);

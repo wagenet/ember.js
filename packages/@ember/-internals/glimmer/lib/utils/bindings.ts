@@ -13,7 +13,7 @@ import {
 import { Component } from './curly-component-state-bucket';
 
 function referenceForParts(rootRef: Reference<Component>, parts: string[]): Reference {
-  let isAttrs = parts[0] === 'attrs';
+  const isAttrs = parts[0] === 'attrs';
 
   // TODO deprecate this
   if (isAttrs) {
@@ -28,7 +28,7 @@ function referenceForParts(rootRef: Reference<Component>, parts: string[]): Refe
 }
 
 export function parseAttributeBinding(microsyntax: string): [string, string, boolean] {
-  let colonIndex = microsyntax.indexOf(':');
+  const colonIndex = microsyntax.indexOf(':');
 
   if (colonIndex === -1) {
     assert(
@@ -37,8 +37,8 @@ export function parseAttributeBinding(microsyntax: string): [string, string, boo
     );
     return [microsyntax, microsyntax, true];
   } else {
-    let prop = microsyntax.substring(0, colonIndex);
-    let attribute = microsyntax.substring(colonIndex + 1);
+    const prop = microsyntax.substring(0, colonIndex);
+    const attribute = microsyntax.substring(colonIndex + 1);
 
     assert(
       'You cannot use class as an attributeBinding, use classNameBindings instead.',
@@ -55,20 +55,22 @@ export function installAttributeBinding(
   parsed: [string, string, boolean],
   operations: ElementOperations
 ) {
-  let [prop, attribute, isSimple] = parsed;
+  const [prop, attribute, isSimple] = parsed;
 
   if (attribute === 'id') {
     let elementId = get(component, prop);
     if (elementId === undefined || elementId === null) {
       elementId = component.elementId;
     }
-    let elementIdRef = createPrimitiveRef(elementId);
+    const elementIdRef = createPrimitiveRef(elementId);
     operations.setAttribute('id', elementIdRef, true, null);
     return;
   }
 
-  let isPath = prop.indexOf('.') > -1;
-  let reference = isPath ? referenceForParts(rootRef, prop.split('.')) : childRefFor(rootRef, prop);
+  const isPath = prop.indexOf('.') > -1;
+  const reference = isPath
+    ? referenceForParts(rootRef, prop.split('.'))
+    : childRefFor(rootRef, prop);
 
   assert(
     `Illegal attributeBinding: '${prop}' is not a valid attribute name.`,
@@ -83,15 +85,15 @@ export function createClassNameBindingRef(
   microsyntax: string,
   operations: ElementOperations
 ) {
-  let [prop, truthy, falsy] = microsyntax.split(':');
-  let isStatic = prop === '';
+  const [prop, truthy, falsy] = microsyntax.split(':');
+  const isStatic = prop === '';
 
   if (isStatic) {
     operations.setAttribute('class', createPrimitiveRef(truthy), true, null);
   } else {
-    let isPath = prop.indexOf('.') > -1;
-    let parts = isPath ? prop.split('.') : [];
-    let value = isPath ? referenceForParts(rootRef, parts) : childRefFor(rootRef, prop);
+    const isPath = prop.indexOf('.') > -1;
+    const parts = isPath ? prop.split('.') : [];
+    const value = isPath ? referenceForParts(rootRef, parts) : childRefFor(rootRef, prop);
     let ref;
 
     if (truthy === undefined) {
@@ -108,7 +110,7 @@ export function createSimpleClassNameBindingRef(inner: Reference, path?: string)
   let dasherizedPath: string;
 
   return createComputeRef(() => {
-    let value = valueForRef(inner);
+    const value = valueForRef(inner);
 
     if (value === true) {
       assert(

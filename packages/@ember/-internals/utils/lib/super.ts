@@ -4,7 +4,7 @@ const HAS_SUPER_PATTERN = /\.(_super|call\(this|apply\(this)/;
 const fnToString = Function.prototype.toString;
 
 export const checkHasSuper = (() => {
-  let sourceAvailable =
+  const sourceAvailable =
     fnToString
       .call(function (this: any) {
         return this;
@@ -59,12 +59,12 @@ export function observerListenerMetaFor(fn: Function): ObserverListenerMeta | un
 }
 
 export function setObservers(func: Function, observers: { paths: string[]; sync: boolean }): void {
-  let meta = createObserverListenerMetaFor(func);
+  const meta = createObserverListenerMetaFor(func);
   meta.observers = observers;
 }
 
 export function setListeners(func: Function, listeners: string[]): void {
-  let meta = createObserverListenerMetaFor(func);
+  const meta = createObserverListenerMetaFor(func);
   meta.listeners = listeners;
 }
 
@@ -95,16 +95,16 @@ export function wrap(func: Function, superFunc: Function): Function {
 
 function _wrap(func: Function, superFunc: Function): Function {
   function superWrapper(this: { _super?: Function }) {
-    let orig = this._super;
+    const orig = this._super;
     this._super = superFunc;
-    let ret = func.apply(this, arguments);
+    const ret = func.apply(this, arguments);
     this._super = orig;
     return ret;
   }
 
   IS_WRAPPED_FUNCTION_SET.add(superWrapper);
 
-  let meta = OBSERVERS_LISTENERS_MAP.get(func);
+  const meta = OBSERVERS_LISTENERS_MAP.get(func);
 
   if (meta !== undefined) {
     OBSERVERS_LISTENERS_MAP.set(superWrapper, meta);

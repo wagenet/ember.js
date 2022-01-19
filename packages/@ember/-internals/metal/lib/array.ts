@@ -47,7 +47,7 @@ export function replaceInNativeArray<T>(
     array.splice(start, deleteCount);
 
     for (let i = 0; i < items.length; i += CHUNK_SIZE) {
-      let chunk = items.slice(i, i + CHUNK_SIZE);
+      const chunk = items.slice(i, i + CHUNK_SIZE);
       array.splice(start + i, 0, ...chunk);
     }
   }
@@ -73,7 +73,7 @@ function arrayObserversHelper<T>(
   opts: ArrayObserverOptions,
   operation: Operation<T>
 ): ObservedObject<T> {
-  let { willChange, didChange } = opts;
+  const { willChange, didChange } = opts;
 
   operation(obj, '@array:before', target, willChange);
   operation(obj, '@array:change', target, didChange);

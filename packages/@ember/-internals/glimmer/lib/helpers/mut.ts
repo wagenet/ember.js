@@ -81,7 +81,7 @@ import { internalHelper } from './internal-helper';
 */
 
 export default internalHelper(({ positional }: CapturedArguments) => {
-  let ref = positional[0];
+  const ref = positional[0];
 
   // TODO: Improve this error message. This covers at least two distinct
   // cases:

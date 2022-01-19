@@ -28,7 +28,7 @@ import {
 } from './component-managers/curly';
 
 // Keep track of which component classes have already been processed for lazy event setup.
-let lazyEventsProcessed = new WeakMap<EventDispatcher, WeakSet<object>>();
+const lazyEventsProcessed = new WeakMap<EventDispatcher, WeakSet<object>>();
 
 /**
 @module @ember/component
@@ -664,7 +664,7 @@ const Component = CoreView.extend(
       this[DIRTY_TAG] = createTag();
       this[BOUNDS] = null;
 
-      let eventDispatcher = this._dispatcher;
+      const eventDispatcher = this._dispatcher;
       if (eventDispatcher) {
         let lazyEventsProcessedForComponentClass = lazyEventsProcessed.get(eventDispatcher);
         if (!lazyEventsProcessedForComponentClass) {
@@ -672,9 +672,9 @@ const Component = CoreView.extend(
           lazyEventsProcessed.set(eventDispatcher, lazyEventsProcessedForComponentClass);
         }
 
-        let proto = Object.getPrototypeOf(this);
+        const proto = Object.getPrototypeOf(this);
         if (!lazyEventsProcessedForComponentClass.has(proto)) {
-          let lazyEvents = eventDispatcher.lazyEvents;
+          const lazyEvents = eventDispatcher.lazyEvents;
 
           lazyEvents.forEach((mappedEventName: string, event: string) => {
             if (mappedEventName !== null && typeof this[mappedEventName] === 'function') {
@@ -687,11 +687,11 @@ const Component = CoreView.extend(
       }
 
       if (DEBUG && eventDispatcher && this.renderer._isInteractive && this.tagName === '') {
-        let eventNames = [];
-        let events = eventDispatcher.finalEventNameMapping;
+        const eventNames = [];
+        const events = eventDispatcher.finalEventNameMapping;
 
-        for (let key in events) {
-          let methodName = events[key];
+        for (const key in events) {
+          const methodName = events[key];
 
           if (typeof this[methodName] === 'function') {
             eventNames.push(methodName);
@@ -707,7 +707,7 @@ const Component = CoreView.extend(
 
     get _dispatcher(): EventDispatcher | null {
       if (this.__dispatcher === undefined) {
-        let owner = getOwner(this);
+        const owner = getOwner(this);
         if (owner.lookup<Environment>('-environment:main')!.isInteractive) {
           this.__dispatcher = owner.lookup<EventDispatcher>('event_dispatcher:main');
         } else {
@@ -734,8 +734,8 @@ const Component = CoreView.extend(
         return;
       }
 
-      let args = this[ARGS];
-      let reference = args !== undefined ? args[key] : undefined;
+      const args = this[ARGS];
+      const reference = args !== undefined ? args[key] : undefined;
 
       if (reference !== undefined && isUpdatableRef(reference)) {
         updateRef(reference, arguments.length === 2 ? value : get(this, key));
@@ -780,16 +780,16 @@ const Component = CoreView.extend(
      */
     readDOMAttr(name: string) {
       // TODO revisit this
-      let _element = getViewElement(this);
+      const _element = getViewElement(this);
 
       assert(
         `Cannot call \`readDOMAttr\` on ${this} which does not have an element`,
         _element !== null
       );
 
-      let element = _element;
-      let isSVG = element.namespaceURI === Namespace.SVG;
-      let { type, normalized } = normalizeProperty(element, name);
+      const element = _element;
+      const isSVG = element.namespaceURI === Namespace.SVG;
+      const { type, normalized } = normalizeProperty(element, name);
 
       if (isSVG || type === 'attr') {
         return element.getAttribute(normalized);

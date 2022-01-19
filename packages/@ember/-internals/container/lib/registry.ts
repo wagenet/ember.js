@@ -186,7 +186,7 @@ export default class Registry implements IRegistry {
     assert('fullName must be a proper full name', this.isValidFullName(fullName));
     assert(`Attempting to register an unknown factory: '${fullName}'`, factory !== undefined);
 
-    let normalizedName = this.normalize(fullName);
+    const normalizedName = this.normalize(fullName);
     assert(
       `Cannot re-register: '${fullName}', as it has already been resolved.`,
       !this._resolveCache[normalizedName]
@@ -217,7 +217,7 @@ export default class Registry implements IRegistry {
   unregister(fullName: string): void {
     assert('fullName must be a proper full name', this.isValidFullName(fullName));
 
-    let normalizedName = this.normalize(fullName);
+    const normalizedName = this.normalize(fullName);
 
     this._localLookupCache = Object.create(null);
 
@@ -411,12 +411,12 @@ export default class Registry implements IRegistry {
    @param {Object} options
    */
   options(fullName: string, options: TypeOptions): void {
-    let normalizedName = this.normalize(fullName);
+    const normalizedName = this.normalize(fullName);
     this._options[normalizedName] = options;
   }
 
   getOptions(fullName: string): TypeOptions {
-    let normalizedName = this.normalize(fullName);
+    const normalizedName = this.normalize(fullName);
     let options = this._options[normalizedName];
 
     if (options === undefined && this.fallback !== null) {
@@ -435,7 +435,7 @@ export default class Registry implements IRegistry {
       return options[optionName];
     }
 
-    let type = fullName.split(':')[0];
+    const type = fullName.split(':')[0];
     options = this._typeOptions[type];
 
     if (options && options[optionName] !== undefined) {
@@ -482,11 +482,11 @@ export default class Registry implements IRegistry {
    @param {String} type the type to iterate over
   */
   knownForType(type: string): KnownForTypeResult {
-    let localKnown = dictionary(null);
-    let registeredNames = Object.keys(this.registrations);
+    const localKnown = dictionary(null);
+    const registeredNames = Object.keys(this.registrations);
     for (let index = 0; index < registeredNames.length; index++) {
-      let fullName = registeredNames[index];
-      let itemType = fullName.split(':')[0];
+      const fullName = registeredNames[index];
+      const itemType = fullName.split(':')[0];
 
       if (itemType === type) {
         localKnown[fullName] = true;
@@ -518,11 +518,11 @@ export declare class DebugRegistry extends Registry {
 if (DEBUG) {
   const proto = Registry.prototype as DebugRegistry;
   proto.normalizeInjectionsHash = function (hash: { [key: string]: LazyInjection }) {
-    let injections: Injection[] = [];
+    const injections: Injection[] = [];
 
-    for (let key in hash) {
+    for (const key in hash) {
       if (Object.prototype.hasOwnProperty.call(hash, key)) {
-        let { specifier } = hash[key];
+        const { specifier } = hash[key];
         assert(
           `Expected a proper full name, given '${specifier}'`,
           this.isValidFullName(specifier)
@@ -544,7 +544,7 @@ if (DEBUG) {
     }
 
     for (let i = 0; i < injections.length; i++) {
-      let { specifier } = injections[i];
+      const { specifier } = injections[i];
 
       assert(`Attempting to inject an unknown injection: '${specifier}'`, this.has(specifier));
     }
@@ -552,9 +552,9 @@ if (DEBUG) {
 }
 
 function resolve<T, C>(registry: Registry, _normalizedName: string): Factory<T, C> | undefined {
-  let normalizedName = _normalizedName;
+  const normalizedName = _normalizedName;
 
-  let cached = registry._resolveCache[normalizedName];
+  const cached = registry._resolveCache[normalizedName];
   if (cached !== undefined) {
     return cached as Factory<T, C>;
   }
@@ -589,11 +589,11 @@ const privateNames: { [key: string]: string } = dictionary(null);
 const privateSuffix = `${Math.random()}${Date.now()}`.replace('.', '');
 
 export function privatize([fullName]: TemplateStringsArray): string {
-  let name = privateNames[fullName];
+  const name = privateNames[fullName];
   if (name) {
     return name;
   }
 
-  let [type, rawName] = fullName.split(':');
+  const [type, rawName] = fullName.split(':');
   return (privateNames[fullName] = intern(`${type}:${rawName}-${privateSuffix}`));
 }

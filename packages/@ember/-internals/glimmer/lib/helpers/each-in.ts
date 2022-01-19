@@ -167,7 +167,7 @@ export class EachInWrapper {
 }
 
 export default internalHelper(({ positional }: CapturedArguments) => {
-  let inner = positional[0];
+  const inner = positional[0];
 
   return createComputeRef(() => {
     let iterable = valueForRef(inner);

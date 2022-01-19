@@ -10,8 +10,8 @@ import { Dict, Option } from '@glimmer/interfaces';
 */
 
 export function isSimpleClick(event: MouseEvent): boolean {
-  let modifier = event.shiftKey || event.metaKey || event.altKey || event.ctrlKey;
-  let secondaryClick = event.which > 1; // IE9 may return undefined
+  const modifier = event.shiftKey || event.metaKey || event.altKey || event.ctrlKey;
+  const secondaryClick = event.which > 1; // IE9 may return undefined
 
   return !modifier && !secondaryClick;
 }
@@ -44,12 +44,12 @@ interface View {
   @param {Object} owner
 */
 export function getRootViews(owner: Owner): View[] {
-  let registry = owner.lookup<Dict<View>>('-view-registry:main')!;
+  const registry = owner.lookup<Dict<View>>('-view-registry:main')!;
 
-  let rootViews: View[] = [];
+  const rootViews: View[] = [];
 
   Object.keys(registry).forEach((id) => {
-    let view = registry[id];
+    const view = registry[id];
 
     if (view.parentView === null) {
       rootViews.push(view);
@@ -117,13 +117,13 @@ const CHILD_VIEW_IDS: WeakMap<View, Set<string>> = new WeakMap();
   @param {Ember.View} view
 */
 export function getChildViews(view: View): View[] {
-  let owner = getOwner(view);
-  let registry = owner.lookup<Dict<View>>('-view-registry:main')!;
+  const owner = getOwner(view);
+  const registry = owner.lookup<Dict<View>>('-view-registry:main')!;
   return collectChildViews(view, registry);
 }
 
 export function initChildViews(view: View): Set<string> {
-  let childViews: Set<string> = new Set();
+  const childViews: Set<string> = new Set();
   CHILD_VIEW_IDS.set(view, childViews);
   return childViews;
 }
@@ -138,12 +138,12 @@ export function addChildView(parent: View, child: View): void {
 }
 
 export function collectChildViews(view: View, registry: Dict<View>): View[] {
-  let views: View[] = [];
-  let childViews = CHILD_VIEW_IDS.get(view);
+  const views: View[] = [];
+  const childViews = CHILD_VIEW_IDS.get(view);
 
   if (childViews !== undefined) {
     childViews.forEach((id) => {
-      let view = registry[id];
+      const view = registry[id];
       if (view && !view.isDestroying && !view.isDestroyed) {
         views.push(view);
       }
@@ -168,9 +168,9 @@ export function getViewBounds(view: View) {
   @param {Ember.View} view
 */
 export function getViewRange(view: View): Range {
-  let bounds = getViewBounds(view);
+  const bounds = getViewBounds(view);
 
-  let range = document.createRange();
+  const range = document.createRange();
   range.setStartBefore((bounds.firstNode as unknown) as Node);
   range.setEndAfter((bounds.lastNode as unknown) as Node);
 
@@ -189,7 +189,7 @@ export function getViewRange(view: View): Range {
   @param {Ember.View} view
 */
 export function getViewClientRects(view: View): DOMRectList {
-  let range = getViewRange(view);
+  const range = getViewRange(view);
   return range.getClientRects();
 }
 
@@ -205,7 +205,7 @@ export function getViewClientRects(view: View): DOMRectList {
   @param {Ember.View} view
 */
 export function getViewBoundingClientRect(view: View): ClientRect | DOMRect {
-  let range = getViewRange(view);
+  const range = getViewRange(view);
   return range.getBoundingClientRect();
 }
 

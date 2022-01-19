@@ -89,7 +89,7 @@ export function tracked(...args: any[]): Decorator | DecoratorPropertyDescriptor
   );
 
   if (!isElementDescriptor(args)) {
-    let propertyDesc = args[0];
+    const propertyDesc = args[0];
 
     assert(
       `tracked() may only receive an options object containing 'value' or 'initializer', received ${propertyDesc}`,
@@ -97,7 +97,7 @@ export function tracked(...args: any[]): Decorator | DecoratorPropertyDescriptor
     );
 
     if (DEBUG && propertyDesc) {
-      let keys = Object.keys(propertyDesc);
+      const keys = Object.keys(propertyDesc);
 
       assert(
         `The options object passed to tracked() may only contain a 'value' or 'initializer' property, not both. Received: [${keys}]`,
@@ -111,10 +111,10 @@ export function tracked(...args: any[]): Decorator | DecoratorPropertyDescriptor
       );
     }
 
-    let initializer = propertyDesc ? propertyDesc.initializer : undefined;
-    let value = propertyDesc ? propertyDesc.value : undefined;
+    const initializer = propertyDesc ? propertyDesc.initializer : undefined;
+    const value = propertyDesc ? propertyDesc.value : undefined;
 
-    let decorator = function (
+    const decorator = function (
       target: object,
       key: string,
       _desc: DecoratorPropertyDescriptor,
@@ -126,7 +126,7 @@ export function tracked(...args: any[]): Decorator | DecoratorPropertyDescriptor
         isClassicDecorator
       );
 
-      let fieldDesc = {
+      const fieldDesc = {
         initializer: initializer || (() => value),
       };
 
@@ -157,10 +157,10 @@ function descriptorForField([target, key, desc]: [
     !desc || (!desc.value && !desc.get && !desc.set)
   );
 
-  let { getter, setter } = trackedData<any, any>(key, desc ? desc.initializer : undefined);
+  const { getter, setter } = trackedData<any, any>(key, desc ? desc.initializer : undefined);
 
   function get(this: object): unknown {
-    let value = getter(this);
+    const value = getter(this);
 
     // Add the tag of the returned value if it is an array, since arrays
     // should always cause updates if they are consumed and then changed
@@ -176,7 +176,7 @@ function descriptorForField([target, key, desc]: [
     dirtyTagFor(this, SELF_TAG);
   }
 
-  let newDesc = {
+  const newDesc = {
     enumerable: true,
     configurable: true,
     isTracked: true,

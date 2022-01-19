@@ -167,14 +167,14 @@ export const ENV = {
 ((EmberENV) => {
   if (typeof EmberENV !== 'object' || EmberENV === null) return;
 
-  for (let flag in EmberENV) {
+  for (const flag in EmberENV) {
     if (
       !Object.prototype.hasOwnProperty.call(EmberENV, flag) ||
       flag === 'EXTEND_PROTOTYPES' ||
       flag === 'EMBER_LOAD_HOOKS'
     )
       continue;
-    let defaultValue = ENV[flag];
+    const defaultValue = ENV[flag];
     if (defaultValue === true) {
       ENV[flag] = EmberENV[flag] !== false;
     } else if (defaultValue === false) {
@@ -182,7 +182,7 @@ export const ENV = {
     }
   }
 
-  let { EXTEND_PROTOTYPES } = EmberENV;
+  const { EXTEND_PROTOTYPES } = EmberENV;
   if (EXTEND_PROTOTYPES !== undefined) {
     if (typeof EXTEND_PROTOTYPES === 'object' && EXTEND_PROTOTYPES !== null) {
       ENV.EXTEND_PROTOTYPES.Array = EXTEND_PROTOTYPES.Array !== false;
@@ -193,19 +193,19 @@ export const ENV = {
 
   // TODO this does not seem to be used by anything,
   //      can we remove it? do we need to deprecate it?
-  let { EMBER_LOAD_HOOKS } = EmberENV;
+  const { EMBER_LOAD_HOOKS } = EmberENV;
   if (typeof EMBER_LOAD_HOOKS === 'object' && EMBER_LOAD_HOOKS !== null) {
-    for (let hookName in EMBER_LOAD_HOOKS) {
+    for (const hookName in EMBER_LOAD_HOOKS) {
       if (!Object.prototype.hasOwnProperty.call(EMBER_LOAD_HOOKS, hookName)) continue;
-      let hooks = EMBER_LOAD_HOOKS[hookName];
+      const hooks = EMBER_LOAD_HOOKS[hookName];
       if (Array.isArray(hooks)) {
         ENV.EMBER_LOAD_HOOKS[hookName] = hooks.filter((hook) => typeof hook === 'function');
       }
     }
   }
-  let { FEATURES } = EmberENV;
+  const { FEATURES } = EmberENV;
   if (typeof FEATURES === 'object' && FEATURES !== null) {
-    for (let feature in FEATURES) {
+    for (const feature in FEATURES) {
       if (!Object.prototype.hasOwnProperty.call(FEATURES, feature)) continue;
       ENV.FEATURES[feature] = FEATURES[feature] === true;
     }

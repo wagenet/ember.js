@@ -27,7 +27,7 @@ if (DEBUG) {
     if (typeof gc === 'function') {
       leakTracking = (() => {
         // avoid syntax errors when --allow-natives-syntax not present
-        let GetWeakSetValues = new Function('weakSet', 'return %GetWeakSetValues(weakSet, 0)');
+        const GetWeakSetValues = new Function('weakSet', 'return %GetWeakSetValues(weakSet, 0)');
         containers = new WeakSet<Container>();
         return {
           hasContainers() {
@@ -35,7 +35,7 @@ if (DEBUG) {
             return GetWeakSetValues(containers).length > 0;
           },
           reset() {
-            let values = GetWeakSetValues(containers);
+            const values = GetWeakSetValues(containers);
             for (let i = 0; i < values.length; i++) {
               containers.delete(values[i]);
             }
@@ -196,7 +196,7 @@ export default class Container {
    @returns { Object }
   */
   ownerInjection() {
-    let injection = {};
+    const injection = {};
     setOwner(injection, this.owner!);
     return injection;
   }
@@ -217,7 +217,7 @@ export default class Container {
     if (this.isDestroyed) {
       throw new Error(`Can not call \`.factoryFor\` after the owner has been destroyed`);
     }
-    let normalizedName = this.registry.normalize(fullName);
+    const normalizedName = this.registry.normalize(fullName);
 
     assert('fullName must be a proper full name', this.registry.isValidFullName(normalizedName));
 
@@ -234,7 +234,7 @@ if (DEBUG) {
  * set on the manager.
  */
 function wrapManagerInDeprecationProxy<T, C>(manager: FactoryManager<T, C>): FactoryManager<T, C> {
-  let validator = {
+  const validator = {
     set(_obj: T, prop: keyof T) {
       throw new Error(
         `You attempted to set "${prop}" on a factory manager created by container#factoryFor. A factory manager is a read-only construct.`
@@ -245,8 +245,8 @@ function wrapManagerInDeprecationProxy<T, C>(manager: FactoryManager<T, C>): Fac
   // Note:
   // We have to proxy access to the manager here so that private property
   // access doesn't cause the above errors to occur.
-  let m = manager;
-  let proxiedManager = {
+  const m = manager;
+  const proxiedManager = {
     class: m.class,
     create(props?: { [prop: string]: any }) {
       return m.create(props);
@@ -265,13 +265,13 @@ function isInstantiatable(container: Container, fullName: string) {
 }
 
 function lookup(container: Container, fullName: string, options: LookupOptions = {}) {
-  let normalizedName = fullName;
+  const normalizedName = fullName;
 
   if (
     options.singleton === true ||
     (options.singleton === undefined && isSingleton(container, fullName))
   ) {
-    let cached = container.cache[normalizedName];
+    const cached = container.cache[normalizedName];
     if (cached !== undefined) {
       return cached;
     }
@@ -281,13 +281,13 @@ function lookup(container: Container, fullName: string, options: LookupOptions =
 }
 
 function factoryFor<T, C>(container: Container, normalizedName: string, fullName: string) {
-  let cached = container.factoryManagerCache[normalizedName];
+  const cached = container.factoryManagerCache[normalizedName];
 
   if (cached !== undefined) {
     return cached;
   }
 
-  let factory = container.registry.resolve(normalizedName) as DebugFactory<T, C> | undefined;
+  const factory = container.registry.resolve(normalizedName) as DebugFactory<T, C> | undefined;
 
   if (factory === undefined) {
     return;
@@ -368,7 +368,7 @@ function instantiateFactory(
   fullName: string,
   options: FactoryOptions
 ) {
-  let factoryManager = factoryFor(container, normalizedName, fullName);
+  const factoryManager = factoryFor(container, normalizedName, fullName);
 
   if (factoryManager === undefined) {
     return;
@@ -377,7 +377,7 @@ function instantiateFactory(
   // SomeClass { singleton: true, instantiate: true } | { singleton: true } | { instantiate: true } | {}
   // By default majority of objects fall into this case
   if (isSingletonInstance(container, fullName, options)) {
-    let instance = (container.cache[normalizedName] = factoryManager.create() as CacheMember);
+    const instance = (container.cache[normalizedName] = factoryManager.create() as CacheMember);
 
     // if this lookup happened _during_ destruction (emits a deprecation, but
     // is still possible) ensure that it gets destroyed
@@ -407,12 +407,12 @@ function instantiateFactory(
 }
 
 function destroyDestroyables(container: Container): void {
-  let cache = container.cache;
-  let keys = Object.keys(cache);
+  const cache = container.cache;
+  const keys = Object.keys(cache);
 
   for (let i = 0; i < keys.length; i++) {
-    let key = keys[i];
-    let value = cache[key];
+    const key = keys[i];
+    const value = cache[key];
 
     if (value.destroy) {
       value.destroy();
@@ -426,7 +426,7 @@ function resetCache(container: Container) {
 }
 
 function resetMember(container: Container, fullName: string) {
-  let member = container.cache[fullName];
+  const member = container.cache[fullName];
 
   delete container.factoryManagerCache[fullName];
 
@@ -499,7 +499,7 @@ class FactoryManager<T, C> {
   }
 
   create(options?: { [prop: string]: any }) {
-    let { container } = this;
+    const { container } = this;
 
     if (container.isDestroyed) {
       throw new Error(
@@ -517,7 +517,7 @@ class FactoryManager<T, C> {
 
     if (DEBUG) {
       let lazyInjections;
-      let validationCache = this.container.validationCache;
+      const validationCache = this.container.validationCache;
       // Ensure that all lazy injections are valid at instantiation time
       if (
         !validationCache[this.fullName] &&

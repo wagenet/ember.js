@@ -3,18 +3,18 @@ import { run } from '@ember/runloop';
 
 export function setupNamespacesCheck(hooks: NestedHooks): void {
   hooks.afterEach(function () {
-    let { assert } = QUnit.config.current;
+    const { assert } = QUnit.config.current;
 
     if (NAMESPACES.length > 0) {
       assert.ok(false, 'Should not have any NAMESPACES after tests');
       run(() => {
-        let namespaces = NAMESPACES.slice();
+        const namespaces = NAMESPACES.slice();
         for (let i = 0; i < namespaces.length; i++) {
           namespaces[i].destroy();
         }
       });
     }
-    let keys = Object.keys(NAMESPACES_BY_ID);
+    const keys = Object.keys(NAMESPACES_BY_ID);
     if (keys.length > 0) {
       assert.ok(false, 'Should not have any NAMESPACES_BY_ID after tests');
       for (let i = 0; i < keys.length; i++) {

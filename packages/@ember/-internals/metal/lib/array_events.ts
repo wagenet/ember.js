@@ -48,7 +48,7 @@ export function arrayContentDidChange<T extends { length: number }>(
     }
   }
 
-  let meta = peekMeta(array);
+  const meta = peekMeta(array);
 
   if (notify) {
     if (addAmt < 0 || removeAmt < 0 || addAmt - removeAmt !== 0) {
@@ -61,20 +61,20 @@ export function arrayContentDidChange<T extends { length: number }>(
   sendEvent(array, '@array:change', [array, startIdx, removeAmt, addAmt]);
 
   if (meta !== null) {
-    let length = array.length;
-    let addedAmount = addAmt === -1 ? 0 : addAmt;
-    let removedAmount = removeAmt === -1 ? 0 : removeAmt;
-    let delta = addedAmount - removedAmount;
-    let previousLength = length - delta;
+    const length = array.length;
+    const addedAmount = addAmt === -1 ? 0 : addAmt;
+    const removedAmount = removeAmt === -1 ? 0 : removeAmt;
+    const delta = addedAmount - removedAmount;
+    const previousLength = length - delta;
 
-    let normalStartIdx = startIdx < 0 ? previousLength + startIdx : startIdx;
+    const normalStartIdx = startIdx < 0 ? previousLength + startIdx : startIdx;
     if (meta.revisionFor('firstObject') !== undefined && normalStartIdx === 0) {
       notifyPropertyChange(array, 'firstObject', meta);
     }
 
     if (meta.revisionFor('lastObject') !== undefined) {
-      let previousLastIndex = previousLength - 1;
-      let lastAffectedIndex = normalStartIdx + removedAmount;
+      const previousLastIndex = previousLength - 1;
+      const lastAffectedIndex = normalStartIdx + removedAmount;
       if (previousLastIndex < lastAffectedIndex) {
         notifyPropertyChange(array, 'lastObject', meta);
       }

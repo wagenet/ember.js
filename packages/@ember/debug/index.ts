@@ -243,13 +243,17 @@ if (DEBUG) {
   */
   setDebugFunction('deprecateFunc', function deprecateFunc(...args: any[]) {
     if (args.length === 3) {
-      let [message, options, func] = args as [string, DeprecationOptions, (...args: any[]) => any];
+      const [message, options, func] = args as [
+        string,
+        DeprecationOptions,
+        (...args: any[]) => any
+      ];
       return function (this: any, ...args: any[]) {
         deprecate(message, false, options);
         return func.apply(this, args);
       };
     } else {
-      let [message, func] = args;
+      const [message, func] = args;
       return function (this: any) {
         deprecate(message);
         return func.apply(this, arguments);

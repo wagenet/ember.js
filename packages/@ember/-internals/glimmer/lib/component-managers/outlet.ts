@@ -78,29 +78,29 @@ class OutletComponentManager
     env: Environment,
     dynamicScope: DynamicScope
   ): OutletInstanceState {
-    let parentStateRef = dynamicScope.get('outletState');
-    let currentStateRef = definition.ref;
+    const parentStateRef = dynamicScope.get('outletState');
+    const currentStateRef = definition.ref;
 
     dynamicScope.set('outletState', currentStateRef);
 
-    let state: OutletInstanceState = {
+    const state: OutletInstanceState = {
       self: createConstRef(definition.controller, 'this'),
       finalize: _instrumentStart('render.outlet', instrumentationPayload, definition),
     };
 
     if (env.debugRenderTree !== undefined) {
       state.outlet = { name: definition.outlet };
-      let parentState = valueForRef(parentStateRef);
-      let parentOwner = parentState && parentState.render && parentState.render.owner;
-      let currentOwner = valueForRef(currentStateRef)!.render!.owner;
+      const parentState = valueForRef(parentStateRef);
+      const parentOwner = parentState && parentState.render && parentState.render.owner;
+      const currentOwner = valueForRef(currentStateRef)!.render!.owner;
 
       if (parentOwner && parentOwner !== currentOwner) {
-        let engine = currentOwner as EngineInstance;
+        const engine = currentOwner as EngineInstance;
 
         assert('invalid engine: missing mountPoint', typeof currentOwner.mountPoint === 'string');
         assert('invalid engine: missing routable', currentOwner.routable === true);
 
-        let mountPoint = engine.mountPoint!;
+        const mountPoint = engine.mountPoint!;
 
         state.engine = engine;
         state.engineBucket = { mountPoint };
@@ -119,7 +119,7 @@ class OutletComponentManager
     state: OutletInstanceState,
     args: CapturedArguments
   ): CustomRenderNode[] {
-    let nodes: CustomRenderNode[] = [];
+    const nodes: CustomRenderNode[] = [];
 
     if (state.outlet) {
       nodes.push({
@@ -193,7 +193,7 @@ export class OutletComponentDefinition
     public state: OutletDefinitionState,
     public manager: OutletComponentManager = OUTLET_MANAGER
   ) {
-    let capabilities = manager.getCapabilities();
+    const capabilities = manager.getCapabilities();
     this.capabilities = capabilityFlagsFrom(capabilities);
     this.compilable = capabilities.wrapped
       ? unwrapTemplate(state.template).asWrappedLayout()

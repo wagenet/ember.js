@@ -56,7 +56,7 @@ class MountManager
     WithCustomDebugRenderTree<EngineState, EngineDefinitionState>,
     WithSubOwner<EngineState> {
   getDynamicLayout(state: EngineState) {
-    let templateFactory = state.engine.lookup('template:application') as TemplateFactory;
+    const templateFactory = state.engine.lookup('template:application') as TemplateFactory;
     return unwrapTemplate(templateFactory(state.engine)).asLayout();
   }
 
@@ -74,12 +74,13 @@ class MountManager
     // we should resolve the engine app template in the helper
     // it also should use the owner that looked up the mount helper.
 
-    let engine = owner.buildChildEngineInstance(name);
+    const engine = owner.buildChildEngineInstance(name);
 
     engine.boot();
 
-    let applicationFactory = engine.factoryFor(`controller:application`);
-    let controllerFactory = applicationFactory || generateControllerFactory(engine, 'application');
+    const applicationFactory = engine.factoryFor(`controller:application`);
+    const controllerFactory =
+      applicationFactory || generateControllerFactory(engine, 'application');
     let controller: any;
     let self: Reference;
     let bucket: EngineState;
@@ -94,7 +95,7 @@ class MountManager
       self = createConstRef(controller, 'this');
       bucket = { engine, controller, self, modelRef };
     } else {
-      let model = valueForRef(modelRef);
+      const model = valueForRef(modelRef);
       controller = controllerFactory.create({ model });
       self = createConstRef(controller, 'this');
       bucket = { engine, controller, self, modelRef };
@@ -151,7 +152,7 @@ class MountManager
   didUpdateLayout(): void {}
 
   update(bucket: EngineState): void {
-    let { controller, modelRef } = bucket;
+    const { controller, modelRef } = bucket;
 
     if (modelRef !== undefined) {
       controller.set('model', valueForRef(modelRef));

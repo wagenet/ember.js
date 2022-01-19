@@ -40,7 +40,7 @@ function notifyPropertyChange(
   _meta?: Meta | null,
   value?: unknown
 ): void {
-  let meta = _meta === undefined ? peekMeta(obj) : _meta;
+  const meta = _meta === undefined ? peekMeta(obj) : _meta;
 
   if (meta !== null && (meta.isInitializing() || meta.isPrototypeMeta(obj))) {
     return;

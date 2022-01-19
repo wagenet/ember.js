@@ -27,7 +27,7 @@ function ast(template: string): AST.Program {
     };
   }
 
-  let options = compileOptions({
+  const options = compileOptions({
     moduleName: '-top-level',
   });
 
@@ -41,11 +41,11 @@ function ast(template: string): AST.Program {
 }
 
 function clone<T extends object>(node: T): T {
-  let out = Object.create(null);
-  let keys = Object.keys(node);
+  const out = Object.create(null);
+  const keys = Object.keys(node);
 
   keys.forEach((key) => {
-    let value = node[key];
+    const value = node[key];
 
     if (value !== null && typeof value === 'object') {
       out[key] = clone(value);
@@ -58,11 +58,11 @@ function clone<T extends object>(node: T): T {
 }
 
 function deloc<T extends object, U extends { loc?: AST.SourceLocation }>(node: T & U): T {
-  let out = Object.create(null);
-  let keys = Object.keys(node);
+  const out = Object.create(null);
+  const keys = Object.keys(node);
 
   keys.forEach((key) => {
-    let value = node[key];
+    const value = node[key];
 
     if (key === 'loc') {
       return;

@@ -81,7 +81,7 @@ class ForkedValue implements Value {
   }
 
   get(): unknown {
-    let upstreamValue = this.upstream.get();
+    const upstreamValue = this.upstream.get();
 
     if (upstreamValue !== this.lastUpstreamValue) {
       this.lastUpstreamValue = upstreamValue;
@@ -158,7 +158,7 @@ export default abstract class AbstractInput extends InternalComponent {
   }
 
   protected listenerFor(name: string): EventListener {
-    let listener = super.listenerFor(name);
+    const listener = super.listenerFor(name);
 
     if (this.isVirtualEventListener(name, listener)) {
       return devirtualize(listener);
@@ -171,7 +171,7 @@ export default abstract class AbstractInput extends InternalComponent {
     name: string,
     _listener: Function
   ): _listener is VirtualEventListener {
-    let virtualEvents = ['enter', 'insert-newline', 'escape-press'];
+    const virtualEvents = ['enter', 'insert-newline', 'escape-press'];
 
     return virtualEvents.indexOf(name) !== -1;
   }

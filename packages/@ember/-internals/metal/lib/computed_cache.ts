@@ -1,7 +1,7 @@
 import { peekMeta } from '@ember/-internals/meta';
 
 export function getCachedValueFor(obj: object, key: string): unknown {
-  let meta = peekMeta(obj);
+  const meta = peekMeta(obj);
 
   if (meta) {
     return meta.valueFor(key);

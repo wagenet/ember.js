@@ -17,17 +17,17 @@ export default internalHelper(({ positional }: CapturedArguments, owner: Owner |
     positional.length === 1
   );
 
-  let fullNameRef = positional[0];
+  const fullNameRef = positional[0];
 
   assert('[BUG] expecting a string literal as argument', isConstRef(fullNameRef));
 
-  let fullName = valueForRef(fullNameRef);
+  const fullName = valueForRef(fullNameRef);
 
   assert('[BUG] expecting a string literal as argument', typeof fullName === 'string');
   assert('[BUG] expecting a valid full name', fullName.split(':').length === 2);
 
   if (DEBUG) {
-    let [type, name] = fullName.split(':');
+    const [type, name] = fullName.split(':');
 
     assert(
       `Attempted to invoke \`(-resolve "${fullName}")\`, but ${name} was not a valid ${type} name.`,

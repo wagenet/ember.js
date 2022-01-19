@@ -31,10 +31,10 @@ const BREAK = {};
   disrupt the control flow.
 */
 export function setupAssertionHelpers(hooks: NestedHooks, env: DebugEnv): void {
-  let originalAssertFunc = env.getDebugFunction('assert');
+  const originalAssertFunc = env.getDebugFunction('assert');
 
   hooks.beforeEach(function (assert) {
-    let expectAssertion: ExpectAssertionFunc = (func: () => void, expectedMessage: Message) => {
+    const expectAssertion: ExpectAssertionFunc = (func: () => void, expectedMessage: Message) => {
       if (!DEBUG) {
         assert.ok(true, 'Assertions disabled in production builds.');
         return;
@@ -63,7 +63,7 @@ export function setupAssertionHelpers(hooks: NestedHooks, env: DebugEnv): void {
       check(assert, sawCall, actualMessage, expectedMessage);
     };
 
-    let ignoreAssertion: IgnoreAssertionFunc = (func) => {
+    const ignoreAssertion: IgnoreAssertionFunc = (func) => {
       callWithStub(env, 'assert', func);
     };
 

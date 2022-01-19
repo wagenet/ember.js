@@ -34,7 +34,7 @@ export function runTaskNext(): Promise<void> {
 export function runLoopSettled(event?: any): Promise<void> {
   return new Promise(function (resolve: Function) {
     // Every 5ms, poll for the async thing to have finished
-    let watcher = setInterval(() => {
+    const watcher = setInterval(() => {
       // If there are scheduled timers or we are inside of a run loop, keep polling
       if (_hasScheduledTimers() || _getCurrentRunLoop()) {
         return;

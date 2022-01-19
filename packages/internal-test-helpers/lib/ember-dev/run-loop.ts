@@ -4,7 +4,7 @@ import { end, _cancelTimers, _getCurrentRunLoop, _hasScheduledTimers } from '@em
 export function setupRunLoopCheck(hooks: NestedHooks) {
   hooks.afterEach(function (assert) {
     if (_getCurrentRunLoop() || _hasScheduledTimers()) {
-      let done = assert.async();
+      const done = assert.async();
       // use a setTimeout to allow the current run loop to flush via autorun
       setTimeout(() => {
         // increment expected assertion count for the assertions just below

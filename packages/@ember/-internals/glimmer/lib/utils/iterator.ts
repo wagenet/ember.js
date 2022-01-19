@@ -63,14 +63,14 @@ abstract class BoundedIterator implements IteratorDelegate {
   }
 
   next() {
-    let { length, position } = this;
+    const { length, position } = this;
 
     if (position >= length) {
       return null;
     }
 
-    let value = this.valueFor(position);
-    let memo = this.memoFor(position);
+    const value = this.valueFor(position);
+    const memo = this.memoFor(position);
 
     this.position++;
 
@@ -84,7 +84,7 @@ class ArrayIterator extends BoundedIterator {
   }
 
   static fromForEachable(object: ForEachable) {
-    let array: unknown[] = [];
+    const array: unknown[] = [];
     object.forEach((item) => array.push(item));
     return this.from(array);
   }
@@ -114,18 +114,16 @@ class EmberArrayIterator extends BoundedIterator {
 
 class ObjectIterator extends BoundedIterator {
   static fromIndexable(obj: Indexable) {
-    let keys = Object.keys(obj);
-    let { length } = keys;
+    const keys = Object.keys(obj);
+    const { length } = keys;
 
     if (length === 0) {
       return null;
     } else {
-      let values: unknown[] = [];
+      const values: unknown[] = [];
       for (let i = 0; i < length; i++) {
-        let value: any;
-        let key = keys[i];
-
-        value = obj[key];
+        const key = keys[i];
+        const value = obj[key];
 
         // Add the tag of the returned value if it is an array, since arrays
         // should always cause updates if they are consumed and then changed
@@ -144,8 +142,8 @@ class ObjectIterator extends BoundedIterator {
   }
 
   static fromForEachable(obj: ForEachable) {
-    let keys: unknown[] = [];
-    let values: unknown[] = [];
+    const keys: unknown[] = [];
+    const values: unknown[] = [];
     let length = 0;
     let isMapLike = false;
 
@@ -189,9 +187,9 @@ interface NativeIteratorConstructor<T = unknown> {
 
 abstract class NativeIterator<T = unknown> implements IteratorDelegate {
   static from<T>(this: NativeIteratorConstructor<T>, iterable: Iterable<T>) {
-    let iterator = iterable[Symbol.iterator]();
-    let result = iterator.next();
-    let { done } = result;
+    const iterator = iterable[Symbol.iterator]();
+    const result = iterator.next();
+    const { done } = result;
 
     if (done) {
       return null;
@@ -212,14 +210,14 @@ abstract class NativeIterator<T = unknown> implements IteratorDelegate {
   abstract memoFor(result: IteratorResult<T>, position: number): unknown;
 
   next() {
-    let { iterable, result, position } = this;
+    const { iterable, result, position } = this;
 
     if (result.done) {
       return null;
     }
 
-    let value = this.valueFor(result, position);
-    let memo = this.memoFor(result, position);
+    const value = this.valueFor(result, position);
+    const memo = this.memoFor(result, position);
 
     this.position++;
     this.result = iterable.next();

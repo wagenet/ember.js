@@ -17,7 +17,7 @@ export function setupApplicationRegistry(registry: Registry): void {
   // association won't leak
   registry.register('service:-dom-builder', {
     create(props) {
-      let env = getOwner(props).lookup('-environment:main') as { _renderMode: string };
+      const env = getOwner(props).lookup('-environment:main') as { _renderMode: string };
 
       switch (env._renderMode) {
         case 'serialize':

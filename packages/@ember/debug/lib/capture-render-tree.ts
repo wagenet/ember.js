@@ -20,7 +20,7 @@ import { expect } from '@glimmer/util';
   @since 3.14.0
 */
 export default function captureRenderTree(app: Owner): CapturedRenderNode[] {
-  let renderer = expect(app.lookup<Renderer>('renderer:-dom'), `BUG: owner is missing renderer`);
+  const renderer = expect(app.lookup<Renderer>('renderer:-dom'), `BUG: owner is missing renderer`);
 
   return renderer.debugRenderTree.capture();
 }

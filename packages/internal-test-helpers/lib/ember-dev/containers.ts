@@ -6,14 +6,14 @@ export function setupContainersCheck(hooks: NestedHooks): void {
   hooks.afterEach(function () {
     if (containerLeakTracking === undefined) return;
 
-    let { config } = QUnit;
+    const { config } = QUnit;
 
-    let {
+    const {
       testName,
       testId,
       module: { name: moduleName },
-      finish: originalFinish,
     } = config.current;
+    let { finish: originalFinish } = config.current;
 
     config.current.finish = function () {
       originalFinish.call(this);

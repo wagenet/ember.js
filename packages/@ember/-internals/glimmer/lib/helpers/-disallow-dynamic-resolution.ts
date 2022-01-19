@@ -12,15 +12,15 @@ export default internalHelper(({ positional, named }: CapturedArguments) => {
     positional.length === 1
   );
 
-  let nameOrValueRef = positional[0];
+  const nameOrValueRef = positional[0];
 
   assert(`[BUG] expecting \`type\` named argument`, 'type' in named);
   assert(`[BUG] expecting \`loc\` named argument`, 'loc' in named);
   assert(`[BUG] expecting \`original\` named argument`, 'original' in named);
 
-  let typeRef = named.type;
-  let locRef = named.loc;
-  let originalRef = named.original;
+  const typeRef = named.type;
+  const locRef = named.loc;
+  const originalRef = named.original;
 
   // Bug: why do these fail?
   // assert('[BUG] expecting a string literal for the `type` argument', isConstRef(typeRef));
@@ -39,7 +39,7 @@ export default internalHelper(({ positional, named }: CapturedArguments) => {
   );
 
   return createComputeRef(() => {
-    let nameOrValue = valueForRef(nameOrValueRef);
+    const nameOrValue = valueForRef(nameOrValueRef);
 
     assert(
       `Passing a dynamic string to the \`(${type})\` keyword is disallowed. ` +

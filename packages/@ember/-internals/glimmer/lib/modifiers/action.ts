@@ -42,13 +42,13 @@ function isAllowedEvent(event: Event, allowedKeys: any) {
   return true;
 }
 
-export let ActionHelper = {
+export const ActionHelper = {
   // registeredActions is re-exported for compatibility with older plugins
   // that were using this undocumented API.
   registeredActions: ActionManager.registeredActions,
 
   registerAction(actionState: ActionState) {
-    let { actionId } = actionState;
+    const { actionId } = actionState;
 
     ActionManager.registeredActions[actionId] = actionState;
 
@@ -56,7 +56,7 @@ export let ActionHelper = {
   },
 
   unregisterAction(actionState: ActionState) {
-    let { actionId } = actionState;
+    const { actionId } = actionState;
 
     delete ActionManager.registeredActions[actionId];
   },
@@ -94,13 +94,13 @@ export class ActionState {
   }
 
   getEventName() {
-    let { on } = this.namedArgs;
+    const { on } = this.namedArgs;
 
     return on !== undefined ? valueForRef(on) : 'click';
   }
 
   getActionArgs() {
-    let result = new Array(this.actionArgs.length);
+    const result = new Array(this.actionArgs.length);
 
     for (let i = 0; i < this.actionArgs.length; i++) {
       result[i] = valueForRef(this.actionArgs[i]);
@@ -110,23 +110,24 @@ export class ActionState {
   }
 
   getTarget(): any {
-    let { implicitTarget, namedArgs } = this;
-    let { target } = namedArgs;
+    const { implicitTarget, namedArgs } = this;
+    const { target } = namedArgs;
 
     return target !== undefined ? valueForRef(target) : valueForRef(implicitTarget);
   }
 
   handler(event: Event): boolean {
-    let { actionName, namedArgs } = this;
-    let { bubbles, preventDefault, allowedKeys } = namedArgs;
+    const { actionName, namedArgs } = this;
+    const { bubbles, preventDefault, allowedKeys } = namedArgs;
 
-    let bubblesVal = bubbles !== undefined ? valueForRef(bubbles) : undefined;
-    let preventDefaultVal = preventDefault !== undefined ? valueForRef(preventDefault) : undefined;
-    let allowedKeysVal = allowedKeys !== undefined ? valueForRef(allowedKeys) : undefined;
+    const bubblesVal = bubbles !== undefined ? valueForRef(bubbles) : undefined;
+    const preventDefaultVal =
+      preventDefault !== undefined ? valueForRef(preventDefault) : undefined;
+    const allowedKeysVal = allowedKeys !== undefined ? valueForRef(allowedKeys) : undefined;
 
-    let target = this.getTarget();
+    const target = this.getTarget();
 
-    let shouldBubble = bubblesVal !== false;
+    const shouldBubble = bubblesVal !== false;
 
     if (!isAllowedEvent(event, allowedKeysVal)) {
       return true;
@@ -141,8 +142,8 @@ export class ActionState {
     }
 
     join(() => {
-      let args = this.getActionArgs();
-      let payload = {
+      const args = this.getActionArgs();
+      const payload = {
         args,
         target,
         name: null,
@@ -186,14 +187,14 @@ class ActionModifierManager implements InternalModifierManager<ActionState, obje
     _state: object,
     { named, positional }: CapturedArguments
   ): ActionState {
-    let actionArgs: any[] = [];
+    const actionArgs: any[] = [];
     // The first two arguments are (1) `this` and (2) the action name.
     // Everything else is a param.
     for (let i = 2; i < positional.length; i++) {
       actionArgs.push(positional[i]);
     }
 
-    let actionId = uuid();
+    const actionId = uuid();
 
     return new ActionState(element, owner, actionId, actionArgs, named, positional);
   }
@@ -203,7 +204,7 @@ class ActionModifierManager implements InternalModifierManager<ActionState, obje
   }
 
   install(actionState: ActionState): void {
-    let { element, actionId, positional } = actionState;
+    const { element, actionId, positional } = actionState;
 
     let actionName;
     let actionNameRef: any;
@@ -219,9 +220,9 @@ class ActionModifierManager implements InternalModifierManager<ActionState, obje
         actionName = valueForRef(actionNameRef);
 
         if (DEBUG) {
-          let actionPath = actionNameRef.debugLabel;
-          let actionPathParts = actionPath.split('.');
-          let actionLabel = actionPathParts[actionPathParts.length - 1];
+          const actionPath = actionNameRef.debugLabel;
+          const actionPathParts = actionPath.split('.');
+          const actionLabel = actionPathParts[actionPathParts.length - 1];
 
           assert(
             'You specified a quoteless path, `' +
@@ -249,14 +250,14 @@ class ActionModifierManager implements InternalModifierManager<ActionState, obje
   }
 
   update(actionState: ActionState): void {
-    let { positional } = actionState;
-    let actionNameRef = positional[1];
+    const { positional } = actionState;
+    const actionNameRef = positional[1];
 
     if (!isInvokableRef(actionNameRef)) {
       actionState.actionName = valueForRef(actionNameRef);
     }
 
-    let newEventName = actionState.getEventName();
+    const newEventName = actionState.getEventName();
     if (newEventName !== actionState.eventName) {
       this.ensureEventSetup(actionState);
       actionState.eventName = actionState.getEventName();
@@ -264,7 +265,7 @@ class ActionModifierManager implements InternalModifierManager<ActionState, obje
   }
 
   ensureEventSetup(actionState: ActionState): void {
-    let dispatcher = actionState.owner.lookup<EventDispatcher>('event_dispatcher:main');
+    const dispatcher = actionState.owner.lookup<EventDispatcher>('event_dispatcher:main');
     dispatcher?.setupHandlerForEmberEvent(actionState.eventName);
   }
 

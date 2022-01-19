@@ -34,9 +34,13 @@ export default class OutletView {
   }
 
   static create(options: any): OutletView {
-    let { environment: _environment, application: namespace, template: templateFactory } = options;
-    let owner = getOwner(options);
-    let template = templateFactory(owner);
+    const {
+      environment: _environment,
+      application: namespace,
+      template: templateFactory,
+    } = options;
+    const owner = getOwner(options);
+    const template = templateFactory(owner);
     return new OutletView(_environment, owner, template, namespace);
   }
 
@@ -49,8 +53,8 @@ export default class OutletView {
     public template: Template,
     public namespace: any
   ) {
-    let outletStateTag = createTag();
-    let outletState: OutletState = {
+    const outletStateTag = createTag();
+    const outletState: OutletState = {
       outlets: { main: undefined },
       render: {
         owner: owner,
@@ -63,7 +67,7 @@ export default class OutletView {
       },
     };
 
-    let ref = (this.ref = createComputeRef(
+    const ref = (this.ref = createComputeRef(
       () => {
         consumeTag(outletStateTag);
         return outletState;
@@ -93,7 +97,7 @@ export default class OutletView {
       target = selector;
     }
 
-    let renderer = this.owner.lookup('renderer:-dom');
+    const renderer = this.owner.lookup('renderer:-dom');
 
     schedule('render', renderer, 'appendOutletView', this, target);
   }

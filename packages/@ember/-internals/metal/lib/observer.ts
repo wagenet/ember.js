@@ -40,11 +40,11 @@ export function addObserver(
   method?: string | Function,
   sync = SYNC_DEFAULT
 ): void {
-  let eventName = changeEvent(path);
+  const eventName = changeEvent(path);
 
   addListener(obj, eventName, target, method, false, sync);
 
-  let meta = peekMeta(obj);
+  const meta = peekMeta(obj);
 
   if (meta === null || !(meta.isPrototypeMeta(obj) || meta.isInitializing())) {
     activateObserver(obj, eventName, sync);
@@ -68,9 +68,9 @@ export function removeObserver(
   method?: string | Function,
   sync = SYNC_DEFAULT
 ): void {
-  let eventName = changeEvent(path);
+  const eventName = changeEvent(path);
 
-  let meta = peekMeta(obj);
+  const meta = peekMeta(obj);
 
   if (meta === null || !(meta.isPrototypeMeta(obj) || meta.isInitializing())) {
     deactivateObserver(obj, eventName, sync);
@@ -80,7 +80,7 @@ export function removeObserver(
 }
 
 function getOrCreateActiveObserversFor(target: object, sync: boolean) {
-  let observerMap = sync === true ? SYNC_OBSERVERS : ASYNC_OBSERVERS;
+  const observerMap = sync === true ? SYNC_OBSERVERS : ASYNC_OBSERVERS;
 
   if (!observerMap.has(target)) {
     observerMap.set(target, new Map());
@@ -91,13 +91,13 @@ function getOrCreateActiveObserversFor(target: object, sync: boolean) {
 }
 
 export function activateObserver(target: object, eventName: string, sync = false) {
-  let activeObservers = getOrCreateActiveObserversFor(target, sync);
+  const activeObservers = getOrCreateActiveObserversFor(target, sync);
 
   if (activeObservers.has(eventName)) {
     activeObservers.get(eventName)!.count++;
   } else {
-    let path = eventName.substring(0, eventName.lastIndexOf(':'));
-    let tag = getChainTagsForKey(target, path, tagMetaFor(target), peekMeta(target));
+    const path = eventName.substring(0, eventName.lastIndexOf(':'));
+    const tag = getChainTagsForKey(target, path, tagMetaFor(target), peekMeta(target));
 
     activeObservers.set(eventName, {
       count: 1,
@@ -118,12 +118,12 @@ export function deactivateObserver(target: object, eventName: string, sync = fal
     return;
   }
 
-  let observerMap = sync === true ? SYNC_OBSERVERS : ASYNC_OBSERVERS;
+  const observerMap = sync === true ? SYNC_OBSERVERS : ASYNC_OBSERVERS;
 
-  let activeObservers = observerMap.get(target);
+  const activeObservers = observerMap.get(target);
 
   if (activeObservers !== undefined) {
-    let observer = activeObservers.get(eventName)!;
+    const observer = activeObservers.get(eventName)!;
 
     observer.count--;
 
@@ -144,7 +144,7 @@ export function suspendedObserverDeactivation() {
 export function resumeObserverDeactivation() {
   DEACTIVATE_SUSPENDED = false;
 
-  for (let [target, eventName, sync] of SCHEDULED_DEACTIVATE) {
+  for (const [target, eventName, sync] of SCHEDULED_DEACTIVATE) {
     deactivateObserver(target, eventName, sync);
   }
 
@@ -187,18 +187,18 @@ export function revalidateObservers(target: object) {
 let lastKnownRevision = 0;
 
 export function flushAsyncObservers(shouldSchedule = true) {
-  let currentRevision = valueForTag(CURRENT_TAG);
+  const currentRevision = valueForTag(CURRENT_TAG);
   if (lastKnownRevision === currentRevision) {
     return;
   }
   lastKnownRevision = currentRevision;
 
   ASYNC_OBSERVERS.forEach((activeObservers, target) => {
-    let meta = peekMeta(target);
+    const meta = peekMeta(target);
 
     activeObservers.forEach((observer, eventName) => {
       if (!validateTag(observer.tag, observer.lastRevision)) {
-        let sendObserver = () => {
+        const sendObserver = () => {
           try {
             sendEvent(target, eventName, [target, observer.path], undefined, meta);
           } finally {
@@ -228,7 +228,7 @@ export function flushSyncObservers() {
   // a global revision.
 
   SYNC_OBSERVERS.forEach((activeObservers, target) => {
-    let meta = peekMeta(target);
+    const meta = peekMeta(target);
 
     activeObservers.forEach((observer, eventName) => {
       if (!observer.suspended && !validateTag(observer.tag, observer.lastRevision)) {
@@ -251,13 +251,13 @@ export function flushSyncObservers() {
 }
 
 export function setObserverSuspended(target: object, property: string, suspended: boolean) {
-  let activeObservers = SYNC_OBSERVERS.get(target);
+  const activeObservers = SYNC_OBSERVERS.get(target);
 
   if (!activeObservers) {
     return;
   }
 
-  let observer = activeObservers.get(changeEvent(property));
+  const observer = activeObservers.get(changeEvent(property));
 
   if (observer) {
     observer.suspended = suspended;

@@ -8,7 +8,7 @@ export interface Handlers {
   [key: string]: Handler;
 }
 
-export let HANDLERS: Handlers = {};
+export const HANDLERS: Handlers = {};
 
 export type RegisterHandlerFunc = (type: string, callback: HandlerCallback) => void;
 export type InvokeFunc = (type: string, message: string, test?: boolean, options?: Options) => void;
@@ -18,7 +18,7 @@ let invoke: InvokeFunc = () => {};
 
 if (DEBUG) {
   registerHandler = function registerHandler(type, callback) {
-    let nextHandler = HANDLERS[type] || (() => {});
+    const nextHandler = HANDLERS[type] || (() => {});
 
     HANDLERS[type] = (message, options) => {
       callback(message, options, nextHandler);
@@ -30,7 +30,7 @@ if (DEBUG) {
       return;
     }
 
-    let handlerForType = HANDLERS[type];
+    const handlerForType = HANDLERS[type];
 
     if (handlerForType) {
       handlerForType(message, options);

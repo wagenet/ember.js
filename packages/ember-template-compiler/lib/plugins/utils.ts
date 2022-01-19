@@ -13,19 +13,19 @@ export function isStringLiteral(node: AST.Expression): node is AST.StringLiteral
 }
 
 export function trackLocals() {
-  let locals = new Map();
+  const locals = new Map();
 
-  let node = {
+  const node = {
     enter(node: AST.Program | AST.Block | AST.ElementNode) {
-      for (let param of node.blockParams) {
-        let value = locals.get(param) || 0;
+      for (const param of node.blockParams) {
+        const value = locals.get(param) || 0;
         locals.set(param, value + 1);
       }
     },
 
     exit(node: AST.Program | AST.Block | AST.ElementNode) {
-      for (let param of node.blockParams) {
-        let value = locals.get(param) - 1;
+      for (const param of node.blockParams) {
+        const value = locals.get(param) - 1;
 
         if (value === 0) {
           locals.delete(param);

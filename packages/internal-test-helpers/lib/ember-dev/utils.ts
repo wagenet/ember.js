@@ -16,7 +16,7 @@ export function callWithStub(
   func: () => void,
   debugStub: DebugFunction = noop
 ) {
-  let originalFunc = env.getDebugFunction(name);
+  const originalFunc = env.getDebugFunction(name);
   try {
     env.setDebugFunction(name, debugStub);
     func();

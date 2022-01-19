@@ -17,7 +17,7 @@ import { tagForProperty } from './tags';
 export const CHAIN_PASS_THROUGH = new _WeakSet();
 
 export function finishLazyChains(meta: Meta, key: string, value: any) {
-  let lazyTags = meta.readableLazyChainsFor(key);
+  const lazyTags = meta.readableLazyChainsFor(key);
 
   if (lazyTags === undefined) {
     return;
@@ -25,7 +25,7 @@ export function finishLazyChains(meta: Meta, key: string, value: any) {
 
   if (isObject(value)) {
     for (let i = 0; i < lazyTags.length; i++) {
-      let [tag, deps] = lazyTags[i];
+      const [tag, deps] = lazyTags[i];
       updateTag(tag, getChainTagsForKey(value, deps as string, tagMetaFor(value), peekMeta(value)));
     }
   }
@@ -39,7 +39,7 @@ export function getChainTagsForKeys(
   tagMeta: TagMeta,
   meta: Meta | null
 ): Tag {
-  let tags: Tag[] = [];
+  const tags: Tag[] = [];
 
   for (let i = 0; i < keys.length; i++) {
     getChainTags(tags, obj, keys[i], tagMeta, meta);
@@ -68,7 +68,7 @@ function getChainTags(
   let currentTagMeta = tagMeta;
   let currentMeta = meta;
 
-  let pathLength = path.length;
+  const pathLength = path.length;
   let segmentEnd = -1;
   // prevent closures
   let segment: string, descriptor: any;
@@ -89,7 +89,7 @@ function getChainTags(
       lastSegmentEnd = segmentEnd + 1;
       segmentEnd = path.indexOf('.', lastSegmentEnd);
 
-      let arrLength = current.length;
+      const arrLength = current.length;
 
       if (
         typeof arrLength !== 'number' ||
@@ -114,7 +114,7 @@ function getChainTags(
 
       // Push the tags for each item's property
       for (let i = 0; i < arrLength; i++) {
-        let item = objectAt(current as Array<any>, i);
+        const item = objectAt(current as Array<any>, i);
 
         if (item) {
           assert(
@@ -140,7 +140,7 @@ function getChainTags(
       break;
     }
 
-    let propertyTag = tagForProperty(current, segment, true, currentTagMeta);
+    const propertyTag = tagForProperty(current, segment, true, currentTagMeta);
     descriptor = currentMeta !== null ? currentMeta.peekDescriptors(segment) : undefined;
 
     chainTags.push(propertyTag);
@@ -175,17 +175,17 @@ function getChainTags(
       // the CP is still valid, and if so we use the cached value. If not, then
       // we create a lazy chain lookup, and the next time the CP is calculated,
       // it will update that lazy chain.
-      let instanceMeta = currentMeta!.source === current ? currentMeta! : metaFor(current);
-      let lastRevision = instanceMeta.revisionFor(segment);
+      const instanceMeta = currentMeta!.source === current ? currentMeta! : metaFor(current);
+      const lastRevision = instanceMeta.revisionFor(segment);
 
       if (lastRevision !== undefined && validateTag(propertyTag, lastRevision)) {
         current = instanceMeta.valueFor(segment);
       } else {
         // use metaFor here to ensure we have the meta for the instance
-        let lazyChains = instanceMeta.writableLazyChainsFor(segment);
-        let rest = path.substr(segmentEnd + 1);
+        const lazyChains = instanceMeta.writableLazyChainsFor(segment);
+        const rest = path.substr(segmentEnd + 1);
 
-        let placeholderTag = createUpdatableTag();
+        const placeholderTag = createUpdatableTag();
 
         lazyChains.push([placeholderTag, rest]);
         chainTags.push(placeholderTag);

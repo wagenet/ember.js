@@ -7,8 +7,8 @@ import { isPath, trackLocals } from './utils';
 export default function assertAgainstDynamicHelpersModifiers(
   env: EmberASTPluginEnvironment
 ): ASTPlugin {
-  let moduleName = env.meta?.moduleName;
-  let { hasLocal, node } = trackLocals();
+  const moduleName = env.meta?.moduleName;
+  const { hasLocal, node } = trackLocals();
 
   return {
     name: 'assert-against-dynamic-helpers-modifiers',
@@ -24,7 +24,7 @@ export default function assertAgainstDynamicHelpersModifiers(
 
       MustacheStatement(node: AST.MustacheStatement) {
         if (isPath(node.path)) {
-          let name = node.path.parts[0];
+          const name = node.path.parts[0];
 
           assert(
             `${messageFor(name)} ${calculateLocationDisplay(moduleName, node.loc)}`,
@@ -35,7 +35,7 @@ export default function assertAgainstDynamicHelpersModifiers(
 
       SubExpression(node: AST.SubExpression) {
         if (isPath(node.path)) {
-          let name = node.path.parts[0];
+          const name = node.path.parts[0];
 
           assert(
             `${messageFor(name)} ${calculateLocationDisplay(moduleName, node.loc)}`,
