@@ -105,10 +105,10 @@ class MyComponent extends EmberObject {
   constructor() {
     super();
     this.addObserver('foo', this, 'fooDidChange');
-
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     this.addObserver('foo', this, this.fooDidChange);
     this.removeObserver('foo', this, 'fooDidChange');
-
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     this.removeObserver('foo', this, this.fooDidChange);
     const lambda = () => {
       this.fooDidChange(this, 'foo');
@@ -123,5 +123,5 @@ class MyComponent extends EmberObject {
 }
 
 const myComponent = MyComponent.create();
-myComponent.addObserver('foo', null, () => {});
+myComponent.addObserver('foo', null, () => {}); // eslint-disable-line @typescript-eslint/no-empty-function
 myComponent.set('foo', 'baz');

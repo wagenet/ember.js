@@ -4,7 +4,7 @@ import { expectTypeOf } from 'expect-type';
 
 const definition = {
   dependentKeys: ['value1', 'value2', 'value3'],
-
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   fn: () => {},
   sync: true,
 };
@@ -17,7 +17,7 @@ class Foo {
   definitionObserver = observer(definition);
 
   // @ts-expect-error Requires at least one key
-  noKeysObserver = observer(() => {});
+  noKeysObserver = observer(() => {}); // eslint-disable-line @typescript-eslint/no-empty-function
 
   // @ts-expect-error Doesn't allow keys and definition
   extraKeysObserver = observer('extraKey', definition);

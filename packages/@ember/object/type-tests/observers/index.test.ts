@@ -5,10 +5,10 @@ class MyComponent {
 
   constructor() {
     addObserver(this, 'foo', this, 'fooDidChange');
-
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     addObserver(this, 'foo', this, this.fooDidChange);
     removeObserver(this, 'foo', this, 'fooDidChange');
-
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     removeObserver(this, 'foo', this, this.fooDidChange);
     const lambda = () => {
       this.fooDidChange(this, 'foo');

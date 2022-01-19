@@ -10,7 +10,7 @@ class Foo {
   bar!: string;
 
   @action
-  foo() {}
+  foo() {} // eslint-disable-line @typescript-eslint/no-empty-function
 }
 
 new Foo();

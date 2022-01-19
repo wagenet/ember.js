@@ -26,15 +26,16 @@ class MyClass extends EmberObject {
     super();
     addListener(this, 'willDestroy', this, 'willDestroyListener');
     addListener(this, 'willDestroy', this, 'willDestroyListener', true);
-
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     addListener(this, 'willDestroy', this, this.willDestroyListener);
-
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     addListener(this, 'willDestroy', this, this.willDestroyListener, true);
     removeListener(this, 'willDestroy', this, 'willDestroyListener');
-
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     removeListener(this, 'willDestroy', this, this.willDestroyListener);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   willDestroyListener() {}
 }
 

@@ -743,23 +743,6 @@
       "@typescript-eslint/no-unsafe-assignment": 1,
       "@typescript-eslint/unbound-method": 1
     },
-    "packages/@ember/object/type-tests/action.test.ts": {
-      "@typescript-eslint/no-empty-function": 1
-    },
-    "packages/@ember/object/type-tests/ember-object.test.ts": {
-      "@typescript-eslint/no-empty-function": 1,
-      "@typescript-eslint/unbound-method": 2
-    },
-    "packages/@ember/object/type-tests/events/index.test.ts": {
-      "@typescript-eslint/no-empty-function": 1,
-      "@typescript-eslint/unbound-method": 3
-    },
-    "packages/@ember/object/type-tests/observer.test.ts": {
-      "@typescript-eslint/no-empty-function": 2
-    },
-    "packages/@ember/object/type-tests/observers/index.test.ts": {
-      "@typescript-eslint/unbound-method": 2
-    },
     "packages/@ember/polyfills/lib/assign.ts": {
       "@typescript-eslint/no-unsafe-return": 1
     },
