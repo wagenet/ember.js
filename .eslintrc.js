@@ -64,7 +64,6 @@ module.exports = {
         'prefer-rest-params': 'warn',
 
         // Remove from esplintrc when no longer warning
-        '@typescript-eslint/ban-ts-comment': 'warn',
         '@typescript-eslint/ban-types': 'warn',
         '@typescript-eslint/no-empty-function': 'warn',
         '@typescript-eslint/no-explicit-any': 'warn',

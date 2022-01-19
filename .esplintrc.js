@@ -9,7 +9,6 @@ module.exports = {
     'qunit/no-assert-equal',
     'qunit/no-commented-tests',
     'qunit/require-expect',
-    '@typescript-eslint/ban-ts-comment',
     '@typescript-eslint/ban-types',
     '@typescript-eslint/no-empty-function',
     '@typescript-eslint/no-explicit-any',

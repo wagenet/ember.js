@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-expect-error Not all of these are exported in TS
 import { end, _cancelTimers, _getCurrentRunLoop, _hasScheduledTimers } from '@ember/runloop';
 
 export function setupRunLoopCheck(hooks: NestedHooks) {

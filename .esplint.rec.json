@@ -1,6 +1,6 @@
 {
   "recordVersion": 1,
-  "configHash": "638ddbd369a8d69bb8835fe49916978a858a7441",
+  "configHash": "f54497fe29351a2b52c70c04b2e2ed12e4249af6",
   "files": {
     "packages/@ember/-internals/bootstrap/index.ts": {
       "@typescript-eslint/no-unsafe-assignment": 1,
@@ -919,7 +919,6 @@
     },
     "packages/internal-test-helpers/lib/ember-dev/run-loop.ts": {
       "prefer-const": 1,
-      "@typescript-eslint/ban-ts-comment": 1,
       "@typescript-eslint/no-unsafe-call": 4,
       "@typescript-eslint/no-unsafe-member-access": 2
     },
