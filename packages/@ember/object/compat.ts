@@ -11,6 +11,7 @@ import { assert } from '@ember/debug';
 import { consumeTag, tagFor, track, UpdatableTag, updateTag } from '@glimmer/validator';
 
 const wrapGetterSetter = function (target: object, key: string, desc: PropertyDescriptor) {
+  // eslint-disable-next-line @typescript-eslint/unbound-method
   const { get: originalGet } = desc;
 
   assert(
@@ -21,7 +22,7 @@ const wrapGetterSetter = function (target: object, key: string, desc: PropertyDe
   if (originalGet !== undefined) {
     desc.get = function () {
       const propertyTag = tagFor(this, key) as UpdatableTag;
-      let ret;
+      let ret: unknown;
 
       const tag = track(() => {
         ret = originalGet.call(this);

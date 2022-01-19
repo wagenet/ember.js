@@ -603,17 +603,6 @@
       "@typescript-eslint/no-explicit-any": 7,
       "@typescript-eslint/restrict-template-expressions": 1
     },
-    "packages/@ember/object/compat.ts": {
-      "@typescript-eslint/no-unsafe-assignment": 1,
-      "@typescript-eslint/unbound-method": 1
-    },
-    "packages/@ember/polyfills/lib/assign.ts": {
-      "@typescript-eslint/no-unsafe-return": 1
-    },
-    "packages/@ember/runloop/index.d.ts": {
-      "@typescript-eslint/ban-types": 5,
-      "@typescript-eslint/no-explicit-any": 4
-    },
     "packages/@ember/runloop/tests/later_test.js": {
       "qunit/no-commented-tests": 2
     },

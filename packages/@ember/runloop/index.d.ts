@@ -11,15 +11,30 @@ export const scheduleOnce: Backburner['scheduleOnce'];
 
 export function _getCurrentRunLoop(): DeferredActionQueues;
 
-export function once(method: Function): Timer;
-export function once<T, U extends keyof T>(target: T, method: U, ...args: any[]): Timer;
-export function once(target: unknown, method: unknown | Function, ...args: any[]): Timer;
+export function once(method: () => void): Timer;
+export function once<T, U extends keyof T>(target: T, method: U, ...args: unknown[]): Timer;
+export function once<T>(
+  target: T,
+  method: unknown | ((this: T) => void),
+  ...args: unknown[]
+): Timer;
 
-export function bind<T extends Function>(target: T): T;
-export function bind<T extends Function, U extends any[]>(
-  target: unknown,
-  method?: T,
-  ...args: U
-): T;
-export function bind<T extends any[]>(target: unknown, method?: string, ...args: T): Function;
-export function bind<T>(target: unknown, method?: T, ...args: unknown[]): T;
+export function bind<M extends (...args: unknown[]) => unknown>(method: M): M;
+export function bind<
+  T,
+  A extends unknown[],
+  M extends (this: T, ...args: [...A, ...unknown[]]) => unknown
+>(
+  target: T,
+  method: M,
+  ...args: unknown[]
+): M extends (...args: [...A, ...infer Rest]) => infer Return
+  ? (this: T, ...args: Rest) => Return
+  : never;
+export function bind<T, M extends keyof T, A extends unknown[]>(
+  target: T,
+  method: M,
+  ...args: A
+): T[M] extends (this: T, ...args: [...A, ...infer Rest]) => infer Return
+  ? (this: T, ...args: Rest) => Return
+  : never;

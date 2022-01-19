@@ -45,5 +45,7 @@ export function assign(target: object, ...rest: object[]): object {
     }
   );
 
-  return Object.assign(target, ...rest);
+  // SAFETY: While TS doesn't recognize that this is an object, there's no way it
+  // could be otherwise here.
+  return Object.assign(target, ...rest) as object;
 }
