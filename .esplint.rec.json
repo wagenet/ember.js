@@ -739,8 +739,7 @@
       "@typescript-eslint/restrict-template-expressions": 1
     },
     "packages/@ember/object/compat.ts": {
-      "prefer-const": 5,
-      "@typescript-eslint/ban-types": 4,
+      "prefer-const": 9,
       "@typescript-eslint/no-unsafe-assignment": 1,
       "@typescript-eslint/unbound-method": 1
     },
