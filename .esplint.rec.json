@@ -1,6 +1,6 @@
 {
   "recordVersion": 1,
-  "configHash": "abf3265644da132cd88858eeb0881c9b1e34a5c3",
+  "configHash": "638ddbd369a8d69bb8835fe49916978a858a7441",
   "files": {
     "packages/@ember/-internals/bootstrap/index.ts": {
       "@typescript-eslint/no-unsafe-assignment": 1,
@@ -537,7 +537,6 @@
       "@typescript-eslint/no-explicit-any": 27,
       "@typescript-eslint/no-floating-promises": 2,
       "@typescript-eslint/no-misused-promises": 2,
-      "@typescript-eslint/no-unnecessary-type-assertion": 1,
       "@typescript-eslint/no-unsafe-argument": 18,
       "@typescript-eslint/no-unsafe-assignment": 26,
       "@typescript-eslint/no-unsafe-call": 10,

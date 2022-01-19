@@ -2051,6 +2051,7 @@ function buildRenderOptions(
     name = route.routeName;
     templateName = route.templateName || name;
   } else {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     name = _name!.replace(/\//g, '.');
     templateName = name;
   }
