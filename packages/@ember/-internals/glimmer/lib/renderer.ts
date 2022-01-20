@@ -292,15 +292,16 @@ export class Renderer {
 
   static create(props: { _viewRegistry: any }): Renderer {
     const { _viewRegistry } = props;
-    const document = getOwner(props).lookup('service:-document') as SimpleDocument;
-    const env = getOwner(props).lookup('-environment:main') as {
+    const owner = getOwner(props);
+    assert('Renderer is unexpectedly missing an owner', owner);
+    const document = owner.lookup('service:-document') as SimpleDocument;
+    const env = owner.lookup('-environment:main') as {
       isInteractive: boolean;
       hasDOM: boolean;
     };
-    const owner = getOwner(props);
     const rootTemplate = owner.lookup(P`template:-root`) as TemplateFactory;
     const builder = owner.lookup('service:-dom-builder') as IBuilder;
-    return new this(getOwner(props), document, env, rootTemplate, _viewRegistry, builder);
+    return new this(owner, document, env, rootTemplate, _viewRegistry, builder);
   }
 
   constructor(

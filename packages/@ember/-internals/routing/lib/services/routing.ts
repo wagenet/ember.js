@@ -4,6 +4,7 @@
 
 import { getOwner } from '@ember/-internals/owner';
 import { symbol } from '@ember/-internals/utils';
+import { assert } from '@ember/debug';
 import { readOnly } from '@ember/object/computed';
 import Service from '@ember/service';
 import EmberRouter from '../system/router';
@@ -28,6 +29,8 @@ export default class RoutingService extends Service {
       return router;
     }
     const owner = getOwner(this);
+    assert('RoutingService is unexpectedly missing an owner', owner);
+
     router = owner.lookup('router:main') as EmberRouter;
     router.setupRouter();
     return (this[ROUTER] = router);

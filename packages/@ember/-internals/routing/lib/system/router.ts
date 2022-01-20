@@ -86,6 +86,12 @@ if (DEBUG) {
   };
 }
 
+function getOwnerChecked(route: Router): Owner {
+  const owner = getOwner(route);
+  assert('Router is unexpectedly missing an owner', owner);
+  return owner;
+}
+
 interface RenderOutletState {
   name: string;
   outlet: string;
@@ -206,6 +212,13 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
   declare has: (name: string) => boolean;
   // End Evented
 
+  /** @private */
+  get _owner(): Owner {
+    const owner = getOwner(this);
+    assert('Router is unexpectedly missing an owner', owner);
+    return owner;
+  }
+
   // Set with reopenClass
   private static dslCallbacks?: MatchCallback[];
 
@@ -312,7 +325,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
   _initRouterJs(): void {
     const location = get(this, 'location') as IEmberLocation;
     const router = this;
-    const owner = getOwner(this);
+    const owner = getOwnerChecked(this);
     const seen = Object.create(null);
 
     class PrivateRouter extends Router<Route> {
@@ -500,7 +513,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
   _buildDSL(): DSL {
     const enableLoadingSubstates = this._hasModuleBasedResolver();
     const router = this;
-    const owner = getOwner(this);
+    const owner = getOwnerChecked(this);
     const options = {
       enableLoadingSubstates,
       resolveRouteMap(name: string) {
@@ -526,7 +539,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
   }
 
   _hasModuleBasedResolver() {
-    const owner = getOwner(this);
+    const owner = getOwnerChecked(this);
     const resolver = get(owner, 'application.__registry__.resolver.moduleBasedResolver');
     return Boolean(resolver);
   }
@@ -623,7 +636,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
     }
 
     if (!this._toplevelView) {
-      const owner = getOwner(this);
+      const owner = getOwnerChecked(this);
       const OutletView = owner.factoryFor<OutletView, FactoryClass>('view:-outlet')!;
       const application = owner.lookup('application:main');
       const environment = owner.lookup('-environment:main');
@@ -827,7 +840,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
   _setupLocation() {
     let location = this.location;
     const rootURL = this.rootURL;
-    const owner = getOwner(this);
+    const owner = getOwnerChecked(this);
 
     if ('string' === typeof location) {
       const resolvedLocation = owner.lookup<IEmberLocation>(`location:${location}`);
@@ -1371,7 +1384,7 @@ class EmberRouter extends EmberObject.extend(Evented) implements Evented {
     let engineInstance = engineInstances[name][instanceId];
 
     if (!engineInstance) {
-      const owner = getOwner(this);
+      const owner = getOwnerChecked(this);
 
       assert(
         `You attempted to mount the engine '${name}' in your router map, but the engine can not be found.`,
@@ -1608,6 +1621,8 @@ function logError(_error: any, initialMessage: string) {
 */
 function findRouteSubstateName(route: Route, state: string) {
   const owner = getOwner(route);
+  assert('Route is unexpectedly missing an owner', owner);
+
   const { routeName, fullRouteName, _router: router } = route;
 
   const substateName = `${routeName}_${state}`;
@@ -1628,6 +1643,8 @@ function findRouteSubstateName(route: Route, state: string) {
 */
 function findRouteStateName(route: Route, state: string) {
   const owner = getOwner(route);
+  assert('Route is unexpectedly missing an owner', owner);
+
   const { routeName, fullRouteName, _router: router } = route;
 
   const stateName = routeName === 'application' ? state : `${routeName}.${state}`;
@@ -1747,7 +1764,7 @@ function updatePaths(router: EmberRouter) {
   set(router, 'currentRouteName', currentRouteName);
   set(router, 'currentURL', currentURL);
 
-  const appController = getOwner(router).lookup<Controller>('controller:application');
+  const appController = router._owner.lookup<Controller>('controller:application');
 
   if (!appController) {
     // appController might not exist when top-level loading/error

@@ -93,6 +93,12 @@ export function hasDefaultSerialize(route: Route): boolean {
   return route.serialize === defaultSerialize;
 }
 
+function getOwnerChecked(route: Route): Owner {
+  const owner = getOwner(route);
+  assert('Route is unexpectedly missing an owner', owner);
+  return owner;
+}
+
 /**
 @module @ember/routing
 */
@@ -338,7 +344,7 @@ class Route extends EmberObject.extend(ActionHandler, Evented) implements IRoute
   */
   _setRouteName(name: string) {
     this.routeName = name;
-    this.fullRouteName = getEngineRouteName(getOwner(this), name)!;
+    this.fullRouteName = getEngineRouteName(getOwnerChecked(this), name)!;
   }
 
   /**
@@ -446,7 +452,7 @@ class Route extends EmberObject.extend(ActionHandler, Evented) implements IRoute
     @public
   */
   paramsFor(name: string) {
-    const route = getOwner(this).lookup<Route>(`route:${name}`);
+    const route = getOwnerChecked(this).lookup<Route>(`route:${name}`);
 
     if (route === undefined) {
       return {};
@@ -1534,7 +1540,7 @@ class Route extends EmberObject.extend(ActionHandler, Evented) implements IRoute
     @public
   */
   controllerFor(name: string, _skipAssert: boolean): Controller {
-    const owner = getOwner(this);
+    const owner = getOwnerChecked(this);
     const route = owner.lookup<Route>(`route:${name}`);
 
     if (route && route.controllerName) {
@@ -1576,7 +1582,7 @@ class Route extends EmberObject.extend(ActionHandler, Evented) implements IRoute
     @private
   */
   generateController(name: string) {
-    const owner = getOwner(this);
+    const owner = getOwnerChecked(this);
 
     return generateController(owner, name);
   }
@@ -1625,7 +1631,7 @@ class Route extends EmberObject.extend(ActionHandler, Evented) implements IRoute
   */
   modelFor(_name: string) {
     let name;
-    const owner = getOwner(this);
+    const owner = getOwnerChecked(this);
     const transition =
       this._router && this._router._routerMicrolib
         ? this._router._routerMicrolib.activeTransition
@@ -1758,7 +1764,7 @@ class Route extends EmberObject.extend(ActionHandler, Evented) implements IRoute
   */
   @computed
   protected get store() {
-    const owner = getOwner(this);
+    const owner = getOwnerChecked(this);
     const routeName = this.routeName;
 
     return {
@@ -1816,7 +1822,7 @@ class Route extends EmberObject.extend(ActionHandler, Evented) implements IRoute
     let combinedQueryParameterConfiguration;
 
     const controllerName = this.controllerName || this.routeName;
-    const owner = getOwner(this);
+    const owner = getOwnerChecked(this);
     let controller = owner.lookup<Controller>(`controller:${controllerName}`);
     const queryParameterConfiguraton = get(this, 'queryParams');
     const hasRouterDefinedQueryParams = Object.keys(queryParameterConfiguraton).length > 0;
@@ -2035,7 +2041,7 @@ function buildRenderOptions(
     isDefaultRender || !(options && 'outlet' in options && options.outlet === undefined)
   );
 
-  const owner = getOwner(route);
+  const owner = getOwnerChecked(route);
   let name, templateName, into, outlet, model;
   let controller: Controller | string | undefined = undefined;
 
