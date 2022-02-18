@@ -1,7 +1,7 @@
-import { TypeOptions } from '@ember/-internals/container/lib/registry';
+import { ResolverClass, TypeOptions } from '@ember/-internals/container/lib/registry';
 import { Factory, Owner } from '@ember/-internals/owner';
 import Namespace from '@ember/application/namespace';
-import Engine from '@ember/engine';
+import Engine, { Initializer } from '@ember/engine';
 import EngineInstance from '@ember/engine/instance';
 import EmberObject from '@ember/object';
 import { expectTypeOf } from 'expect-type';
@@ -18,25 +18,27 @@ expectTypeOf(engine).toMatchTypeOf<Namespace>();
 
 expectTypeOf(engine.buildInstance()).toEqualTypeOf<EngineInstance>();
 engine.buildInstance({ mountPoint: 'foo', routable: true });
+engine.buildInstance({ mountPoint: 'foo' });
+engine.buildInstance({});
 // @ts-expect-error Invalid argument
 engine.buildInstance(1);
 // @ts-expect-error Invalid argument
-engine.buildInstance({});
+engine.buildInstance({ mountPoint: 1 });
 // @ts-expect-error Invalid argument
-engine.buildInstance({ mountPoint: 1, routable: true });
-// @ts-expect-error Invalid argument
-engine.buildInstance({ mountPoint: 'foo' });
+engine.buildInstance({ routable: 1 });
 
-expectTypeOf(engine.initializer).toEqualTypeOf<(initializer: unknown) => void>();
+expectTypeOf(engine.initializer).toEqualTypeOf<(initializer: Initializer<Engine>) => void>();
 
-expectTypeOf(engine.instanceInitializer).toEqualTypeOf<(initializer: unknown) => void>();
+expectTypeOf(engine.instanceInitializer).toEqualTypeOf<
+  (initializer: Initializer<EngineInstance>) => void
+>();
 
-expectTypeOf(engine.Resolver).toEqualTypeOf<unknown | null>();
+expectTypeOf(engine.Resolver).toEqualTypeOf<ResolverClass>();
 
 // RegistryProxy
 
-expectTypeOf(engine.resolveRegistration<unknown, object>('foo')).toEqualTypeOf<
-  Factory<unknown, object> | undefined
+expectTypeOf(engine.resolveRegistration('foo')).toEqualTypeOf<
+  Factory<object> | object | undefined
 >();
 // @ts-expect-error Requires name
 engine.resolveRegistration();
