@@ -1,12 +1,12 @@
 import { get } from '@ember/-internals/metal';
-import EmberObject from '../../../lib/system/object';
+import CoreObject from '@ember/object/core';
 import { moduleFor, AbstractTestCase } from 'internal-test-helpers';
 
 moduleFor(
   'system/core_object/reopen',
   class extends AbstractTestCase {
     ['@test adds new properties to subclass instance'](assert) {
-      let Subclass = EmberObject.extend();
+      let Subclass = CoreObject.extend();
       Subclass.reopen({
         foo() {
           return 'FOO';
@@ -19,7 +19,7 @@ moduleFor(
     }
 
     ['@test reopened properties inherited by subclasses'](assert) {
-      let Subclass = EmberObject.extend();
+      let Subclass = CoreObject.extend();
       let SubSub = Subclass.extend();
 
       Subclass.reopen({
@@ -34,7 +34,7 @@ moduleFor(
     }
 
     ['@test allows reopening already instantiated classes'](assert) {
-      let Subclass = EmberObject.extend();
+      let Subclass = CoreObject.extend();
 
       Subclass.create();
 
@@ -42,7 +42,7 @@ moduleFor(
         trololol: true,
       });
 
-      assert.equal(Subclass.create().get('trololol'), true, 'reopen works');
+      assert.equal(get(Subclass.create(), 'trololol'), true, 'reopen works');
     }
   }
 );
