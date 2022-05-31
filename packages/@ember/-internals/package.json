@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "description": "Internal APIs shared by Ember packages. Warning: this package does not follow SemVer and is subject to break at any time!",
   "exports": {
+    "./container": "./container/index.js",
     "./owner": "./owner/index.js"
   },
   "license": "MIT"

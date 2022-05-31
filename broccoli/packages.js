@@ -95,13 +95,13 @@ module.exports.getPackagesES = function getPackagesES() {
     overwrite: true,
   });
 
-  let packageJSON = debugTree(
-    new PackageJSONWriter(mergedFinalOutput),
-    `get-packages-es:package-json`
-  );
+  // let packageJSON = debugTree(
+  //   new PackageJSONWriter(mergedFinalOutput),
+  //   `get-packages-es:package-json`
+  // );
 
   mergedFinalOutput = canaryFeatures(
-    new MergeTrees([mergedFinalOutput, packageJSON], { overwrite: true })
+    new MergeTrees([mergedFinalOutput /*, packageJSON */], { overwrite: true })
   );
 
   return debugTree(mergedFinalOutput, `get-packages-es:output`);

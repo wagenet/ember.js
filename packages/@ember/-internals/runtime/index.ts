@@ -1,6 +1,6 @@
 export { default as Object, FrameworkObject } from './lib/system/object';
-export { default as RegistryProxyMixin } from './lib/mixins/registry_proxy';
-export { default as ContainerProxyMixin } from './lib/mixins/container_proxy';
+export { default as RegistryProxyMixin, IRegistry } from './lib/mixins/registry_proxy';
+export { default as ContainerProxyMixin, IContainer } from './lib/mixins/container_proxy';
 export { default as compare } from './lib/compare';
 export { default as isEqual } from './lib/is-equal';
 export {

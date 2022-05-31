@@ -1,7 +1,6 @@
 import { getOwner as glimmerGetOwner, setOwner as glimmerSetOwner } from '@glimmer/owner';
 import { TypeOptions } from '@ember/-internals/container';
-import type { IContainer } from '../runtime/lib/mixins/container_proxy';
-import type { IRegistry } from '../runtime/lib/mixins/registry_proxy';
+import type { IContainer, IRegistry } from '@ember/-internals/runtime';
 
 /**
 @module @ember/application
