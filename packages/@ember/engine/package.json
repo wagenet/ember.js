@@ -1,0 +1,9 @@
+{
+  "name": "@ember/engine",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./index.js",
+    "./instance": "./instance.js"
+  },
+  "license": "MIT"
+}

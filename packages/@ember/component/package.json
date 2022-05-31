@@ -1,0 +1,10 @@
+{
+  "name": "@ember/component",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./index.js",
+    "./helper": "./helper.js",
+    "./template-only": "./template-only.js"
+  },
+  "license": "MIT"
+}

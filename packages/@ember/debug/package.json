@@ -1,0 +1,10 @@
+{
+  "name": "@ember/debug",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./index.js",
+    "./container-debug-adapter": "./container-debug-adapter.js",
+    "./data-adapter": "./data-adapter.js"
+  },
+  "license": "MIT"
+}

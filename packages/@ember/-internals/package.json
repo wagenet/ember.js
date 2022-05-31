@@ -1,5 +1,21 @@
 {
   "name": "@ember/-internals",
   "version": "0.0.0",
-  "description": "Internal APIs shared by Ember packages. Warning: this package does not follow SemVer and is subject to break at any time!"
+  "description": "Internal APIs shared by Ember packages. Warning: this package does not follow SemVer and is subject to break at any time!",
+  "exports": {
+    "./browser-environment": "./browser-environment/index.js",
+    "./container": "./container/index.js",
+    "./enviroment": "./environment/index.js",
+    "./error-handling": "./error-handling/index.js",
+    "./extension-support": "./extension-support/index.js",
+    "./glimmer": "./glimmer/index.js",
+    "./meta": "./meta/index.js",
+    "./metal": "./metal/index.js",
+    "./routing": "./routing/index.js",
+    "./runtime": "./runtime/index.js",
+    "./owner": "./owner/index.js",
+    "./utils": "./utils/index.js",
+    "./views": "./views/index.js"
+  },
+  "license": "MIT"
 }

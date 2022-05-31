@@ -84,27 +84,27 @@ module.exports = function ({ project }) {
     packages = debugTree(
       new MergeTrees([
         new Funnel(packages, {
-          exclude: [
-            '@ember/-internals/browser-environment/index.js',
-            '@ember/-internals/browser-environment/lib/**',
-            '@ember/-internals/container/index.js',
-            '@ember/-internals/container/lib/**',
-            '@ember/-internals/environment/index.js',
-            '@ember/-internals/environment/lib/**',
-            '@ember/-internals/glimmer/index.js',
-            '@ember/-internals/glimmer/lib/**',
-            '@ember/-internals/metal/index.js',
-            '@ember/-internals/metal/lib/**',
-            '@ember/-internals/utils/index.js',
-            '@ember/-internals/utils/lib/**',
-          ],
+          // exclude: [
+          //   '@ember/-internals/browser-environment/index.js',
+          //   '@ember/-internals/browser-environment/lib/**',
+          //   '@ember/-internals/container/index.js',
+          //   '@ember/-internals/container/lib/**',
+          //   '@ember/-internals/environment/index.js',
+          //   '@ember/-internals/environment/lib/**',
+          //   '@ember/-internals/glimmer/index.js',
+          //   '@ember/-internals/glimmer/lib/**',
+          //   '@ember/-internals/metal/index.js',
+          //   '@ember/-internals/metal/lib/**',
+          //   '@ember/-internals/utils/index.js',
+          //   '@ember/-internals/utils/lib/**',
+          // ],
         }),
-        rollupPackage(packages, '@ember/-internals/browser-environment'),
-        rollupPackage(packages, '@ember/-internals/environment'),
-        rollupPackage(packages, '@ember/-internals/glimmer'),
-        rollupPackage(packages, '@ember/-internals/metal'),
-        rollupPackage(packages, '@ember/-internals/utils'),
-        rollupPackage(packages, '@ember/-internals/container'),
+        // rollupPackage(packages, '@ember/-internals/browser-environment'),
+        // rollupPackage(packages, '@ember/-internals/environment'),
+        // rollupPackage(packages, '@ember/-internals/glimmer'),
+        // rollupPackage(packages, '@ember/-internals/metal'),
+        // rollupPackage(packages, '@ember/-internals/utils'),
+        // rollupPackage(packages, '@ember/-internals/container'),
       ]),
       'packages:rollup'
     );
@@ -115,7 +115,7 @@ module.exports = function ({ project }) {
       new Funnel(packages, {
         destDir: 'packages',
         exclude: [
-          '**/package.json',
+          // '**/package.json',
           '@ember/-internals/*/tests/**' /* internal packages */,
           '*/*/tests/**' /* scoped packages */,
           '*/tests/**' /* packages */,

@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "baseUrl": "dist/types",
+    "rootDir": ".",
+    "noEmit": true,
+    "moduleResolution": "node",
+    "paths": {
+      "ember/version": ["../../packages/ember/version"],
+      "ember-testing": ["../../packages/ember-testing"],
+      "ember-template-compiler": ["../../packages/ember-template-compiler"],
+      "backburner": ["../../node_modules/backburner.js/dist/backburner.d.ts"]
+    }
+  },
+
+  "include": ["packages/ember/index.d.ts", "dist/types/**/*.ts"]
+}

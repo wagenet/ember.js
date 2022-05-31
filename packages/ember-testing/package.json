@@ -1,0 +1,8 @@
+{
+  "name": "ember-testing",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./index.js"
+  },
+  "license": "MIT"
+}

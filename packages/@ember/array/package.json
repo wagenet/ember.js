@@ -1,0 +1,10 @@
+{
+  "name": "@ember/array",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./index.js",
+    "./mutable": "./mutable.js",
+    "./proxy": "./proxy.js"
+  },
+  "license": "MIT"
+}

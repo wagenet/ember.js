@@ -129,6 +129,7 @@ module.exports = {
         'blueprints/**/*.js',
         'blueprints-js/**/*.js',
         'bin/**/*.js',
+        'build-types.js',
         'tests/docs/*.js',
         'config/**/*.js',
         'lib/**/*.js',

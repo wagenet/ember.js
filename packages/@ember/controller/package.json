@@ -1,0 +1,9 @@
+{
+  "name": "@ember/controller",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./index.js",
+    "./lib/controller_mixin": "./lib/controller_mixin.js"
+  },
+  "license": "MIT"
+}
