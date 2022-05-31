@@ -1,0 +1,9 @@
+{
+  "name": "@ember/test",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./index.js",
+    "./adapter": "./adapter.js"
+  },
+  "license": "MIT"
+}

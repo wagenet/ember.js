@@ -1,0 +1,16 @@
+{
+  "name": "@ember/routing",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./index.js",
+    "./auto-location": "./auto-location.js",
+    "./hash-location": "./hash-location.js",
+    "./history-location": "./history-location.js",
+    "./location": "./location.js",
+    "./none-location": "./none-location.js",
+    "./route": "./route.js",
+    "./router-service": "./router-service.js",
+    "./router": "./router.js"
+  },
+  "license": "MIT"
+}

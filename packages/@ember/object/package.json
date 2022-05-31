@@ -1,0 +1,19 @@
+{
+  "name": "@ember/object",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./index.js",
+    "./compat": "./compat.js",
+    "./computed": "./computed.js",
+    "./core": "./core.js",
+    "./evented": "./evented.js",
+    "./events": "./events.js",
+    "./internals": "./internals.js",
+    "./mixin": "./mixin.js",
+    "./observable": "./observable.js",
+    "./observers": "./observers.js",
+    "./promise-proxy-mixin": "./promise-proxy-mixin.js",
+    "./proxy": "./proxy.js"
+  },
+  "license": "MIT"
+}
