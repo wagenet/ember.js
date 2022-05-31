@@ -2,7 +2,7 @@
 @module @ember/component
 */
 
-import type { FactoryManager } from '@ember/-internals/container/lib/container';
+import type { FactoryManager } from '@ember/-internals/container';
 import type { Factory, Owner } from '@ember/-internals/owner';
 import { setOwner } from '@ember/-internals/owner';
 import { FrameworkObject } from '@ember/-internals/runtime';

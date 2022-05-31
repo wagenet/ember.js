@@ -6,8 +6,9 @@ import run from '../test/run';
 import { invokeInjectHelpersCallbacks } from '../test/on_inject_helpers';
 import { asyncStart, asyncEnd } from '../test/adapter';
 import type Application from '@ember/application';
-import type { AnyFn } from '@ember/-internals/utils/types';
 import { assert } from '@ember/debug';
+
+type AnyFn = (...args: any[]) => any;
 
 export interface TestableApp extends Application {
   testing?: boolean;

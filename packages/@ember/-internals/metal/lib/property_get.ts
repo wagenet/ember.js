@@ -1,7 +1,7 @@
 /**
 @module @ember/object
 */
-import type ProxyMixin from '@ember/-internals/runtime/lib/mixins/-proxy';
+import type { _ProxyMixin as ProxyMixin } from '@ember/-internals/runtime';
 import { isEmberArray, setProxy, symbol } from '@ember/-internals/utils';
 import { assert } from '@ember/debug';
 import { DEBUG } from '@glimmer/env';

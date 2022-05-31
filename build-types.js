@@ -20,6 +20,12 @@ async function rollupTypes(inPath, outPath) {
           compilerOptions: {
             // Unless explicit, we don't want anything other than relative imports to be picked up
             baseUrl: null,
+            paths: {
+              // Inline these
+              '@ember/-internals/utils/types': [
+                `${__dirname}/dist/packages/@ember/-internals/utils/types`,
+              ],
+            },
           },
         }),
       ],
@@ -49,7 +55,11 @@ async function run() {
   await mkdir('dist/types', { recursive: true });
 
   let packagesPath = path.join(__dirname, 'dist', 'packages');
-  let files = glob.sync(path.join(packagesPath, '@ember', '**', 'package.json'));
+  let files = [
+    ...glob.sync(path.join(packagesPath, '@ember', '**', 'package.json')),
+    // path.join(packagesPath, 'ember-testing', 'package.json'),
+    // path.join(packagesPath, 'ember-template-compiler', 'package.json'),
+  ];
 
   for (let file of files) {
     let data = await readFile(file);

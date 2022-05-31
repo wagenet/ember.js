@@ -236,10 +236,10 @@ interface CoreObject {
   _super(...args: any[]): any;
 }
 class CoreObject {
-  [OWNER]?: Owner;
+  // [OWNER]?: Owner;
 
   constructor(owner?: Owner) {
-    this[OWNER] = owner;
+    // this[OWNER] = owner;
 
     // prepare prototype...
     (this.constructor as typeof CoreObject).proto();

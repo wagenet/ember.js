@@ -7,6 +7,7 @@ import {
   isNone,
   alias,
   expandProperties,
+  ComputedDecorator,
 } from '@ember/-internals/metal';
 import type { DeprecationOptions } from '@ember/debug';
 import { assert, deprecate } from '@ember/debug';
@@ -102,7 +103,7 @@ function generateComputedWithPredicate(name: string, predicate: (value: unknown)
 
   @public
 */
-export function empty(dependentKey: string) {
+export function empty(dependentKey: string): ComputedDecorator {
   assert(
     'You attempted to use @empty as a decorator directly, but it requires a `dependentKey` parameter',
     !isElementDescriptor(Array.prototype.slice.call(arguments))
@@ -148,7 +149,7 @@ export function empty(dependentKey: string) {
   value for property is not empty.
   @public
 */
-export function notEmpty(dependentKey: string) {
+export function notEmpty(dependentKey: string): ComputedDecorator {
   assert(
     'You attempted to use @notEmpty as a decorator directly, but it requires a `dependentKey` parameter',
     !isElementDescriptor(Array.prototype.slice.call(arguments))
@@ -191,7 +192,7 @@ export function notEmpty(dependentKey: string) {
   value for property is null or undefined.
   @public
 */
-export function none(dependentKey: string) {
+export function none(dependentKey: string): ComputedDecorator {
   assert(
     'You attempted to use @none as a decorator directly, but it requires a `dependentKey` parameter',
     !isElementDescriptor(Array.prototype.slice.call(arguments))

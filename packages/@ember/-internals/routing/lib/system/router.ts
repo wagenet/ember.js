@@ -4,7 +4,7 @@ import { computed, get, set } from '@ember/-internals/metal';
 import type { Factory, FactoryClass, Owner } from '@ember/-internals/owner';
 import { getOwner } from '@ember/-internals/owner';
 import { BucketCache } from '@ember/-internals/routing';
-import type RouterService from '@ember/-internals/routing/lib/services/router';
+import type { RouterService } from '@ember/-internals/routing';
 import { A as emberA, Evented, Object as EmberObject, typeOf } from '@ember/-internals/runtime';
 import { assert, deprecate, info } from '@ember/debug';
 import EmberError from '@ember/error';

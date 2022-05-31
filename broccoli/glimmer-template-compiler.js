@@ -32,7 +32,8 @@ GlimmerTemplatePrecompiler.prototype.processString = function (content, relative
   });
   return stripIndent`
     import { templateFactory } from '@glimmer/opcode-compiler';
-    export default templateFactory(${compiled});
+    const factory = templateFactory(${compiled});
+    export default factory;
   `;
 };
 

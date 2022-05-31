@@ -9,7 +9,7 @@ import type { WarnFunc } from './lib/warn';
 import _warn from './lib/warn';
 
 export { inspect } from '@ember/-internals/utils';
-export { registerHandler as registerWarnHandler } from './lib/warn';
+export { registerHandler as registerWarnHandler, WarnOptions } from './lib/warn';
 export { registerHandler as registerDeprecationHandler } from './lib/deprecate';
 export { isTesting, setTesting } from './lib/testing';
 export { default as captureRenderTree } from './lib/capture-render-tree';

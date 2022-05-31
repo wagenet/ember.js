@@ -603,7 +603,7 @@ class AutoComputedProperty extends ComputedProperty {
 export type ComputedDecorator = ExtendedMethodDecorator & PropertyDecorator & ComputedDecoratorImpl;
 
 // TODO: This class can be svelted once `meta` has been deprecated
-class ComputedDecoratorImpl extends Function {
+export class ComputedDecoratorImpl extends Function {
   /**
     Call on a computed property to set it into read-only mode. When in this
     mode the computed property will throw an error when set.

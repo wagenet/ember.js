@@ -2,9 +2,7 @@ import { schedule, join } from '@ember/runloop';
 /**
 @module ember
 */
-import type { FactoryManager } from '@ember/-internals/container/lib/container';
-import type Container from '@ember/-internals/container/lib/container';
-import type { TypeOptions } from '@ember/-internals/container/lib/registry';
+import type { Container, FactoryManager, TypeOptions } from '@ember/-internals/container';
 import { Mixin } from '@ember/-internals/metal';
 import type { Factory } from '@ember/-internals/owner';
 

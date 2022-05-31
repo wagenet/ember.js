@@ -5,5 +5,19 @@ The public API, specified on the application namespace should be considered the 
   @private
 */
 
-export { default as Registry, TypeOptions, privatize } from './lib/registry';
-export { default as Container, getFactoryFor, setFactoryFor, INIT_FACTORY } from './lib/container';
+export {
+  default as Registry,
+  Injection,
+  Resolver,
+  ResolverClass,
+  TypeOptions,
+  privatize,
+} from './lib/registry';
+export {
+  default as Container,
+  getFactoryFor,
+  setFactoryFor,
+  FactoryManager,
+  LazyInjection,
+  INIT_FACTORY,
+} from './lib/container';

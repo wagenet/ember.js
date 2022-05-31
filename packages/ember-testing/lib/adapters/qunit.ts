@@ -1,5 +1,6 @@
 /* globals QUnit */
 
+import type { Owner } from '@ember/-internals/owner';
 import { inspect } from '@ember/-internals/utils';
 import Adapter from './adapter';
 
@@ -23,12 +24,13 @@ function isVeryOldQunit(obj: unknown): obj is VeryOldQunit {
   @extends TestAdapter
   @public
 */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface QUnitAdapter extends Adapter {}
-const QUnitAdapter = Adapter.extend({
-  init() {
+export default class QUnitAdapter extends Adapter {
+  declare doneCallbacks: Array<QUnit['assert']['async'] | null>;
+
+  init(owner?: Owner) {
+    super.init(owner);
     this.doneCallbacks = [];
-  },
+  }
 
   asyncStart() {
     if (isVeryOldQunit(QUnit)) {
@@ -38,7 +40,7 @@ const QUnitAdapter = Adapter.extend({
     } else {
       this.doneCallbacks.push(QUnit.config.current ? QUnit.config.current.assert.async() : null);
     }
-  },
+  }
 
   asyncEnd() {
     // checking for QUnit.stop here (even though we _need_ QUnit.start) because
@@ -53,11 +55,9 @@ const QUnitAdapter = Adapter.extend({
         done();
       }
     }
-  },
+  }
 
   exception(error: unknown) {
     QUnit.config.current.assert.ok(false, inspect(error));
-  },
-});
-
-export default QUnitAdapter;
+  }
+}

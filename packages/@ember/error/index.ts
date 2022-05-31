@@ -11,4 +11,6 @@
   @constructor
   @public
 */
-export default Error;
+const EmberError = Error;
+
+export default EmberError;

@@ -1,5 +1,5 @@
 import { privatize as P } from '@ember/-internals/container';
-import type { TypeOptions } from '@ember/-internals/container/lib/registry';
+import type { TypeOptions } from '@ember/-internals/container';
 import { ENV } from '@ember/-internals/environment';
 import type { Factory, Owner } from '@ember/-internals/owner';
 import { isFactory } from '@ember/-internals/owner';

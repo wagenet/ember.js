@@ -1,12 +1,11 @@
 import { getOwner as glimmerGetOwner, setOwner as glimmerSetOwner } from '@glimmer/owner';
-import { TypeOptions } from '@ember/-internals/container';
 import type { IContainer, IRegistry } from '@ember/-internals/runtime';
 
 /**
 @module @ember/application
 */
 
-export { TypeOptions };
+export { TypeOptions } from '@ember/-internals/container';
 
 export interface FactoryClass {
   positionalParams?: string | string[] | undefined | null;

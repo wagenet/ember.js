@@ -5,11 +5,11 @@
 import { get, set } from '@ember/-internals/metal';
 import * as environment from '@ember/-internals/browser-environment';
 import EngineInstance from '@ember/engine/instance';
-import type Application from './lib/application';
+import type Application from '@ember/application';
 import { renderSettled } from '@ember/-internals/glimmer';
-import type { BootEnvironment } from '@ember/-internals/glimmer/lib/views/outlet';
+import type { BootEnvironment } from '@ember/-internals/glimmer';
 import { assert } from '@ember/debug';
-import { Router } from '@ember/-internals/routing';
+import type { Router } from '@ember/-internals/routing';
 import type { ViewMixin } from '@ember/-internals/views';
 import { EventDispatcher } from '@ember/-internals/views';
 import type { Registry } from '@ember/-internals/container';
@@ -24,6 +24,10 @@ export interface BootOptions {
   // Private?
   isInteractive?: boolean;
   _renderMode?: string;
+}
+
+function isRouter(obj: unknown): obj is Router {
+  return obj != null && Boolean((obj as Router)._routerMicrolib);
 }
 
 /**
@@ -139,7 +143,7 @@ class ApplicationInstance extends EngineInstance {
   get router() {
     if (!this._router) {
       let router = this.lookup('router:main');
-      assert('expected an instance of Router', router instanceof Router);
+      assert('expected an instance of Router', isRouter(router));
       this._router = router;
     }
 

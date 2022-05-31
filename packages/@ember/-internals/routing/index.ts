@@ -24,3 +24,4 @@ export {
 } from './lib/services/router';
 export { default as RouterState } from './lib/system/router_state';
 export { default as BucketCache } from './lib/system/cache';
+export { RouteArgs } from './lib/utils';

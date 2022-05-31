@@ -3,7 +3,7 @@ import type { NativeArray } from '@ember/-internals/runtime';
 import { A as emberA, typeOf, Namespace, Object as EmberObject } from '@ember/-internals/runtime';
 import type { Owner } from '@ember/-internals/owner';
 import { getOwner } from '@ember/-internals/owner';
-import type { Resolver } from '@ember/-internals/container/lib/registry';
+import type { Resolver } from '@ember/-internals/container';
 
 /**
 @module @ember/debug

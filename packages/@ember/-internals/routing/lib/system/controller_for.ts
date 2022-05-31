@@ -1,5 +1,4 @@
-import type { Container } from '@ember/-internals/container';
-import type { TypeOptions } from '@ember/-internals/container/lib/registry';
+import type { Container, TypeOptions } from '@ember/-internals/container';
 /**
 @module ember
 */

@@ -1,4 +1,10 @@
-export { default as computed, autoComputed, isComputed, ComputedProperty } from './lib/computed';
+export {
+  default as computed,
+  autoComputed,
+  isComputed,
+  ComputedDecorator,
+  ComputedProperty,
+} from './lib/computed';
 export { getCachedValueFor } from './lib/computed_cache';
 export { default as alias } from './lib/alias';
 export { deprecateProperty } from './lib/deprecate_property';
@@ -31,6 +37,7 @@ export {
   changeProperties,
   endPropertyChanges,
   notifyPropertyChange,
+  PropertyDidChange,
   PROPERTY_DID_CHANGE,
 } from './lib/property_events';
 export { defineProperty } from './lib/properties';

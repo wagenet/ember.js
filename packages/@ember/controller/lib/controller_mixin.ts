@@ -1,5 +1,5 @@
 import { Mixin, computed } from '@ember/-internals/metal';
-import type { RouteArgs } from '@ember/-internals/routing/lib/utils';
+import type { RouteArgs } from '@ember/-internals/routing';
 import { ActionHandler } from '@ember/-internals/runtime';
 import { symbol } from '@ember/-internals/utils';
 import type Route from '@ember/routing/route';

@@ -1,5 +1,6 @@
-import type { AnyFn } from '@ember/-internals/utils/types';
 import TestPromise from './promise';
+
+type AnyFn = (...args: any[]) => any;
 
 export const helpers: Record<
   string,
