@@ -6,6 +6,7 @@
     "./auto-location": "./auto-location.js",
     "./hash-location": "./hash-location.js",
     "./history-location": "./history-location.js",
+    "./internals": "./internals.js",
     "./location": "./location.js",
     "./none-location": "./none-location.js",
     "./route": "./route.js",

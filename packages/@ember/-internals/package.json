@@ -7,7 +7,6 @@
     "./container": "./container/index.js",
     "./enviroment": "./environment/index.js",
     "./error-handling": "./error-handling/index.js",
-    "./extension-support": "./extension-support/index.js",
     "./glimmer": "./glimmer/index.js",
     "./meta": "./meta/index.js",
     "./metal": "./metal/index.js",
@@ -15,6 +14,7 @@
     "./runtime": "./runtime/index.js",
     "./owner": "./owner/index.js",
     "./utils": "./utils/index.js",
+    "./utils/types": "./utils/types.js",
     "./views": "./views/index.js"
   },
   "license": "MIT"

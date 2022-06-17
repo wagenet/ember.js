@@ -1,6 +1,6 @@
 import { get } from '@ember/-internals/metal';
 import { getOwner } from '@ember/-internals/owner';
-import type { ControllerQueryParam, ControllerQueryParamType } from '@ember/controller';
+import type { ControllerQueryParam } from '@ember/controller';
 import { assert, deprecate } from '@ember/debug';
 import EngineInstance from '@ember/engine/instance';
 import EmberError from '@ember/error';
@@ -10,33 +10,21 @@ import { STATE_SYMBOL } from 'router_js';
 import type { ExtendedInternalRouteInfo } from '@ember/routing/route';
 import type Route from '@ember/routing/route';
 import type EmberRouter from '@ember/routing/router';
+import type {
+  ExpandedControllerQueryParam,
+  NamedRouteArgs,
+  RouteArgs,
+  RouteOptions,
+  UnnamedRouteArgs,
+} from '@ember/routing/internals';
 
 const ALL_PERIODS_REGEX = /\./g;
-
-export type ExpandedControllerQueryParam = {
-  as: string | null;
-  scope: string;
-  type?: ControllerQueryParamType;
-};
-
-export type NamedRouteArgs<R extends Route> =
-  | [routeNameOrUrl: string, ...modelsAndOptions: [...ModelFor<R>[], RouteOptions]]
-  | [routeNameOrUrl: string, ...models: ModelFor<R>[]];
-
-export type UnnamedRouteArgs<R extends Route> =
-  | [...modelsAndOptions: [...ModelFor<R>[], RouteOptions]]
-  | [...models: ModelFor<R>[]]
-  | [options: RouteOptions];
-
-export type RouteArgs<R extends Route> = NamedRouteArgs<R> | UnnamedRouteArgs<R>;
 
 type ExtractedArgs<R extends Route> = {
   routeName: string | undefined;
   models: ModelFor<R>[];
   queryParams: Record<string, unknown>;
 };
-
-export type RouteOptions = { queryParams: Record<string, unknown> };
 
 export function extractRouteArgs<R extends Route>(args: RouteArgs<R>): ExtractedArgs<R> {
   // SAFETY: This should just be the same thing

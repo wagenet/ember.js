@@ -6,13 +6,13 @@ import { getOwner } from '@ember/-internals/owner';
 import { BucketCache, DSL } from '@ember/routing/internals';
 import type { DSLCallback, EngineRouteInfo } from '@ember/routing/internals';
 import { RouterState } from '@ember/routing/internals';
+import type { RouteArgs, RouteOptions } from '@ember/routing/internals';
 import {
   calculateCacheKey,
   extractRouteArgs,
   getActiveTargetName,
   resemblesURL,
 } from './lib/utils';
-import type { RouteArgs, RouteOptions } from './lib/utils';
 import EmberLocation from '@ember/routing/location';
 import type { ILocation as IEmberLocation } from '@ember/routing/location';
 import type RouterService from '@ember/routing/router-service';

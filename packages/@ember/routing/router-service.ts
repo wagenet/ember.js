@@ -8,7 +8,7 @@ import type { ModelFor, Transition } from 'router_js';
 import type Route from '@ember/routing/route';
 import EmberRouter from '@ember/routing/router';
 import { RouteInfo, RouteInfoWithAttributes } from '@ember/routing/internals';
-import type { RouteArgs, RouteOptions } from './lib/utils';
+import type { RouteArgs, RouteOptions } from '@ember/routing/internals';
 import { extractRouteArgs, resemblesURL, shallowEqual } from './lib/utils';
 
 export const ROUTER = Symbol('ROUTER');
@@ -53,7 +53,7 @@ function cleanURL(url: string, rootURL: string) {
    @class RouterService
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface RouterService<R extends Route> extends Evented {}
+interface RouterService<R extends Route> extends Service, Evented {}
 class RouterService<R extends Route> extends Service.extend(Evented) {
   [ROUTER]?: EmberRouter<R>;
 

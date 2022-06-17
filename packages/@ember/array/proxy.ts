@@ -109,8 +109,7 @@ function customTagForArrayProxy(proxy: object, key: string) {
   @uses MutableArray
   @public
 */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface, @typescript-eslint/no-unused-vars
-interface ArrayProxy<T, C extends EmberArray<T> | T[] = T[]> extends MutableArray<T> {}
+interface ArrayProxy<T, C extends EmberArray<T> | T[] = T[]> extends EmberObject, MutableArray<T> {}
 class ArrayProxy<T, C extends EmberArray<T> | T[] = T[]>
   extends EmberObject
   implements PropertyDidChange

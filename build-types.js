@@ -22,9 +22,9 @@ async function rollupTypes(inPath, outPath) {
             baseUrl: null,
             paths: {
               // Inline these
-              '@ember/-internals/utils/types': [
-                `${__dirname}/dist/packages/@ember/-internals/utils/types`,
-              ],
+              // '@ember/-internals/utils/types': [
+              //   `${__dirname}/dist/packages/@ember/-internals/utils/types.d.ts`,
+              // ],
             },
           },
         }),

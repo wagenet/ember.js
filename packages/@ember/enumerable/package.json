@@ -2,7 +2,8 @@
   "name": "@ember/enumerable",
   "version": "0.0.0",
   "exports": {
-    ".": "./index.js"
+    ".": "./index.js",
+    "./mutable": "./mutable.js"
   },
   "license": "MIT"
 }

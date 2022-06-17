@@ -34,7 +34,11 @@ import { PARAMS_SYMBOL, STATE_SYMBOL } from 'router_js';
 import type { QueryParam } from '@ember/routing/router';
 import EmberRouter from '@ember/routing/router';
 import { generateController } from '@ember/routing/internals';
-import type { ExpandedControllerQueryParam, NamedRouteArgs, RouteArgs } from './lib/utils';
+import type {
+  ExpandedControllerQueryParam,
+  NamedRouteArgs,
+  RouteArgs,
+} from '@ember/routing/internals';
 import {
   calculateCacheKey,
   deprecateTransitionMethods,

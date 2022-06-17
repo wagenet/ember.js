@@ -53,8 +53,7 @@ export interface Initializer<T> {
   @uses RegistryProxyMixin
   @public
 */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface Engine extends RegistryProxyMixin {}
+interface Engine extends Namespace, RegistryProxyMixin {}
 class Engine extends Namespace.extend(RegistryProxyMixin) {
   static initializers: Record<string, Initializer<Engine>> = Object.create(null);
   static instanceInitializers: Record<string, Initializer<EngineInstance>> = Object.create(null);
