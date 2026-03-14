@@ -458,6 +458,7 @@ d('backburner.js', backburnerjs);
 import * as dagMap from 'dag-map';
 d('dag-map', dagMap);
 
+import * as emberBarrel from 'ember/barrel';
 import * as emberIndex from 'ember/index';
 d('ember/index', emberIndex);
 
@@ -474,7 +475,7 @@ import * as rsvp from 'rsvp';
 d('rsvp', rsvp);
 
 if (typeof module === 'object' && typeof module.require === 'function') {
-  module.exports = emberIndex.default;
+  module.exports = emberBarrel.default;
 }
 
 emberDebugIndex.deprecate(
