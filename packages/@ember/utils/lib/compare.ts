@@ -185,4 +185,3 @@ function hasInstanceCompare(value: unknown): value is WithInstanceCompare {
     typeof (value as WithInstanceCompare).compare === 'function'
   );
 }
-

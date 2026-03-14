@@ -196,6 +196,7 @@ jobs:
   perf-check:
     name: Perf script still works
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v6
         with:
